@@ -4,16 +4,153 @@ namespace App\Http\Controllers\Usuario;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Perfil\UpdatePasswordRequest;
+use App\Http\Requests\Usuario\Rol\UpdateRolRequest;
+use App\Http\Requests\Usuario\Usuario\UsuarioRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
+use Database\Seeders\UsuarioSeeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Storage;
+use Exception;
+use Illuminate\Support\Facades\Redis;
 
 class Controlador_usuario extends Controller
 {
+    public $mensaje = [];
+
+    public function index()
+    {
+
+
+        $usuarios = User::with('roles')->get();
+        $roles = Role::select('id', 'name')->get();
+
+        // Obtener el ID del usuario autenticado
+        // $userId = auth()->user()->id; // O también puedes usar Auth::id();
+        // $role = Auth::user()->getRoleNames(); // Devuelve una colección con los nombres de los roles
+        return view('administrador.usuarios.usuarios', [
+            'usuarios'  => $usuarios,
+            'roles'  => $roles,
+        ]);
+    }
+
+
+    public function show($id_usuario)
+    {
+
+        $user_id = User::select('id')->find($id_usuario);
+
+
+        $content = $this->datosLector();
+        return response()->json(
+            [
+                'titulo' => "exito",
+                'codigo_targeta' => $content,
+                'user' => $user_id,
+            ]
+        );
+    }
+
+
+    public function store(UsuarioRequest $request)
+    {
+
+        DB::beginTransaction();
+        
+        try {
+            // Crear un nuevo usuario
+            $usuario = new User();
+            $usuario->ci = $request->ci;
+            $usuario->nombres = $request->nombres;
+            $usuario->paterno = $request->paterno;
+            $usuario->materno = $request->materno;
+            $usuario->email = $request->email;
+            $usuario->estado = "activo";
+            $usuario->usuario = "michael";
+            $usuario->password = bcrypt("caceres");
+            // $usuario->rol = $request->usuario_edad;
+
+            // Guardar el nuevo usuario en la base de datos
+            $usuario->save();
+
+         
+            $usuario->assignRole(intval($request->role));
+            // Confirmar la transacción si todo va bien
+            DB::commit();
+
+            $this->mensaje("exito", "usuario registrado correctamente");
+
+            return response()->json($this->mensaje, 200);
+        } catch (Exception $e) {
+            // Revertir los cambios si hay algún error
+            DB::rollBack();
+
+            $this->mensaje("error", "error". $e->getMessage());
+
+            return response()->json($this->mensaje, 200);
+        }
+    }
+
+
+    // public function asignar_targeta(Request $request)
+    // {
+    //     $usuario = User::find($request->id_usuario_targeta);
+
+    //     $usuario->cod_targeta = $request->codigo_targeta;
+
+    //     $usuario->save();
+    //     return response()->json(
+    //         [
+    //             'titulo' => "exito",
+    //             'mensaje' => 'adicionado correctamente',
+
+    //         ]
+    //     );
+    // }
+
+    //verifica en que estado esta el lector
+    private function datosLector()
+    {
+        // Verifica si el archivo existe
+        if (!Storage::disk('local')->exists('estadoLector.txt')) {
+            // Si no existe, lo crea y escribe contenido inicial
+            Storage::disk('local')->put('estadoLector.txt', '');
+        }
+
+        $estadoLector = Storage::disk('local')->get('estadoLector.txt');
+
+        if ($estadoLector != "lectura") {
+            return response()->json(
+                [
+                    'titulo' => "error",
+                    'mensaje'  => "El estado del lector no esta en lectura",
+                ],
+                200
+            );
+        }
+        // Verifica si el archivo existe
+        if (!Storage::disk('local')->exists('data.txt')) {
+            // Si no existe, lo crea y escribe contenido inicial
+            Storage::disk('local')->put('data.txt', '');
+        }
+
+
+        // Obtiene el contenido del archivo
+        $datosTargeta = Storage::disk('local')->get('data.txt');
+
+        return $datosTargeta;
+    }
+    public function listar()
+    {
+        $usuarios = User::with('roles')->get();
+
+        return $usuarios;
+    }
     /**
      * PARA LA PARTE DEL PERFIL
      */
@@ -31,7 +168,8 @@ class Controlador_usuario extends Controller
     /**
      * PARA GUARDAR NUEVA CONTRASEÑA
      */
-    public function password_guardar(UpdatePasswordRequest $request){
+    public function password_guardar(UpdatePasswordRequest $request)
+    {
         // Inicia la transacción
         DB::beginTransaction();
         try {
@@ -60,6 +198,16 @@ class Controlador_usuario extends Controller
             DB::rollBack();
             return response()->json(mensaje_mostrar('error', 'Ocurrió un error al actualizar la contraseña.'), 500);
         }
+    }
+
+
+    public function mensaje($titulo, $mensaje)
+    {
+
+        $this->mensaje = [
+            'tipo' => $titulo,
+            'mensaje' => $mensaje
+        ];
     }
     /**
      * FIN DE LA PARTE DE NUEVA CONTRASEÑA

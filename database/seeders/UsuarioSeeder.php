@@ -28,8 +28,9 @@ class UsuarioSeeder extends Seeder
         $usuario->usuario = 'admin';
         $usuario->password = Hash::make('rodry');
         $usuario->ci = '10028685';
-        $usuario->nombres = 'Admin';
-        $usuario->apellidos = 'admin admin';
+        $usuario->nombres = 'Michael';
+        $usuario->paterno = 'caceres';
+        $usuario->materno = 'quina';
         $usuario->estado = 'activo';
         $usuario->email = 'rodrigo@gmail.com';
         $usuario->save();

@@ -31,9 +31,13 @@ Route::prefix('/admin')->middleware([Autenticados::class])->group(function(){
         Route::post('cerrar_session', 'cerrar_session')->name('salir');
     });
 
+     // PARA EL USUARIO
     Route::controller(Controlador_usuario::class)->group(function(){
         Route::get('perfil', 'perfil')->name('perfil');
+        Route::get('listarUsuarios','listar');
+        Route::post('asignar_targeta', 'asignar_targeta');
         Route::post('pwd_guardar', 'password_guardar')->name('pwd_guardar');
+        Route::resource('/usuarios', Controlador_usuario::class);
     });
 
     //PARA LOS PERMISOS
@@ -42,4 +46,9 @@ Route::prefix('/admin')->middleware([Autenticados::class])->group(function(){
 
     //PARA EL ROL
     Route::resource('roles', Controlador_rol::class);
+   
+    
 });
+
+
+
