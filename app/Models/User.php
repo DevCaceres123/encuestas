@@ -55,7 +55,7 @@ class User extends Authenticatable
 
     protected function nombres():Attribute{
         return new Attribute(
-            set: fn ($value) => mb_strtoupper($value),
+            //set: fn ($value) => mb_strtoupper($value),
             get: fn ($value) => mb_strtoupper($value),
         );
     }

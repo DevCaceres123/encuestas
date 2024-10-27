@@ -1,13 +1,19 @@
 import { mensajeAlerta } from '../../../funciones_helper/notificaciones/mensajes.js';
 import { crud } from '../../../funciones_helper/operaciones_crud/crud.js';
+import { vaciar_errores, vaciar_formulario } from '../../../funciones_helper/vistas/formulario.js';
+
 let tablaUser;
+
+let ciUsuario = document.getElementById("ci");
+let nombreUsuario = document.getElementById("nombres");
+
 
 $(document).ready(function () {
     tablaUser = $("#table_user").DataTable({
         processing: true,
         responsive: true,
     });
-    listar_usuarios();
+    //listar_usuarios();
 });
 
 
@@ -39,14 +45,14 @@ function listar_usuarios() {
                 },
                 {
                     data: 'nombres',
-                    className: 'table-td',
+                    className: 'table-td text-uppercase',
                     render: function (data, type, row) {
 
                         return `
-                         <td><img src="/admin_template/images/logos/lang-logo/slack.png"
+                         <img src="/admin_template/images/logos/lang-logo/slack.png"
                              alt="" class="rounded-circle thumb-md me-1 d-inline">
                             ${data}
-                        </td>
+                        
                         
                         `;
                     }
@@ -63,6 +69,13 @@ function listar_usuarios() {
                     className: 'table-td',
                     render: function (data, type, row) {
                         return data;
+                    }
+                },
+                {
+                    data: 'ci',
+                    className: 'table-td ',
+                    render: function (data, type, row) {
+                        return `<b class="text-muted">${data}</b>`;
                     }
                 },
                 {
@@ -141,16 +154,23 @@ function listar_usuarios() {
 $('#formularioUsuario').submit(function (e) {
 
     e.preventDefault();
+    $("#btnUser_nuevo").prop("disabled", true);
+    generarUsuario();
+    generarContraseña();
+    vaciar_errores("formularioUsuario");
     let datosFormulario = $('#formularioUsuario').serialize();
 
     crud("admin/usuarios", "POST", null, datosFormulario, function (error, response) {
-
-        console.log(response);
+        $("#btnUser_nuevo").prop("disabled", false);
+        //console.log(response);
         // if (error != null) {
         //     mensajeAlerta(error, "error");
         //     return;
         // }
+
+        console.log(response);
         if (response.tipo === "errores") {
+
             mensajeAlerta(response.mensaje, "errores");
             return;
         }
@@ -160,9 +180,12 @@ $('#formularioUsuario').submit(function (e) {
         }
 
 
+
         listar_usuarios();
         mensajeAlerta(response.mensaje, response.tipo);
-        $('#ModalTargeta').modal('hide');
+        vaciar_formulario("formularioUsuario");
+        $('#ModalUsuario').modal('hide');
+
 
     });
 
@@ -278,6 +301,17 @@ $('#alumno_form_nuevo').submit(function (e) {
     });
 });
 
+
+
+// Esta funcion es para generar el nombre usaurio
+function generarUsuario() {
+
+    $('#usuario').val(ciUsuario.value.replace(/\s/g, ""));
+}
+
+function generarContraseña() {
+    $('#password').val(ciUsuario.value.replace(/\s/g, "") + "_" + nombreUsuario.value.replace(/\s/g, ""));
+}
 
 
 

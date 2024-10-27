@@ -26,12 +26,14 @@ class UsuarioRequest extends BasePrincipalRequest
         switch ($routeName) {
             case 'usuarios.store':
                 return [
-                    'ci' => 'required|string|max:20|unique:users',
+                    'ci' => 'required|string|max:20|min:6|unique:users',
                     'nombres' => 'required|string|max:255',
                     'paterno' => 'required|string|max:255',
                     'materno' => 'required|string|max:255',
                     'email' => 'required|string|email|max:255|unique:users,email',
                     'role' => 'required|integer',
+                    'usuario' => 'required|string|min:6|unique:users',
+                    'password' => 'required|string|min:8',
                     
                 ];
             case 'usuarios.update':
@@ -53,27 +55,27 @@ class UsuarioRequest extends BasePrincipalRequest
     public function messages()
     {
         return [
-            'ci.unique' => 'El carnet de identidad ya esta en uso.',
-            'ci.required' => 'El campo CI es obligatorio.',
-            'ci.string' => 'El CI debe ser una cadena de texto.',
-            'ci.max' => 'El CI no puede tener más de 20 caracteres.',
+            // 'ci.unique' => 'El carnet de identidad ya esta en uso.',
+            // 'ci.required' => 'El campo CI es obligatorio.',
+            // 'ci.string' => 'El CI debe ser una cadena de texto.',
+            // 'ci.max' => 'El CI no puede tener más de 20 caracteres.',
 
-            'nombres.required' => 'El nombre es obligatorio.',
-            'nombres.string' => 'El nombre debe ser una cadena de texto.',
-            'nombres.max' => 'El nombre no puede tener más de 255 caracteres.',
+            // 'nombres.required' => 'El nombre es obligatorio.',
+            // 'nombres.string' => 'El nombre debe ser una cadena de texto.',
+            // 'nombres.max' => 'El nombre no puede tener más de 255 caracteres.',
 
-            'paterno.required' => 'El apellido paterno es obligatorio.',
-            'paterno.string' => 'El apellido paterno debe ser una cadena de texto.',
-            'paterno.max' => 'El apellido paterno no puede tener más de 255 caracteres.',
+            // 'paterno.required' => 'El apellido paterno es obligatorio.',
+            // 'paterno.string' => 'El apellido paterno debe ser una cadena de texto.',
+            // 'paterno.max' => 'El apellido paterno no puede tener más de 255 caracteres.',
 
-            'materno.string' => 'El apellido materno debe ser una cadena de texto.',
-            'materno.max' => 'El apellido materno no puede tener más de 255 caracteres.',
+            // 'materno.string' => 'El apellido materno debe ser una cadena de texto.',
+            // 'materno.max' => 'El apellido materno no puede tener más de 255 caracteres.',
 
-            'email.required' => 'El correo electrónico es obligatorio.',
-            'email.string' => 'El correo electrónico debe ser una cadena de texto.',
-            'email.email' => 'El correo electrónico debe ser un formato válido.',
-            'email.max' => 'El correo electrónico no puede tener más de 255 caracteres.',
-            'email.unique' => 'El correo electrónico ya está en uso.',
+            // 'email.required' => 'El correo electrónico es obligatorio.',
+            // 'email.string' => 'El correo electrónico debe ser una cadena de texto.',
+            // 'email.email' => 'El correo electrónico debe ser un formato válido.',
+            // 'email.max' => 'El correo electrónico no puede tener más de 255 caracteres.',
+            // 'email.unique' => 'El correo electrónico ya está en uso.',
 
          
         ];

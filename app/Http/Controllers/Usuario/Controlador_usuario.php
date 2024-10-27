@@ -61,7 +61,7 @@ class Controlador_usuario extends Controller
     {
 
         DB::beginTransaction();
-        
+       
         try {
             // Crear un nuevo usuario
             $usuario = new User();
@@ -71,26 +71,26 @@ class Controlador_usuario extends Controller
             $usuario->materno = $request->materno;
             $usuario->email = $request->email;
             $usuario->estado = "activo";
-            $usuario->usuario = "michael";
-            $usuario->password = bcrypt("caceres");
+            $usuario->usuario = $request->usuario;
+            $usuario->password = bcrypt("ca");
             // $usuario->rol = $request->usuario_edad;
 
             // Guardar el nuevo usuario en la base de datos
             $usuario->save();
 
-         
+
             $usuario->assignRole(intval($request->role));
             // Confirmar la transacción si todo va bien
             DB::commit();
 
-            $this->mensaje("exito", "usuario registrado correctamente");
+            $this->mensaje("exito", "Usuario Registrado Correctamente");
 
             return response()->json($this->mensaje, 200);
         } catch (Exception $e) {
             // Revertir los cambios si hay algún error
             DB::rollBack();
 
-            $this->mensaje("error", "error". $e->getMessage());
+            $this->mensaje("error", "error" . $e->getMessage());
 
             return response()->json($this->mensaje, 200);
         }

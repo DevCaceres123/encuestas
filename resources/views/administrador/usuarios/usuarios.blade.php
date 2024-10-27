@@ -26,13 +26,13 @@
                                             <th>NOMBRE</th>
                                             <th>PATERNO</th>
                                             <th>MATERNO</th>
-
+                                            <th>CI</th>
                                             <th>ROL</th>
                                             <th>COD.TARGETA</th>
                                             <th class="text-end">ACCION</th>
                                         </tr>
                                     </thead>
-                                    {{-- <tbody>
+                                    <tbody>
                                         @foreach ($usuarios as $usuario)
                                             <tr>
                                                 <td>
@@ -44,6 +44,7 @@
                                                 </td>
                                                 <td>{{ $usuario->paterno }}</td>
                                                 <td>{{ $usuario->materno }}</td>
+                                                <td><b class="text-muted">{{ $usuario->ci }}</b></td>
 
 
                                                 <td>
@@ -76,21 +77,27 @@
 
                                                 </td>
                                                 <td class="text-end">
-                                                    <button
-                                                        class="btn btn-sm btn-outline-danger px-2 d-inline-flex align-items-center">
+                                                    <a class="btn btn-sm btn-outline-danger px-2 d-inline-flex align-items-center desactivar_usuario"
+                                                        data-id="${row.id}">
                                                         <i class="iconoir-trash fs-16"></i>
 
-                                                    </button>
-                                                    <button
-                                                        class="btn btn-sm btn-outline-info px-2 d-inline-flex align-items-center">
+                                                    </a>
+                                                    <a class="btn btn-sm btn-outline-info px-2 d-inline-flex align-items-center"
+                                                        data-id="${row.id}">
                                                         <i class="fas fa-pencil-alt fs-16"></i>
 
-                                                    </button>
+                                                    </a>
+
+                                                    <a class="btn btn-sm btn-outline-warning px-2 d-inline-flex align-items-center asignar_targeta"
+                                                        data-id="${row.id}">
+                                                        <i class="fas fa-id-card fs-16"></i>
+
+                                                    </a>
                                                 </td>
                                             </tr>
                                         @endforeach
 
-                                    </tbody> --}}
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -180,9 +187,8 @@
                                 <label for="" class="form-label">USUARIO</label>
                                 <div class=" " id="group_name_usuario">
                                     <input type="text" class="form-control rounded" name="usuario" id="usuario"
-                                        style="text-transform:uppercase;background-color: #f0f0f0;" disabled
-                                        placeholder="usuario">
-                                    <div id="_email"></div>
+                                        style="text-transform:uppercase;background-color: #f0f0f0;" placeholder="usuario">
+                                    <div id="_usuario"></div>
                                 </div>
 
                             </div>
@@ -190,7 +196,7 @@
                                 <label for="" class="form-label">CONTRASEÑA</label>
                                 <div class="" id="group_password_usuario">
                                     <input type="text" class="form-control rounded" name="password" id="password"
-                                        disabled style="text-transform:uppercase; background-color: #f0f0f0;"
+                                        style="text-transform:uppercase; background-color: #f0f0f0;"
                                         placeholder="contraseña">
                                     <div id="_password"></div>
                                 </div>
@@ -208,7 +214,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger rounded btn-sm" data-bs-dismiss="modal"> <i
                             class="ri-close-line me-1 align-middle"></i> Cerrar</button>
-                    <button type="submit" class="btn btn-success rounded btn-sm" id="btn-user"><i
+                    <button type="submit" class="btn btn-success rounded btn-sm" id="btnUser_nuevo"><i
                             class="ri-save-3-line me-1 align-middle"></i> Guardar</button>
                 </div>
 

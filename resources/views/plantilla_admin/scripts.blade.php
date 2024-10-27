@@ -82,6 +82,7 @@
     //para vaciar los errores
     function vaciar_errores(array) {
         let nuevo_array = array;
+        console.log(nuevo_array);
         nuevo_array.forEach(element => {
             document.getElementById(element).innerHTML = '';
         });

@@ -41,13 +41,13 @@ export async function crud(url, metodo, idRegistro = null, datos = null, callbac
         }
 
 
-
+        
         // Verificar si hubo error HTTP
         if (!response.ok && response.status !="422") {
             throw new Error(`Ocurrio algun error: ${response.status}`);
         }
         const respuestaParseada = await response.json();
-
+        
         // console.log(respuestaParseada);
         callback(null, respuestaParseada);
 
