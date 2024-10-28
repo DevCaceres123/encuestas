@@ -68,31 +68,34 @@
                                                 </td>
 
                                                 <td>
-                                                    @if ($usuario->estado == 'activo')
-                                                        <div class="" data-class="">
-                                                            <a class="cambiar_estado_usuario"
-                                                                data-id="{{ $usuario->id }},{{ $usuario->estado }}">
-                                                                <div class="form-check form-switch ms-3">
-                                                                    <input class="form-check-input" type="checkbox"
-                                                                        id="flexSwitchCheckChecked" Checked
-                                                                        style="transform: scale(2.0);">
-                                                                </div>
-                                                            </a>
-                                                        </div>
-                                                    @endif
+                                                    @can('admin.usuario.desactivar')
+                                                        @if ($usuario->estado == 'activo')
+                                                            <div class="" data-class="">
+                                                                <a class="cambiar_estado_usuario"
+                                                                    data-id="{{ $usuario->id }},{{ $usuario->estado }}">
+                                                                    <div class="form-check form-switch ms-3">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                            id="flexSwitchCheckChecked" Checked
+                                                                            style="transform: scale(2.0);">
+                                                                    </div>
+                                                                </a>
+                                                            </div>
+                                                        @endif
 
-                                                    @if ($usuario->estado == 'inactivo')
-                                                        <div class="" data-class="">
-                                                            <a class="cambiar_estado_usuario"
-                                                                data-id="{{ $usuario->id }},{{ $usuario->estado }}">
-                                                                <div class="form-check form-switch  ms-3">
-                                                                    <input class="form-check-input" type="checkbox"
-                                                                        id="flexSwitchCheckChecked"
-                                                                        style="transform: scale(2.0);">
-                                                                </div>
-                                                            </a>
-                                                        </div>
-                                                    @endif
+                                                        @if ($usuario->estado == 'inactivo')
+                                                            <div class="" data-class="">
+                                                                <a class="cambiar_estado_usuario"
+                                                                    data-id="{{ $usuario->id }},{{ $usuario->estado }}">
+                                                                    <div class="form-check form-switch  ms-3">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                            id="flexSwitchCheckChecked"
+                                                                            style="transform: scale(2.0);">
+                                                                    </div>
+                                                                </a>
+                                                            </div>
+                                                        @endif
+                                                    @endcan
+
 
                                                 </td>
 
@@ -111,12 +114,14 @@
 
                                                 </td>
                                                 <td class="text-end">
+                                                    @can(' admin.usuario.reset')
+                                                        <a class="btn btn-sm btn-outline-info px-2 d-inline-flex align-items-center resetear_usuario"
+                                                            data-id="{{ $usuario->id }}">
+                                                            <i class="fab fa-stumbleupon-circle fs-16"></i>
 
-                                                    <a class="btn btn-sm btn-outline-info px-2 d-inline-flex align-items-center resetear_usuario"
-                                                        data-id="{{ $usuario->id }}">
-                                                        <i class="fab fa-stumbleupon-circle fs-16"></i>
+                                                        </a>
+                                                    @endcan
 
-                                                    </a>
 
                                                     <a class="btn btn-sm btn-outline-warning px-2 d-inline-flex align-items-center asignar_targeta"
                                                         data-id="${row.id}">
@@ -144,10 +149,12 @@
         <div class="modal-dialog modal-center modal-md" role="document">
             <div class="modal-content">
                 <div class="modal-header">
+                    @can('admin.usuario.crear ')
+                        <h4 class="modal-title " id="exampleModalLabel"><span
+                                class="badge badge-outline-primary rounded">REGISTRAR NUEVO USUARIO</span></h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    @endcan
 
-                    <h4 class="modal-title " id="exampleModalLabel"><span
-                            class="badge badge-outline-primary rounded">REGISTRAR NUEVO USUARIO</span></h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="formularioUsuario">
@@ -351,7 +358,7 @@
 
                                         <i class="container-input__icon mdi"></i>
                                     </div>
-                                    
+
                                 </div>
                                 <div class="form-group py-2 col-12 col-md-6">
                                     <label for="" class="form-label">Contraseña</label>
@@ -361,7 +368,7 @@
                                             style="text-transform:uppercase; background-color: #f0f0f0;">
                                         <i class="container-input__icon mdi"></i>
                                     </div>
-                                   
+
                                 </div>
                             </div>
 

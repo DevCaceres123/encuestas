@@ -24,6 +24,10 @@ class UsuarioSeeder extends Seeder
         $rol1->name = 'administrador';
         $rol1->save();
 
+        $rol2       = new Role();
+        $rol2->name = 'general';
+        $rol2->save();
+
         $usuario = new User();
         $usuario->usuario = 'admin';
         $usuario->password = Hash::make('rodry');
@@ -36,5 +40,16 @@ class UsuarioSeeder extends Seeder
         $usuario->save();
 
         $usuario->syncRoles(['administrador']);
+
+
+        Permission::create(['name' => 'inicio.index'])->assignRole($rol1);
+
+        Permission::create(['name' => 'admin.index'])->syncRoles([$rol1,$rol2]);
+
+
+        Permission::create(['name' => 'admin.usuario.incio'])->syncRoles([$rol1,$rol2]);
+        Permission::create(['name' => 'admin.usuario.crear'])->assignRole($rol1);
+        Permission::create(['name' => 'admin.usuario.desactivar'])->assignRole($rol1);
+        Permission::create(['name' => 'admin.usuario.reset'])->assignRole($rol1);
     }
 }
