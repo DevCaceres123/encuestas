@@ -94,6 +94,9 @@
                                                                 </a>
                                                             </div>
                                                         @endif
+                                                        @else
+
+                                                        <p>No permitido...</p>
                                                     @endcan
 
 

@@ -13,163 +13,125 @@ $(document).ready(function () {
         processing: true,
         responsive: true,
     });
-    // listar_usuarios();
+    //listar_usuarios();
 });
 
 
 
 function listar_usuarios() {
-
-
     crud("admin/listarUsuarios", "GET", null, null, function (error, respuesta) {
-
         if (error != null) {
             mensajeAlerta(error, "error");
+            return; // Agregar un return para evitar ejecutar el resto si hay un error
         }
 
-
-        let i = 1;
+        let usuarios = respuesta.usuarios;
+        let permissions = respuesta.permissions;
 
         $('#table_user').DataTable({
             responsive: true,
-            data: respuesta,
+            data: usuarios,
             columns: [
                 {
                     data: null,
                     className: 'table-td',
                     render: function (data) {
-
-
-                        return 1;
+                        return data.rowIndex + 1; // Usar el índice para el número de fila
                     }
                 },
                 {
                     data: 'nombres',
                     className: 'table-td text-uppercase',
-                    render: function (data, type, row) {
-
+                    render: function (data) {
                         return `
-                         <img src="/admin_template/images/logos/lang-logo/slack.png"
-                             alt="" class="rounded-circle thumb-md me-1 d-inline">
+                            <img src="/admin_template/images/logos/lang-logo/slack.png"
+                                 alt="" class="rounded-circle thumb-md me-1 d-inline">
                             ${data}
-                        
-                        
                         `;
                     }
                 },
                 {
                     data: 'paterno',
                     className: 'table-td',
-                    render: function (data, type, row) {
+                    render: function (data) {
                         return data;
                     }
                 },
                 {
                     data: 'materno',
                     className: 'table-td',
-                    render: function (data, type, row) {
+                    render: function (data) {
                         return data;
                     }
                 },
                 {
                     data: 'ci',
-                    className: 'table-td ',
-                    render: function (data, type, row) {
+                    className: 'table-td',
+                    render: function (data) {
                         return `<b class="text-muted">${data}</b>`;
                     }
                 },
                 {
                     data: 'roles',
-                    render: function (data, type, row) {
-                        let contenido = "";
+                    render: function (data) {
                         if (data.length != 0) {
-
-                            data.forEach(element => {
-                                contenido = ` <span class="badge bg-success fs-5">
-                                                            ${element.name}    
-                                                 </span>`;
-                            });
-
+                            return data.map(role =>
+                                `<span class="badge bg-success fs-5">${role.name}</span>`
+                            ).join(' ');
                         } else {
-                            contenido = ` <span class="badge bg-success fs-5">
-                            Sin roles asignados 
-                            </span>`;
+                            return `<span class="badge bg-success fs-5">Sin roles asignados</span>`;
                         }
-
-                        return contenido;
                     }
                 },
                 {
                     data: null,
                     render: function (data, type, row) {
+                        let estadoChecked = row.estado === "activo" ? 'checked' : '';
 
-                        let contenido = "";
-                        if (row.estado == "activo") {
-                            contenido = ` <div class="" data-class="">
-                                                    <a class="cambiar_estado_usuario"
-                                                        data-id="${row.id},${row.estado}">
-                                                            <div class="form-check form-switch ms-3">
-                                                                <input class="form-check-input" type="checkbox"
-                                                                    id="flexSwitchCheckChecked" Checked
-                                                                    style="transform: scale(2.0);">
-                                                                </div>
-                                                            </a>
-                                                        </div>`
-                        } else {
-                            contenido = ` <div class="" data-class="">
-                                                            <a class="cambiar_estado_usuario"
-                                                                 data-id="${row.id},${row.estado}">
-                                                                <div class="form-check form-switch  ms-3">
-                                                                    <input class="form-check-input" type="checkbox"
-                                                                        id="flexSwitchCheckChecked"
-                                                                        style="transform: scale(2.0);">
-                                                                </div>
-                                                            </a>
-                                                        </div>`;
-                        }
+                        // Aquí verificamos el permiso de desactivar
+                        let desactivarContent = permissions['desactivar'] ? `
+                            <a class="cambiar_estado_usuario" data-id="${row.id},${row.estado}">
+                                <div class="form-check form-switch ms-3">
+                                    <input class="form-check-input" type="checkbox" 
+                                           ${estadoChecked} style="transform: scale(2.0);">
+                                </div>
+                            </a>` : `
+                           <p>No permitido...<p/>
+                        `;
 
-                        return contenido;
+                        return `
+                            <div data-class="">
+                                ${desactivarContent}
+                            </div>`;
                     }
                 },
+
                 {
                     data: 'cod_targeta',
-                    render: function (data, type, row) {
-                        let contenido = "";
-                        if (data == null) {
-                            contenido = ` <span class="badge bg-danger fs-5">
-                                                            Sin asignar
-                                                        </span>`;
-                        }
-                        else {
-                            contenido = `<span class="badge bg-success fs-5">
-                                                            ${data}
-                                                        </span>`;
-                        }
-                        return contenido;
+                    render: function (data) {
+                        return data == null
+                            ? `<span class="badge bg-danger fs-5">Sin asignar</span>`
+                            : `<span class="badge bg-success fs-5">${data}</span>`;
                     }
                 },
                 {
                     data: null,
                     className: 'table-td',
-                    render: function (data, type, row, meta) {
+                    render: function (data, type, row) {
                         return `
-                  <div class="text-end">
-                   <td >
-                    
-                        <a
-                        class="btn btn-sm btn-outline-info px-2 d-inline-flex align-items-center resetear_usuario"  data-id="${row.id}">
-                            <i class="fab fa-stumbleupon-circle fs-16" ></i>
-
-                        </a>
-
-                        <a
-                        class="btn btn-sm btn-outline-warning px-2 d-inline-flex align-items-center asignar_targeta" data-id="${row.id}">
-                            <i class="fas fa-id-card fs-16"  ></i>
-
-                        </a>
-                    </td>
-                </div>
-                    `;
+                            <div class="text-end">
+                                <td>
+                                    ${permissions['reset'] ? // Verificar permiso para resetear usuario
+                                `<a class="btn btn-sm btn-outline-info px-2 d-inline-flex align-items-center resetear_usuario" data-id="${row.id}">
+                                            <i class="fab fa-stumbleupon-circle fs-16"></i>
+                                        </a>` : ''
+                            }
+                                    <a class="btn btn-sm btn-outline-warning px-2 d-inline-flex align-items-center asignar_targeta" data-id="${row.id}">
+                                        <i class="fas fa-id-card fs-16"></i>
+                                    </a>
+                                </td>
+                            </div>
+                        `;
                     }
                 },
             ],
@@ -177,6 +139,7 @@ function listar_usuarios() {
         });
     });
 }
+
 
 // REGISTRAR  USUARIO
 $('#formularioUsuario').submit(function (e) {

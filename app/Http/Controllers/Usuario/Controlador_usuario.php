@@ -149,7 +149,7 @@ class Controlador_usuario extends Controller
     public function resetar_usuario($id_usuario)
     {
 
-       
+
         DB::beginTransaction();
 
         try {
@@ -157,8 +157,8 @@ class Controlador_usuario extends Controller
             $user = User::find($id_usuario);
 
             $user->usuario = $user->ci;
-            $user->password = Hash::make($user->ci."_".strtolower($user->nombres));
-           
+            $user->password = Hash::make($user->ci . "_" . strtolower($user->nombres));
+
             $user->save();
             DB::commit();
             $this->mensaje("exito", "Usuario reseteado correctamente");
@@ -232,7 +232,15 @@ class Controlador_usuario extends Controller
     {
         $usuarios = User::with('roles')->get();
 
-        return $usuarios;
+        $permissions = [
+            'desactivar' => auth()->user()->can('admin.usuario.desactivar'),
+            'reset' => auth()->user()->can('admin.usuario.reset'),
+           
+        ];
+        return response()->json([
+            'usuarios' => $usuarios,
+            'permissions' => $permissions,
+        ]);
     }
     /**
      * PARA LA PARTE DEL PERFIL
