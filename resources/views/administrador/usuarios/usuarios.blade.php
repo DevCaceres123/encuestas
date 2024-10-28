@@ -117,7 +117,7 @@
 
                                                 </td>
                                                 <td class="text-end">
-                                                    @can(' admin.usuario.reset')
+                                                    @can('admin.usuario.reset')
                                                         <a class="btn btn-sm btn-outline-info px-2 d-inline-flex align-items-center resetear_usuario"
                                                             data-id="{{ $usuario->id }}">
                                                             <i class="fab fa-stumbleupon-circle fs-16"></i>
