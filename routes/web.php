@@ -38,6 +38,7 @@ Route::prefix('/admin')->middleware([Autenticados::class])->group(function(){
         Route::post('asignar_targeta', 'asignar_targeta');
         Route::post('pwd_guardar', 'password_guardar')->name('pwd_guardar');
         Route::resource('/usuarios', Controlador_usuario::class);
+        Route::put('resetar_usuario/{id_usuario}', 'resetar_usuario');
     });
 
     //PARA LOS PERMISOS

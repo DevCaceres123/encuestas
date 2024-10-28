@@ -10,11 +10,14 @@
                         <div class="col">
                             <h4 class="card-title">LISTA DE USUARIOS</h4>
                         </div>
-                        <div class="col-auto">
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalUsuario">
-                                <i class="fas fa-plus me-1"></i> Nuevo
-                            </button>
-                        </div>
+                        @can('admin.usuario.crear')
+                            <div class="col-auto">
+                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalUsuario">
+                                    <i class="fas fa-plus me-1"></i> Nuevo
+                                </button>
+                            </div>
+                        @endcan
+
                         <div class="card-body">
                             <div class="table-responsive">
                                 {{-- tabla para crear usuarios --}}
@@ -28,6 +31,7 @@
                                             <th>MATERNO</th>
                                             <th>CI</th>
                                             <th>ROL</th>
+                                            <th>ESTADO</th>
                                             <th>COD.TARGETA</th>
                                             <th class="text-end">ACCION</th>
                                         </tr>
@@ -62,6 +66,36 @@
                                                     @endif
 
                                                 </td>
+
+                                                <td>
+                                                    @if ($usuario->estado == 'activo')
+                                                        <div class="" data-class="">
+                                                            <a class="cambiar_estado_usuario"
+                                                                data-id="{{ $usuario->id }},{{ $usuario->estado }}">
+                                                                <div class="form-check form-switch ms-3">
+                                                                    <input class="form-check-input" type="checkbox"
+                                                                        id="flexSwitchCheckChecked" Checked
+                                                                        style="transform: scale(2.0);">
+                                                                </div>
+                                                            </a>
+                                                        </div>
+                                                    @endif
+
+                                                    @if ($usuario->estado == 'inactivo')
+                                                        <div class="" data-class="">
+                                                            <a class="cambiar_estado_usuario"
+                                                                data-id="{{ $usuario->id }},{{ $usuario->estado }}">
+                                                                <div class="form-check form-switch  ms-3">
+                                                                    <input class="form-check-input" type="checkbox"
+                                                                        id="flexSwitchCheckChecked"
+                                                                        style="transform: scale(2.0);">
+                                                                </div>
+                                                            </a>
+                                                        </div>
+                                                    @endif
+
+                                                </td>
+
                                                 <td>
 
                                                     @if ($usuario->cod_targeta == null)
@@ -77,14 +111,10 @@
 
                                                 </td>
                                                 <td class="text-end">
-                                                    <a class="btn btn-sm btn-outline-danger px-2 d-inline-flex align-items-center desactivar_usuario"
-                                                        data-id="${row.id}">
-                                                        <i class="iconoir-trash fs-16"></i>
 
-                                                    </a>
-                                                    <a class="btn btn-sm btn-outline-info px-2 d-inline-flex align-items-center"
-                                                        data-id="${row.id}">
-                                                        <i class="fas fa-pencil-alt fs-16"></i>
+                                                    <a class="btn btn-sm btn-outline-info px-2 d-inline-flex align-items-center resetear_usuario"
+                                                        data-id="{{ $usuario->id }}">
+                                                        <i class="fab fa-stumbleupon-circle fs-16"></i>
 
                                                     </a>
 
@@ -280,10 +310,82 @@
     </div>
 
 
-@endsection
 
 
-@section('scripts')
 
-    <script src="{{ asset('js/modulos/adm_usuarios/usuarios.js') }}" type="module"></script>
-@endsection
+    <!-- MODAL PARA RESETEAR USUARIO -->
+    <div class="modal fade" id="ModalResetearUsuario" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-center modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+
+                    <h4 class="modal-title " id="exampleModalLabel"><span
+                            class="badge badge-outline-primary rounded">RESETEAR USUARIO</span></h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formResetear_usuario">
+                        <div class="alert alert-success alert-dismissible fade show p-0" role="alert">
+
+                            <div class="text-center">
+                                <div class="row">
+                                    <i class="fas fa-user fs-16  text-info"></i>
+                                </div>
+
+                                <strong class="m-1 text-danger" id="nombre_apellido_res"
+                                    style="text-transform: uppercase;"></strong>
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="row">
+                                <div class="form-group py-2 col-12 col-md-6">
+                                    <input type="hidden" name="id_usuarioReset" id="id_usuarioReset">
+                                    <label for="" class="form-label">Usuario</label>
+                                    <div class="container-validation" id="group_usuarioReset">
+                                        <input type="text" class="form-control rounded-pill" name="usuarioReset"
+                                            id="usuarioReset" disabled
+                                            style="text-transform:uppercase; background-color: #f0f0f0;">
+
+                                        <i class="container-input__icon mdi"></i>
+                                    </div>
+                                    
+                                </div>
+                                <div class="form-group py-2 col-12 col-md-6">
+                                    <label for="" class="form-label">Contraseña</label>
+                                    <div class="container-validation" id="group_passwordReset">
+                                        <input type="text" class="form-control rounded-pill" name="passwordReset"
+                                            id="passwordReset" disabled
+                                            style="text-transform:uppercase; background-color: #f0f0f0;">
+                                        <i class="container-input__icon mdi"></i>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger rounded btn-sm" data-bs-dismiss="modal"> <i
+                                    class="ri-close-line me-1 align-middle"></i> Cerrar</button>
+                            <button type="submit" class="btn btn-success rounded btn-sm" id="btnUser_reset"><i
+                                    class="ri-save-3-line me-1 align-middle"></i> Resetar</button>
+                        </div>
+
+
+                    </form>
+                </div>
+            </div>
+
+
+        </div>
+
+    @endsection
+
+
+    @section('scripts')
+
+        <script src="{{ asset('js/modulos/adm_usuarios/usuarios.js') }}" type="module"></script>
+    @endsection

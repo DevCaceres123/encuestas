@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Models\Role;
 
 class Controlador_login extends Controller
 {
@@ -92,7 +93,9 @@ class Controlador_login extends Controller
     public function inicio()
     {
         $data['menu']   = 0;
-        //$data['usuario_estacion'] = User::with(['estacion'])->find(Auth::user()->id);
+        // Obtener el usuario autenticado
+       
+        
         return view('inicio', $data);
     }
     /**
@@ -102,7 +105,8 @@ class Controlador_login extends Controller
     /**
      * CERRAR LA SESSIÓN
      */
-    public function cerrar_session(Request $request){
+    public function cerrar_session(Request $request)
+    {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();

@@ -13,7 +13,7 @@ $(document).ready(function () {
         processing: true,
         responsive: true,
     });
-    //listar_usuarios();
+    // listar_usuarios();
 });
 
 
@@ -100,6 +100,38 @@ function listar_usuarios() {
                     }
                 },
                 {
+                    data: null,
+                    render: function (data, type, row) {
+
+                        let contenido = "";
+                        if (row.estado == "activo") {
+                            contenido = ` <div class="" data-class="">
+                                                    <a class="cambiar_estado_usuario"
+                                                        data-id="${row.id},${row.estado}">
+                                                            <div class="form-check form-switch ms-3">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                    id="flexSwitchCheckChecked" Checked
+                                                                    style="transform: scale(2.0);">
+                                                                </div>
+                                                            </a>
+                                                        </div>`
+                        } else {
+                            contenido = ` <div class="" data-class="">
+                                                            <a class="cambiar_estado_usuario"
+                                                                 data-id="${row.id},${row.estado}">
+                                                                <div class="form-check form-switch  ms-3">
+                                                                    <input class="form-check-input" type="checkbox"
+                                                                        id="flexSwitchCheckChecked"
+                                                                        style="transform: scale(2.0);">
+                                                                </div>
+                                                            </a>
+                                                        </div>`;
+                        }
+
+                        return contenido;
+                    }
+                },
+                {
                     data: 'cod_targeta',
                     render: function (data, type, row) {
                         let contenido = "";
@@ -123,14 +155,10 @@ function listar_usuarios() {
                         return `
                   <div class="text-end">
                    <td >
-                       <a
-                        class="btn btn-sm btn-outline-danger px-2 d-inline-flex align-items-center desactivar_usuario" data-id="${row.id}">
-                           <i class="iconoir-trash fs-16"  ></i>
-
-                        </a>
+                    
                         <a
-                        class="btn btn-sm btn-outline-info px-2 d-inline-flex align-items-center"  data-id="${row.id}">
-                            <i class="fas fa-pencil-alt fs-16" ></i>
+                        class="btn btn-sm btn-outline-info px-2 d-inline-flex align-items-center resetear_usuario"  data-id="${row.id}">
+                            <i class="fab fa-stumbleupon-circle fs-16" ></i>
 
                         </a>
 
@@ -264,6 +292,64 @@ $('#table_user').on('click', '.asignar_targeta', function (e) {
 
 });
 
+
+// OBTENER DATOS PARA  RESETEAR USUARIO
+$('#table_user').on('click', '.resetear_usuario', function (e) {
+    e.preventDefault(); // Evitar que el enlace recargue la página
+    $('#ModalResetearUsuario').modal('show');
+    let id_usuario = $(this).data('id'); // Obtener el id del alumno desde el data-id
+    crud("admin/usuarios", "GET", id_usuario + "/edit", null, function (error, response) {
+
+        // console.log(response);
+        // if (error != null) {
+        //     mensajeAlerta(error, "error");
+        //     return;
+        // }
+        if (response.tipo != "exito") {
+            mensajeAlerta(response.mensaje, response.tipo);
+            return;
+        }
+
+        let nombre_completo = (response.mensaje.nombres + " " + response.mensaje.paterno + " " + response.mensaje.materno);
+        // console.log(nombre_completo);
+        $('#nombre_apellido_res').text(nombre_completo);
+        $('#usuarioReset').val(response.mensaje.ci);
+        $('#passwordReset').val(response.mensaje.ci + "_" + response.mensaje.nombres);
+        $('#id_usuarioReset').val(response.mensaje.id);
+
+    });
+
+});
+
+
+// RESETEAR USUARIO
+
+$('#formResetear_usuario').submit(function (e) {
+    e.preventDefault(); // Evitar que el enlace recargue la página
+    let id_usuario = $('#id_usuarioReset').val();
+    $("#btnUser_reset").prop("disabled", true);
+
+    crud("admin/resetar_usuario", "PUT", id_usuario, null, function (error, response) {
+        $("#btnUser_reset").prop("disabled", false);
+        // console.log(response);
+        // if (error != null) {
+        //     mensajeAlerta(error, "error");
+        //     return;
+        // }
+        if (response.tipo != "exito") {
+            mensajeAlerta(response.mensaje, response.tipo);
+            return;
+        }
+
+        $('#ModalResetearUsuario').modal('hide');
+        mensajeAlerta(response.mensaje, response.tipo);
+        vaciar_formulario("formResetear_usuario");
+    });
+
+
+});
+
+
 // registrar codigo de targeta
 $('#registrtarCodigoTargeta').submit(function (e) {
     e.preventDefault();
@@ -291,6 +377,48 @@ $('#registrtarCodigoTargeta').submit(function (e) {
     });
 })
 
+
+// CAMBIAR ESTADO USAURIO
+
+
+$('#table_user').on('click', '.cambiar_estado_usuario', function (e) {
+    e.preventDefault(); // Evitar que el enlace recargue la página
+
+
+    // Obtener el valor de data-id
+    var dataId = $(this).data('id'); // "1,activo"
+
+    // Separar el id y el estado
+    var values = dataId.split(','); // ["1", "activo"]
+
+    let datos =
+    {
+        id_usaurio: values[0],
+        estado: values[1]
+    }
+
+    crud("admin/usuarios", "PUT", values[0], datos, function (error, response) {
+        if (response.tipo === "errores") {
+
+            mensajeAlerta(response.mensaje.estado[0], "error");
+            return;
+        }
+        if (response.tipo != "exito") {
+            mensajeAlerta(response.mensaje, response.tipo);
+            return;
+        }
+
+        mensajeAlerta(response.mensaje, response.tipo);
+
+        listar_usuarios();
+
+
+
+
+
+    });
+
+});
 
 $('#alumno_form_nuevo').submit(function (e) {
     e.preventDefault();

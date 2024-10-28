@@ -18,6 +18,7 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Storage;
 use Exception;
 use Illuminate\Support\Facades\Redis;
+use PhpParser\Node\Stmt\TryCatch;
 
 class Controlador_usuario extends Controller
 {
@@ -61,7 +62,7 @@ class Controlador_usuario extends Controller
     {
 
         DB::beginTransaction();
-       
+
         try {
             // Crear un nuevo usuario
             $usuario = new User();
@@ -72,7 +73,7 @@ class Controlador_usuario extends Controller
             $usuario->email = $request->email;
             $usuario->estado = "activo";
             $usuario->usuario = $request->usuario;
-            $usuario->password = bcrypt("ca");
+            $usuario->password = bcrypt($request->password);
             // $usuario->rol = $request->usuario_edad;
 
             // Guardar el nuevo usuario en la base de datos
@@ -95,6 +96,88 @@ class Controlador_usuario extends Controller
             return response()->json($this->mensaje, 200);
         }
     }
+
+    public function update(UsuarioRequest $request, $id)
+    {
+        DB::beginTransaction();
+        try {
+
+
+
+            // Encontrar el usuario por ID
+            $user = User::findOrFail($request->id_usaurio);
+
+            if ($request->estado == "activo") {
+                $user->estado = "inactivo";
+            }
+            if ($request->estado == "inactivo") {
+                $user->estado = "activo";
+            }
+
+
+            $user->save();
+            DB::commit();
+
+            $this->mensaje("exito", "Estado cambiado Correctamente");
+
+            return response()->json($this->mensaje, 200);
+        } catch (Exception $e) {
+            // Revertir los cambios si hay algún error
+            DB::rollBack();
+
+            $this->mensaje("error", "error" . $e->getMessage());
+
+            return response()->json($this->mensaje, 200);
+        }
+    }
+
+
+    public function edit($id_usuario)
+    {
+
+
+        $user = User::select('id', 'ci', 'nombres', 'paterno', 'materno', 'usuario', 'password')->find($id_usuario);
+
+
+        $this->mensaje("exito", $user);
+
+        return response()->json($this->mensaje, 200);
+    }
+
+
+
+    public function resetar_usuario($id_usuario)
+    {
+
+       
+        DB::beginTransaction();
+
+        try {
+
+            $user = User::find($id_usuario);
+
+            $user->usuario = $user->ci;
+            $user->password = Hash::make($user->ci."_".strtolower($user->nombres));
+           
+            $user->save();
+            DB::commit();
+            $this->mensaje("exito", "Usuario reseteado correctamente");
+
+            return response()->json($this->mensaje, 200);
+        } catch (Exception $e) {
+
+            // Revertir los cambios si hay algún error
+            DB::rollBack();
+
+            $this->mensaje("error", "error" . $e->getMessage());
+
+            return response()->json($this->mensaje, 200);
+        }
+    }
+
+
+
+
 
 
     // public function asignar_targeta(Request $request)

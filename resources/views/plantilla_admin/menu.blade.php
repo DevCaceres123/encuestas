@@ -6,8 +6,10 @@
                 <img src="{{ asset('admin_template/images/logo-sm.png') }}" alt="logo-small" class="logo-sm">
             </span>
             <span class="">
-                <img src="{{ asset('admin_template/images/logo-light.png') }}" alt="logo-large" class="logo-lg logo-light">
-                <img src="{{ asset('admin_template/images/logo-dark.png') }}" alt="logo-large" class="logo-lg logo-dark">
+                <img src="{{ asset('admin_template/images/logo-light.png') }}" alt="logo-large"
+                    class="logo-lg logo-light">
+                <img src="{{ asset('admin_template/images/logo-dark.png') }}" alt="logo-large"
+                    class="logo-lg logo-dark">
             </span>
         </a>
     </div>
@@ -18,37 +20,53 @@
             <div class="d-flex align-items-start flex-column w-100">
                 <!-- Navigation -->
                 <ul class="navbar-nav mb-auto w-100">
+
                     <li class="menu-label pt-0 mt-0">
                         <span>MENU</span>
                     </li>
-                    <li class="nav-item">
-                        <a  class="nav-link" href="{{ route('inicio') }}" role="button"
-                            aria-expanded="false" aria-controls="sidebarDashboards">
-                            <i class="iconoir-home-simple menu-icon"></i>
-                            <span>INICIO</span>
-                        </a>
-                    </li><!--end nav-item-->
-                    <li class="nav-item">
-                        <a class="nav-link" href="#usuarios" data-bs-toggle="collapse" role="button"
-                            aria-expanded="false" aria-controls="usuarios">
-                            <i class="iconoir-fingerprint-lock-circle menu-icon"></i>
-                            <span>ADMIN USUARIOS</span>
-                        </a>
-                        <div class="collapse " id="usuarios">
-                            <ul class="nav flex-column">
+                    @can('inicio.index')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('inicio') }}" role="button" aria-expanded="false"
+                                aria-controls="sidebarDashboards">
+                                <i class="iconoir-home-simple menu-icon"></i>
+                                <span>INICIO</span>
+                            </a>
+                        </li><!--end nav-item-->
+                    @endcan
 
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{route('usuarios.index')}}">Usuarios</a>
-                                </li><!--end nav-item-->
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('roles.index') }}">Roles</a>
-                                </li><!--end nav-item-->
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('permisos.index') }}">Permisos</a>
-                                </li><!--end nav-item-->
-                            </ul><!--end nav-->
-                        </div><!--end startbarApplications-->
-                    </li><!--end nav-item-->
+
+                    @can('admin.index')
+                        <li class="nav-item">
+                            <a class="nav-link" href="#usuarios" data-bs-toggle="collapse" role="button"
+                                aria-expanded="false" aria-controls="usuarios">
+                                <i class="iconoir-fingerprint-lock-circle menu-icon"></i>
+                                <span>ADMIN USUARIOS</span>
+                            </a>
+                            <div class="collapse " id="usuarios">
+                                <ul class="nav flex-column">
+                                    @can('admin.usuario.incio')
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ route('usuarios.index') }}">Usuarios</a>
+                                        </li><!--end nav-item-->
+                                    @endcan
+                                    
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ route('roles.index') }}">Roles</a>
+                                        </li><!--end nav-item-->
+                                    
+                                    
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ route('permisos.index') }}">Permisos</a>
+                                        </li><!--end nav-item-->
+                                    
+
+                                </ul><!--end nav-->
+                            </div><!--end startbarApplications-->
+                        </li><!--end nav-item-->
+                    @endcan
+
+
+
                     <li class="menu-label mt-2">
                         <small class="label-border">
                             <div class="border_left hidden-xs"></div>

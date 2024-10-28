@@ -4,9 +4,23 @@ export async function crud(url, metodo, idRegistro = null, datos = null, callbac
     let response;
     try {
         // Hacer la solicitud con fetch
-        const csrfToken =document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        
-        if (datos != null ) {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+
+
+        if (idRegistro != null && datos != null) {
+            // console.log(datos);
+            response = await fetch(`/${url}/${idRegistro}`, {
+                method: metodo, // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                    "X-CSRF-TOKEN": csrfToken  // Añadir el token CSRF aquí
+                },
+                body:  JSON.stringify(datos),
+            });
+
+        }
+        if (datos != null && idRegistro == null) {
            
             // console.log("entro datos");
             response = await fetch(`/${url}`, {
@@ -19,8 +33,8 @@ export async function crud(url, metodo, idRegistro = null, datos = null, callbac
             });
         }
 
-        if (idRegistro != null) {
-         
+        if (idRegistro != null && datos == null) {
+
             response = await fetch(`/${url}/${idRegistro}`, {
                 method: metodo, // or 'PUT'
                 headers: {
@@ -28,9 +42,10 @@ export async function crud(url, metodo, idRegistro = null, datos = null, callbac
                     "X-CSRF-TOKEN": csrfToken  // Añadir el token CSRF aquí
                 },
             });
-        } 
-        if(datos == null && idRegistro == null)
-         {
+        }
+
+
+        if (datos == null && idRegistro == null) {
             // console.log("entro sin datos");
             response = await fetch(`/${url}`, {
                 method: metodo, // or 'PUT'
@@ -41,13 +56,13 @@ export async function crud(url, metodo, idRegistro = null, datos = null, callbac
         }
 
 
-        
+
         // Verificar si hubo error HTTP
-        if (!response.ok && response.status !="422") {
+        if (!response.ok && response.status != "422") {
             throw new Error(`Ocurrio algun error: ${response.status}`);
         }
         const respuestaParseada = await response.json();
-        
+
         // console.log(respuestaParseada);
         callback(null, respuestaParseada);
 

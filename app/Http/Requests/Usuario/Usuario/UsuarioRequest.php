@@ -38,8 +38,8 @@ class UsuarioRequest extends BasePrincipalRequest
                 ];
             case 'usuarios.update':
                 return [
-                    'username' => 'required|string|max:255',
-                    'bio' => 'nullable|string|max:500',
+                    'id_usaurio' => 'required|integer',
+                    'estado' => 'required|string|in:activo,inactivo',
                     // Más reglas según sea necesario
                 ];
             default:
