@@ -35,8 +35,8 @@ function listar_usuarios() {
                 {
                     data: null,
                     className: 'table-td',
-                    render: function (data) {
-                        return data.rowIndex + 1; // Usar el índice para el número de fila
+                    render: function (data, type, row, meta) {
+                        return meta.row + 1; // Obtiene el número de fila desde el índice de DataTables
                     }
                 },
                 {
@@ -106,14 +106,7 @@ function listar_usuarios() {
                     }
                 },
 
-                {
-                    data: 'cod_targeta',
-                    render: function (data) {
-                        return data == null
-                            ? `<span class="badge bg-danger fs-5">Sin asignar</span>`
-                            : `<span class="badge bg-success fs-5">${data}</span>`;
-                    }
-                },
+
                 {
                     data: null,
                     className: 'table-td',
@@ -126,9 +119,7 @@ function listar_usuarios() {
                                             <i class="fab fa-stumbleupon-circle fs-16"></i>
                                         </a>` : ''
                             }
-                                    <a class="btn btn-sm btn-outline-warning px-2 d-inline-flex align-items-center asignar_targeta" data-id="${row.id}">
-                                        <i class="fas fa-id-card fs-16"></i>
-                                    </a>
+                                   
                                 </td>
                             </div>
                         `;
@@ -221,40 +212,6 @@ $('#table_user').on('click', '.desactivar_usuario', function (e) {
 });
 
 
-$('#myTable').on('click', '.editar_alumno', function (e) {
-    e.preventDefault(); // Evitar que el enlace recargue la página
-    alert("xd");
-});
-
-
-
-// asignar targeta
-$('#table_user').on('click', '.asignar_targeta', function (e) {
-    e.preventDefault(); // Evitar que el enlace recargue la página
-    $('#ModalTargeta').modal('show');
-    let id_alumno = $(this).data('id'); // Obtener el id del alumno desde el data-id
-    // console.log(id_alumno);
-    crud("admin/usuarios", "GET", id_alumno, null, function (error, response) {
-
-        if (error != null) {
-            mensajeAlerta(error, "error");
-            return;
-        }
-        if (response.tipo != "exito") {
-            mensajeAlerta(response.mensaje, response.tipo);
-            return;
-        }
-
-        // console.log(response);
-        $('#id_usuario_targeta').val(response.user.id);
-        $('#codigo_targeta').val(response.codigo_targeta);
-        //listar_usuarios();
-
-
-    });
-
-});
-
 
 // OBTENER DATOS PARA  RESETEAR USUARIO
 $('#table_user').on('click', '.resetear_usuario', function (e) {
@@ -313,32 +270,7 @@ $('#formResetear_usuario').submit(function (e) {
 });
 
 
-// registrar codigo de targeta
-$('#registrtarCodigoTargeta').submit(function (e) {
-    e.preventDefault();
 
-    let datosFormulario = $('#registrtarCodigoTargeta').serialize();
-
-
-    console.log(datosFormulario);
-
-    crud("admin/asignar_targeta", "POST", null, datosFormulario, function (error, response) {
-
-        if (error != null) {
-            mensajeAlerta(error, "error");
-            return;
-        }
-        if (response.tipo != "exito") {
-            mensajeAlerta(response.mensaje, response.tipo);
-            return;
-        }
-
-        listar_usuarios();
-        mensajeAlerta(response.mensaje, response.tipo);
-        $('#ModalTargeta').modal('hide');
-
-    });
-})
 
 
 // CAMBIAR ESTADO USAURIO
@@ -383,14 +315,47 @@ $('#table_user').on('click', '.cambiar_estado_usuario', function (e) {
 
 });
 
-$('#alumno_form_nuevo').submit(function (e) {
-    e.preventDefault();
-    const datosFormulario = $('#alumno_form_nuevo').serialize();
-    console.log(datosFormulario);
-    crud("nuevoAlumno", "POST", null, datosFormulario, function (error, respuesta) {
+// OBTENER DATOS PARA CAMBIAR DE ROL
+$('#table_user').on('click', '.cambiar_rol', function (e) {
+    e.preventDefault(); // Evitar que el enlace recargue la página
+    $('#ModalRol').modal('show');
+    let id_user = $(this).data('id');
+
+    $('#user_id_edit').val(id_user);
+
+});
+
+
+// GUARDAR DATOS PARA CAMBIAR ROL
+$('#formEditarRol').submit(function (e) {
+    e.preventDefault(); // Evitar que el enlace recargue la página
+    let id_user = $('#user_id_edit').val();
+
+    let datosFormulario = {
+        'user_id': $('#user_id_edit').val(),
+        'rol_id': $('#role_edit').val(),
+    };
+    crud("admin/editar_rol", "PUT", id_user, datosFormulario, function (error, response) {
+
+        if (error != null) {
+            mensajeAlerta(error, "error");
+            return;
+        }
+        if (response.tipo != "exito") {
+            mensajeAlerta(response.mensaje, response.tipo);
+            return;
+        }
+        mensajeAlerta(response.mensaje, response.tipo);
+
+
+        listar_usuarios();
+        vaciar_formulario("formEditarRol");
+        $('#ModalRol').modal('hide');
 
     });
+
 });
+
 
 
 

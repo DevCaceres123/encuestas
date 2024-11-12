@@ -34,11 +34,11 @@ Route::prefix('/admin')->middleware([Autenticados::class])->group(function(){
      // PARA EL USUARIO
     Route::controller(Controlador_usuario::class)->group(function(){
         Route::get('perfil', 'perfil')->name('perfil');
-        Route::get('listarUsuarios','listar');
-        Route::post('asignar_targeta', 'asignar_targeta');
+        Route::get('listarUsuarios','listar');        
         Route::post('pwd_guardar', 'password_guardar')->name('pwd_guardar');
         Route::resource('/usuarios', Controlador_usuario::class);
         Route::put('resetar_usuario/{id_usuario}', 'resetar_usuario');
+        Route::put('editar_rol/{id_usuario}', 'editar_rol');
     });
 
     //PARA LOS PERMISOS

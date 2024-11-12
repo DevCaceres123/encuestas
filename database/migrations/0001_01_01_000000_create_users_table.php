@@ -19,11 +19,7 @@ return new class extends Migration
             $table->string('nombres', 100);
             $table->string('paterno', 50);
             $table->string('materno', 50);
-            $table->string('estado', 20);
-            $table->date('fecha_nacimiento')->nullable();
-            $table->string('ubicacion', 50)->nullable();
-            $table->string('cod_targeta', 11)->nullable();
-            $table->unsignedBigInteger('id_persona')->nullable();
+            $table->string('estado', 20);                  
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();

@@ -11,13 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('reuniones', function (Blueprint $table) {
+        Schema::create('comunidad', function (Blueprint $table) {
             $table->id();
-            $table->string('titulo',20);
-            $table->string('descripcion',100);
-            $table->string('estado',10);
-            $table->unsignedBigInteger('id_usuario');
+            $table->string('titulo');
+            $table->text('descripcion');
+            $table->unsignedBigInteger('distrito_id');
             $table->timestamps();
+
+            $table->foreign('distrito_id')
+            ->references('id')
+            ->on('distrito')
+            ->onDelete('restrict');
         });
     }
 
@@ -26,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('reuniones');
+        Schema::dropIfExists('comunidad');
     }
 };

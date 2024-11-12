@@ -32,15 +32,15 @@
                                             <th>CI</th>
                                             <th>ROL</th>
                                             <th>ESTADO</th>
-                                            <th>COD.TARGETA</th>
                                             <th class="text-end">ACCION</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <?php $contador = 1; ?>
                                         @foreach ($usuarios as $usuario)
                                             <tr>
                                                 <td>
-                                                    1
+                                                    {{ $contador++ }}
                                                 </td>
                                                 <td><img src="{{ asset('admin_template/images/logos/lang-logo/slack.png') }}"
                                                         alt="" class="rounded-circle thumb-md me-1 d-inline">
@@ -94,43 +94,31 @@
                                                                 </a>
                                                             </div>
                                                         @endif
-                                                        @else
-
+                                                    @else
                                                         <p>No permitido...</p>
                                                     @endcan
 
 
                                                 </td>
 
-                                                <td>
 
-                                                    @if ($usuario->cod_targeta == null)
-                                                        <span class="badge bg-danger fs-5">
-                                                            Sin asignar
-                                                        </span>
-                                                    @else
-                                                        <span class="badge bg-success fs-5">
-                                                            {{ $usuario->cod_targeta }}
-                                                        </span>
-                                                    @endif
-
-
-                                                </td>
                                                 <td class="text-end">
                                                     @can('admin.usuario.reset')
                                                         <a class="btn btn-sm btn-outline-info px-2 d-inline-flex align-items-center resetear_usuario"
                                                             data-id="{{ $usuario->id }}">
-                                                            <i class="fab fa-stumbleupon-circle fs-16"></i>
+                                                            <i class="fas fa-redo fs-16"></i>
 
                                                         </a>
                                                     @endcan
 
 
-                                                    <a class="btn btn-sm btn-outline-warning px-2 d-inline-flex align-items-center asignar_targeta"
-                                                        data-id="${row.id}">
-                                                        <i class="fas fa-id-card fs-16"></i>
+                                                    <a class="btn btn-sm btn-outline-primary px-2 d-inline-flex align-items-center cambiar_rol"
+                                                        data-id="{{ $usuario->id }}">
+                                                        <i class="far fa-edit fs-16"></i>
 
                                                     </a>
+
+
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -145,18 +133,17 @@
         </div>
     </div>
 
-
     <!-- MODAL PARA CREAR USAURIO -->
     <div class="modal fade" id="ModalUsuario" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-center modal-md" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    @can('admin.usuario.crear ')
-                        <h4 class="modal-title " id="exampleModalLabel"><span
-                                class="badge badge-outline-primary rounded">REGISTRAR NUEVO USUARIO</span></h4>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    @endcan
+
+                    <h4 class="modal-title " id="exampleModalLabel"><span
+                            class="badge badge-outline-primary rounded">REGISTRAR NUEVO USUARIO</span></h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
 
                 </div>
                 <div class="modal-body">
@@ -267,61 +254,6 @@
     </div>
 
 
-    <!-- MODAL PARA ASIGNAR TARGETA RFID -->
-    <div class="modal fade" id="ModalTargeta" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-center modal-md" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-
-                    <h4 class="modal-title " id="exampleModalLabel"><span
-                            class="badge badge-outline-primary rounded">REGISTRAR TARGETA</span></h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="registrtarCodigoTargeta">
-
-                        <div class="row">
-                            <div class="form-group py-2 col-md-8">
-                                <label for="" class="form-label">Nº TARGETA</label>
-                                <div class="">
-                                    <input type="hidden" id="id_usuario_targeta" name="id_usuario_targeta">
-                                    <input type="text" class="form-control rounded" placeholder="Codigo de targeta"
-                                        name="codigo_targeta" id="codigo_targeta"
-                                        style="text-transform:uppercase;background-color: #f0f0f0;">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <br><br>
-                                <button class="btn btn-success rounded" id="obtenerCodigoTargeta">Obtener</button>
-                            </div>
-                        </div>
-                </div>
-                <div id="error_formulario" class="mt-1 text-center bg-danger m-3 p-2 rounded text-light exitoText"
-                    style="display:none">
-                    <spam>
-
-                        <b class="">Error Por favor llene correctamente los campos</b>
-                    </spam>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger rounded btn-sm" data-bs-dismiss="modal"> <i
-                            class="ri-close-line me-1 align-middle"></i> Cerrar</button>
-                    <button type="submit" class="btn btn-success rounded btn-sm" id="btn-user"><i
-                            class="ri-save-3-line me-1 align-middle"></i> Guardar</button>
-                </div>
-
-
-                </form>
-            </div>
-        </div>
-
-
-    </div>
-
-
-
-
 
     <!-- MODAL PARA RESETEAR USUARIO -->
     <div class="modal fade" id="ModalResetearUsuario" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -391,11 +323,57 @@
 
 
         </div>
+    </div>
 
-    @endsection
 
 
-    @section('scripts')
+    <!-- MODAL PARA EDITAR ROL -->
+    <div class="modal fade" id="ModalRol" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-center modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
 
-        <script src="{{ asset('js/modulos/adm_usuarios/usuarios.js') }}" type="module"></script>
-    @endsection
+                    <h4 class="modal-title " id="exampleModalLabel"><span
+                            class="badge badge-outline-primary rounded">EDITAR ROL</span></h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formEditarRol">
+                        <div class="form-group py-2 col-md-12">
+                            <label for="apellidoMaterno_socio" class="form-label">ROL</label>
+                            <input type="hidden" name="user_id_edit" id="user_id_edit">
+                            <div class="" id="group_rol_usuario">
+                                <select name="role_edit" id="role_edit" class="form-control  rounded" require>
+                                    <option disabled selected>Seleccione una opción</option>
+
+                                    @foreach ($roles as $value)
+                                        <option class="text-capitalize" value={{ $value->id }}>
+                                            {{ $value->name }}</option>
+                                    @endforeach
+                                </select>
+                                <div id="_role_edit"></div>
+                            </div>
+                        </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger rounded btn-sm" data-bs-dismiss="modal"> <i
+                            class="ri-close-line me-1 align-middle"></i> Cerrar</button>
+                    <button type="submit" class="btn btn-success rounded btn-sm"><i
+                            class="ri-save-3-line me-1 align-middle"></i> Guardar</button>
+                </div>
+
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+@endsection
+
+
+@section('scripts')
+
+    <script src="{{ asset('js/modulos/adm_usuarios/usuarios.js') }}" type="module"></script>
+@endsection

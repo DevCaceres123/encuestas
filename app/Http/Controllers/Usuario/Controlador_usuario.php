@@ -41,21 +41,7 @@ class Controlador_usuario extends Controller
     }
 
 
-    public function show($id_usuario)
-    {
-
-        $user_id = User::select('id')->find($id_usuario);
-
-
-        $content = $this->datosLector();
-        return response()->json(
-            [
-                'titulo' => "exito",
-                'codigo_targeta' => $content,
-                'user' => $user_id,
-            ]
-        );
-    }
+    public function show($id_usuario) {}
 
 
     public function store(UsuarioRequest $request)
@@ -176,58 +162,34 @@ class Controlador_usuario extends Controller
     }
 
 
-
-
-
-
-    // public function asignar_targeta(Request $request)
-    // {
-    //     $usuario = User::find($request->id_usuario_targeta);
-
-    //     $usuario->cod_targeta = $request->codigo_targeta;
-
-    //     $usuario->save();
-    //     return response()->json(
-    //         [
-    //             'titulo' => "exito",
-    //             'mensaje' => 'adicionado correctamente',
-
-    //         ]
-    //     );
-    // }
-
-    //verifica en que estado esta el lector
-    private function datosLector()
+    public function editar_rol(UsuarioRequest $request)
     {
-        // Verifica si el archivo existe
-        if (!Storage::disk('local')->exists('estadoLector.txt')) {
-            // Si no existe, lo crea y escribe contenido inicial
-            Storage::disk('local')->put('estadoLector.txt', '');
+
+        $user = User::find($request->user_id);
+
+
+
+        // Encuentra el rol por ID
+        $nuevoRol = Role::find($request->rol_id);
+
+        if (!$nuevoRol) {
+            // Asigna el nuevo rol, eliminando cualquier rol anterior
+
+            $this->mensaje("error", "Rol no encontrado");
+
+            return response()->json($this->mensaje, 200);
         }
 
-        $estadoLector = Storage::disk('local')->get('estadoLector.txt');
-
-        if ($estadoLector != "lectura") {
-            return response()->json(
-                [
-                    'titulo' => "error",
-                    'mensaje'  => "El estado del lector no esta en lectura",
-                ],
-                200
-            );
-        }
-        // Verifica si el archivo existe
-        if (!Storage::disk('local')->exists('data.txt')) {
-            // Si no existe, lo crea y escribe contenido inicial
-            Storage::disk('local')->put('data.txt', '');
-        }
+        $user->syncRoles([$nuevoRol->name]);
 
 
-        // Obtiene el contenido del archivo
-        $datosTargeta = Storage::disk('local')->get('data.txt');
+        $this->mensaje("exito", "Usuario reseteado correctamente");
 
-        return $datosTargeta;
+        return response()->json($this->mensaje, 200);
     }
+
+
+
     public function listar()
     {
         $usuarios = User::with('roles')->get();
@@ -235,7 +197,7 @@ class Controlador_usuario extends Controller
         $permissions = [
             'desactivar' => auth()->user()->can('admin.usuario.desactivar'),
             'reset' => auth()->user()->can('admin.usuario.reset'),
-           
+
         ];
         return response()->json([
             'usuarios' => $usuarios,

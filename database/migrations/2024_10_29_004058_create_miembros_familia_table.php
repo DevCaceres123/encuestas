@@ -11,23 +11,23 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('lectores', function (Blueprint $table) {
+        Schema::create('miembros_familia', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre',15);
-            $table->string('descripcion',100);
-            $table->string('estado',12);
-            $table->unsignedBigInteger('id_usuario');
-            $table->foreign('id_usuario')->references('id')->on('users')->onDelete('restrict')->onUpdate('cascade');
+            $table->integer('mujeres');
+            $table->integer('hombres');
+            $table->integer('total_integrantes');
+            $table->unsignedBigInteger('afiliado_id');
             $table->timestamps();
+
+            $table->foreign('afiliado_id')->references('id')->on('afiliado')->onDelete('restrict');
         });
     }
-    
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('lectores');
+        Schema::dropIfExists('miembros_familia');
     }
 };
