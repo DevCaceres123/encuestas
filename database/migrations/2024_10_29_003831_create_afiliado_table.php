@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('afiliado', function (Blueprint $table) {
+        Schema::create('afiliados', function (Blueprint $table) {
             $table->id();
             $table->string('nombres');
             $table->string('paterno');
@@ -21,7 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger('comunidad_id');
             $table->timestamps();
 
-            $table->foreign('comunidad_id')->references('id')->on('comunidad')->onDelete('restrict');
+            $table->foreign('comunidad_id')->references('id')->on('comunidades')->onDelete('restrict');
         });
     }
 

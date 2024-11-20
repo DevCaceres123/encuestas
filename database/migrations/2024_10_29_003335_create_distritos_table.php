@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('distrito', function (Blueprint $table) {
+        Schema::create('distritos', function (Blueprint $table) {
             $table->id();
-            $table->string('titulo');
-            $table->text('descripcion');
+            $table->string('titulo',100);
+            $table->text('descripcion',200);
             $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
         });
     }
 

@@ -7,21 +7,36 @@ export function mensajeInputs(mensaje, color, campo) {
 
 export function vaciar_errores(nombre_formulario) {
 
-    // Seleccionar el formulario
-    const form = document.getElementById(nombre_formulario);
+    try {
+        // Seleccionar el formulario
+        const form = document.getElementById(nombre_formulario);
+        if (!form) {
+            throw new Error(`Formulario con ID '${nombre_formulario}' no encontrado`);
+        }
 
-    // Seleccionar solo los campos de tipo input, textarea y select
-    const elements = form.querySelectorAll("input, textarea, select");
-    const fieldNames = Array.from(elements).map(element => element.name);
+        // Seleccionar solo los campos de tipo input, textarea y select
+        const elements = form.querySelectorAll("input, textarea, select");
+        
+        const fieldNames = Array.from(elements).map(element => element.name);
+        
+        fieldNames.forEach(name => {
+            const errorElement = document.getElementById("_" + name);
+            
+            if (errorElement || errorElement.id =="_") {
+                errorElement.innerHTML = '';
+            } else {
+                console.warn(`Elemento de error con ID '_${name}' no encontrado`);
+            }
+        });
+    } catch (error) {
+        console.error("Error en el procesamiento del formulario:", error);
+    }
 
-    fieldNames.forEach(element => {
-        document.getElementById("_" + element).innerHTML = '';
-    });
 }
 
 
 //para vaciar los input, textrarea y select
 export function vaciar_formulario(formulario) {
-   
+
     document.getElementById(formulario).reset();
 }

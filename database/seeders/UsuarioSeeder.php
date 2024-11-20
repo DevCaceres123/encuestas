@@ -79,6 +79,17 @@ class UsuarioSeeder extends Seeder
 
         //  DISTRITO Y COMUNIDAD
          Permission::create(['name' => 'distrito_comunidad.index'])->syncRoles([$rol1]);
+         Permission::create(['name' => 'distrito_comunidad.distrito_comunidad.inicio'])->syncRoles([$rol1]);
+         Permission::create(['name' => 'distrito_comunidad.distrito.crear'])->syncRoles([$rol1]);
+         Permission::create(['name' => 'distrito_comunidad.distrito.editar'])->syncRoles([$rol1]);
+         Permission::create(['name' => 'distrito_comunidad.distrito.eliminar'])->syncRoles([$rol1]);
+
+
+         Permission::create(['name' => 'distrito_comunidad.comunidad.crear'])->syncRoles([$rol1]);
+         Permission::create(['name' => 'distrito_comunidad.comunidad.editar'])->syncRoles([$rol1]);
+         Permission::create(['name' => 'distrito_comunidad.comunidad.eliminar'])->syncRoles([$rol1]);
+
+
 
     }
 }

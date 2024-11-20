@@ -11,16 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('comunidad', function (Blueprint $table) {
+        Schema::create('comunidades', function (Blueprint $table) {
             $table->id();
-            $table->string('titulo');
-            $table->text('descripcion');
+            $table->string('titulo',100);
+            $table->text('descripcion',200);
             $table->unsignedBigInteger('distrito_id');
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
 
             $table->foreign('distrito_id')
             ->references('id')
-            ->on('distrito')
+            ->on('distritos')
             ->onDelete('restrict');
         });
     }

@@ -7,7 +7,7 @@ export async function crud(url, metodo, idRegistro = null, datos = null, callbac
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
 
-
+        // CUANDO SE REALIZA UN PUT
         if (idRegistro != null && datos != null) {
             // console.log(datos);
             response = await fetch(`/${url}/${idRegistro}`, {
@@ -16,13 +16,15 @@ export async function crud(url, metodo, idRegistro = null, datos = null, callbac
                     'Content-Type': 'application/json',
                     "X-CSRF-TOKEN": csrfToken  // Añadir el token CSRF aquí
                 },
-                body:  JSON.stringify(datos),
+                body:JSON.stringify(datos),
             });
 
         }
+
+        // CUANDO SE REALIZA UN POST
         if (datos != null && idRegistro == null) {
            
-            // console.log("entro datos");
+            // console.log(datos);
             response = await fetch(`/${url}`, {
                 method: metodo, // or 'PUT'
                 headers: {
@@ -33,6 +35,7 @@ export async function crud(url, metodo, idRegistro = null, datos = null, callbac
             });
         }
 
+         // CUANDO SE REALIZA UN GET
         if (idRegistro != null && datos == null) {
 
             response = await fetch(`/${url}/${idRegistro}`, {
@@ -44,7 +47,7 @@ export async function crud(url, metodo, idRegistro = null, datos = null, callbac
             });
         }
 
-
+         // CUANDO SE REALIZA GET A INDEX
         if (datos == null && idRegistro == null) {
             // console.log("entro sin datos");
             response = await fetch(`/${url}`, {
