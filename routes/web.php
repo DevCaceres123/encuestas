@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\afiliado\Controlador_afiliado;
 use App\Http\Controllers\distrito\Controlador_distrito;
 use App\Http\Controllers\Usuario\Controlador_login;
 use App\Http\Controllers\Usuario\Controlador_permisos;
@@ -61,6 +62,24 @@ Route::prefix('/admin')->middleware([Autenticados::class])->group(function () {
         Route::post('nuevaComunidad', 'nuevaComunidad')->name('comunidad.nuevo');
         Route::delete('eliminar_comunidad/{id_comunidad}', 'eliminar_comunidad')->name('comunidad.eliminar');
         
+
+    });
+
+    Route::controller(Controlador_distrito::class)->group(function () {
+
+        Route::resource('distrito', Controlador_distrito::class);
+        Route::get('listarDistrito', 'listarDistrito')->name('distrito.listar');
+        Route::get('listarComunidad', 'listarComunidad')->name('distrito.listar');
+        Route::post('nuevaComunidad', 'nuevaComunidad')->name('comunidad.nuevo');
+        Route::delete('eliminar_comunidad/{id_comunidad}', 'eliminar_comunidad')->name('comunidad.eliminar');
+        
+
+    });
+
+    Route::controller(Controlador_afiliado::class)->group(function () {
+
+        Route::resource('afiliado', Controlador_afiliado::class);
+       
 
     });
 });

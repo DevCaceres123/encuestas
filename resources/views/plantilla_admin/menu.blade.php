@@ -73,7 +73,7 @@
 
                     @can('afiliado.index')
                         <li class="nav-item">
-                            <a class="nav-link" href="#afiliados" role="button" aria-expanded="false"
+                            <a class="nav-link" href="{{route('afiliado.index')}}" role="button" aria-expanded="false"
                                 aria-controls="sidebarDashboards">
                                 <i class="fas fa-users menu-icon"></i>
                                 <span>AFILIADOS</span>
