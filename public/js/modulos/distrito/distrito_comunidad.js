@@ -383,7 +383,7 @@ $('#table_comunidad').on('click', '.eliminar_comunidad', function (e) {
                 }
                 // si todo esta correcto muestra el mensaje de correcto
                 mensajeAlerta(response.mensaje, response.tipo);
-               listar_comunidad;
+               listar_comunidad();
             })
         } else {
             alerta_top('error', 'Se canceló la eliminacion');
