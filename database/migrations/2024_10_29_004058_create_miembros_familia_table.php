@@ -18,8 +18,8 @@ return new class extends Migration
             $table->integer('total_integrantes');
             $table->unsignedBigInteger('afiliado_id');
             $table->timestamps();
-
-            $table->foreign('afiliado_id')->references('id')->on('afiliados')->onDelete('restrict');
+            $table->timestamp('deleted_at')->nullable();
+            $table->foreign('afiliado_id')->references('id')->on('afiliados')->onDelete('cascade');
         });
     }
 

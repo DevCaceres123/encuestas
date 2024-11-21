@@ -16,10 +16,12 @@ return new class extends Migration
             $table->string('nombres');
             $table->string('paterno');
             $table->string('materno');
-            $table->string('ci');
-            $table->date('fecha_nacimiento');
+            $table->string('ci')->unique();
+            $table->date('fecha_nacimiento')->nullable();
+            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('comunidad_id');
             $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
 
             $table->foreign('comunidad_id')->references('id')->on('comunidades')->onDelete('restrict');
         });

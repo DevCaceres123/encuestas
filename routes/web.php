@@ -79,7 +79,6 @@ Route::prefix('/admin')->middleware([Autenticados::class])->group(function () {
     Route::controller(Controlador_afiliado::class)->group(function () {
 
         Route::resource('afiliado', Controlador_afiliado::class);
-       
-
+        Route::get('listarAfiliado','listarAfiliado' )->name('afiliado.listar');    
     });
 });
