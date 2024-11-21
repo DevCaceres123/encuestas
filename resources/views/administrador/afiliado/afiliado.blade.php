@@ -25,7 +25,7 @@
                                             <th>CI</th>
                                             <th>NOMBRES</th>
                                             <th>PATARNO</th>
-                                            <th>MATARNO</th>
+                                            <th>MATERNO</th>
                                             <th>T. INTEGRANTES</th>
                                             <th class="text-end">ACCIONES</th>
                                         </tr>
