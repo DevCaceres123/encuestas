@@ -28,7 +28,7 @@ class AfiliadoRequest extends BasePrincipalRequest
             case 'afiliado.store':
                 return [
                     'ci' => 'required|digits_between:6,20|unique:afiliados,ci',
-                    'complemento' => 'min:1|max:4',
+                    'complemento' => 'nullable|min:1|max:4',
                     'comunidad_id' => 'required|integer|exists:comunidades,id',
                     'expedido_id' => 'required|integer|exists:expedidos,id',
                     'hombres' => 'required|integer|digits_between:1,2',
