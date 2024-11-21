@@ -1,18 +1,22 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\formulario;
 
-use App\Models\Formulario;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class FormularioController extends Controller
+class Controlador_formulario extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        if (!auth()->user()->can('formulario.formularios.inicio')) {
+            return redirect()->route('inicio');
+        }
+      
+        return view('administrador.formulario.formulario',);
     }
 
     /**
@@ -34,7 +38,7 @@ class FormularioController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Formulario $formulario)
+    public function show(string $id)
     {
         //
     }
@@ -42,7 +46,7 @@ class FormularioController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Formulario $formulario)
+    public function edit(string $id)
     {
         //
     }
@@ -50,7 +54,7 @@ class FormularioController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Formulario $formulario)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -58,7 +62,7 @@ class FormularioController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Formulario $formulario)
+    public function destroy(string $id)
     {
         //
     }

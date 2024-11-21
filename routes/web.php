@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\afiliado\Controlador_afiliado;
 use App\Http\Controllers\distrito\Controlador_distrito;
+use App\Http\Controllers\encuesta\Controlador_encuesta;
+use App\Http\Controllers\formulario\Controlador_formulario;
 use App\Http\Controllers\Usuario\Controlador_login;
 use App\Http\Controllers\Usuario\Controlador_permisos;
 use App\Http\Controllers\Usuario\Controlador_rol;
@@ -52,8 +54,6 @@ Route::prefix('/admin')->middleware([Autenticados::class])->group(function () {
 
 
     //PARA DISTRITO Y COMUNIDAD
-
-
     Route::controller(Controlador_distrito::class)->group(function () {
 
         Route::resource('distrito', Controlador_distrito::class);
@@ -61,24 +61,27 @@ Route::prefix('/admin')->middleware([Autenticados::class])->group(function () {
         Route::get('listarComunidad', 'listarComunidad')->name('distrito.listar');
         Route::post('nuevaComunidad', 'nuevaComunidad')->name('comunidad.nuevo');
         Route::delete('eliminar_comunidad/{id_comunidad}', 'eliminar_comunidad')->name('comunidad.eliminar');
-        
-
     });
 
-    Route::controller(Controlador_distrito::class)->group(function () {
+    // PARA LA ENCUESTA
+    Route::controller(Controlador_encuesta::class)->group(function () {
 
-        Route::resource('distrito', Controlador_distrito::class);
-        Route::get('listarDistrito', 'listarDistrito')->name('distrito.listar');
-        Route::get('listarComunidad', 'listarComunidad')->name('distrito.listar');
-        Route::post('nuevaComunidad', 'nuevaComunidad')->name('comunidad.nuevo');
-        Route::delete('eliminar_comunidad/{id_comunidad}', 'eliminar_comunidad')->name('comunidad.eliminar');
-        
-
+        Route::resource('encuestas', Controlador_encuesta::class);
+        Route::get('listarAfiliado', 'listarAfiliado')->name('afiliado.listar');
     });
 
+    // PARA EL FORMULARIO
+
+    Route::controller(Controlador_formulario::class)->group(function () {
+
+        Route::resource('formulario', Controlador_formulario::class);
+        Route::get('listarAfiliado', 'listarAfiliado')->name('afiliado.listar');
+    });
+
+    // PARA EL AFILIADO
     Route::controller(Controlador_afiliado::class)->group(function () {
 
         Route::resource('afiliado', Controlador_afiliado::class);
-        Route::get('listarAfiliado','listarAfiliado' )->name('afiliado.listar');    
+        Route::get('listarAfiliado', 'listarAfiliado')->name('afiliado.listar');
     });
 });

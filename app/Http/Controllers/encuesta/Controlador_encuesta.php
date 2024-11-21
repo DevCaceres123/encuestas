@@ -1,18 +1,22 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\encuesta;
 
-use App\Models\Encuesta;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class EncuestaController extends Controller
+class Controlador_encuesta extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        if (!auth()->user()->can('encuestas.encuestas.inicio')) {
+            return redirect()->route('inicio');
+        }
+      
+        return view('administrador.encuesta.encuesta',);
     }
 
     /**
@@ -34,7 +38,7 @@ class EncuestaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Encuesta $encuesta)
+    public function show(string $id)
     {
         //
     }
@@ -42,7 +46,7 @@ class EncuestaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Encuesta $encuesta)
+    public function edit(string $id)
     {
         //
     }
@@ -50,7 +54,7 @@ class EncuestaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Encuesta $encuesta)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -58,7 +62,7 @@ class EncuestaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Encuesta $encuesta)
+    public function destroy(string $id)
     {
         //
     }

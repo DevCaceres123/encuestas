@@ -75,10 +75,11 @@ class UsuarioSeeder extends Seeder
 
         // ENCUESTAS
         Permission::create(['name' => 'encuestas.index'])->syncRoles([$rol1]);
-
+        Permission::create(['name' => 'encuestas.encuestas.inicio'])->syncRoles([$rol1]);
  
          // FORMULARIO
          Permission::create(['name' => 'formulario.index'])->syncRoles([$rol1]);
+         Permission::create(['name' => 'formulario.formularios.inicio'])->syncRoles([$rol1]);
 
         //  DISTRITO Y COMUNIDAD
          Permission::create(['name' => 'distrito_comunidad.index'])->syncRoles([$rol1]);

@@ -92,7 +92,7 @@
                                 <ul class="nav flex-column">
 
                                     <li class="nav-item">
-                                        <a class="nav-link" href="#encuestas">Encuentas</a>
+                                        <a class="nav-link" href="{{route('encuestas.index')}}">Encuentas</a>
                                     </li><!--end nav-item-->
 
                                 </ul>
@@ -111,7 +111,7 @@
                                 <ul class="nav flex-column">
 
                                     <li class="nav-item">
-                                        <a class="nav-link" href="#formulario">Formularios</a>
+                                        <a class="nav-link" href="{{route('formulario.index')}}">Formularios</a>
                                     </li><!--end nav-item-->
 
                                 </ul>
