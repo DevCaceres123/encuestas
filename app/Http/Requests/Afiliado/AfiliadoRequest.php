@@ -33,9 +33,9 @@ class AfiliadoRequest extends BasePrincipalRequest
                     'expedido_id' => 'required|integer|exists:expedidos,id',
                     'hombres' => 'required|integer|digits_between:1,2',
                     'mujeres' => 'required|integer|digits_between:1,2',
-                    'nombres' => 'required|max:50|min:1',
-                    'paterno' => 'required|max:50|min:1',
-                    'materno' => 'required|max:50|min:1',
+                    'nombres' => 'required|string|max:50|min:2|regex:/^[A-Za-zÁáÉéÍíÓóÚúÑñ\s]+$/',
+                    'paterno' => 'required|string|max:50|min:2|regex:/^[A-Za-zÁáÉéÍíÓóÚúÑñ\s]+$/',
+                    'materno' => 'required|string|max:50|min:2|regex:/^[A-Za-zÁáÉéÍíÓóÚúÑñ\s]+$/',
                 ];
             case 'comunidad.nuevo':
                 return [

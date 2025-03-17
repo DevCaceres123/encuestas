@@ -36,7 +36,7 @@ function listar_afiliado() {
             },
             {
                 data: 'ci',
-                className: 'table-td ',
+                className: 'table-td text-uppercase',
                 render: function (data) {
                     return `                            
                         ${data}
@@ -45,14 +45,14 @@ function listar_afiliado() {
             },
             {
                 data: 'nombres',
-                className: 'table-td',
+                className: 'table-td text-uppercase',
                 render: function (data) {
                     return data;
                 }
             },
             {
                 data: 'paterno',
-                className: 'table-td',
+                className: 'table-td text-uppercase',
                 render: function (data) {
                     return data;
                 }
@@ -60,7 +60,7 @@ function listar_afiliado() {
 
             {
                 data: 'materno',
-                className: 'table-td',
+                className: 'table-td text-uppercase',
                 render: function (data) {
                     return data;
                 }
@@ -71,7 +71,7 @@ function listar_afiliado() {
                 className: 'table-td',
                 render: function (data) { 
                     // console.log(data);
-                    let total_integrantes=data == null ? "Ninguno" : data.total_integrantes+" Integrantes";
+                    let total_integrantes=data == null ? "Ninguno" : data.total_integrantes+"<span class='text-muted'> Integrantes</span>";
                     return total_integrantes;
                 }
             },
