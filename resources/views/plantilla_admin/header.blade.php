@@ -11,17 +11,17 @@
                     </button>
                 </li>
                 <li class="mx-3 welcome-text">
-                    <h3 class="mb-0 fw-bold text-truncate">SIST ADMIN {{ Auth::user()->nombres }}</h3>
+                    <h3 class="mb-0 fw-bold text-muted">BIENVENIDO {{ Auth::user()->nombres }}</h3>
                     <!-- <h6 class="mb-0 fw-normal text-muted text-truncate fs-14">Here's your overview this week.</h6> -->
                 </li>
             </ul>
             <ul class="topbar-item list-unstyled d-inline-flex align-items-center mb-0">
 
                 <li class="topbar-item">
-                    <a class="nav-link nav-icon" href="javascript:void(0);" id="light-dark-mode">
+                    {{-- <a class="nav-link nav-icon" href="javascript:void(0);" id="light-dark-mode">
                         <i class="icofont-moon dark-mode"></i>
                         <i class="icofont-sun light-mode"></i>
-                    </a>
+                    </a> --}}
                 </li>
 
 

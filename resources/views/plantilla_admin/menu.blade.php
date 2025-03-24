@@ -3,13 +3,10 @@
     <div class="brand">
         <a href="index.html" class="logo">
             <span>
-                <img src="{{ asset('admin_template/images/logo-sm.png') }}" alt="logo-small" class="logo-sm">
+                 <img src="{{ asset('assets/logo-small.webp') }}" alt="logo-expanded" class="logo" height="40" width="78">
             </span>
             <span class="">
-                <img src="{{ asset('admin_template/images/logo-light.png') }}" alt="logo-large"
-                    class="logo-lg logo-light">
-                <img src="{{ asset('admin_template/images/logo-dark.png') }}" alt="logo-large"
-                    class="logo-lg logo-dark">
+                
             </span>
         </a>
     </div>
