@@ -18,16 +18,17 @@
                         <div class="card-body">
                             <div class="table-responsive">
                                 {{-- tabla para crear reunions --}}
-                                <table class="table  mb-0 table-centered" id="table_afiliado">
+                                <table class="table  mb-0 table-centered table-bordered" id="table_afiliado">
                                     <thead class="table-light">
                                         <tr>
                                             <th>Nº</th>
-                                            <th>CI</th>
+                                            <th>DOC. DE IDENTIDAD</th>
                                             <th>NOMBRES</th>
                                             <th>PATARNO</th>
                                             <th>MATERNO</th>
                                             <th>INTEGRANTES</th>
                                             <th class="text-end">ACCIONES</th>
+                                            <th class="text-end">ESTADO</th>
                                         </tr>
                                     </thead>
                                 </table>

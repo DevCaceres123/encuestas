@@ -42,8 +42,7 @@
                                                 <td>
                                                     {{ $contador++ }}
                                                 </td>
-                                                <td><img src="{{ asset('admin_template/images/logos/lang-logo/slack.png') }}"
-                                                        alt="" class="rounded-circle thumb-md me-1 d-inline">
+                                                <td>
                                                     {{ $usuario->nombres }}
                                                 </td>
                                                 <td>{{ $usuario->paterno }}</td>

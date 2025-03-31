@@ -72,6 +72,7 @@ class UsuarioSeeder extends Seeder
         Permission::create(['name' => 'afiliado.crear'])->syncRoles([$rol1]);
         Permission::create(['name' => 'afiliado.editar'])->syncRoles([$rol1]);
         Permission::create(['name' => 'afiliado.eliminar'])->syncRoles([$rol1]);
+        Permission::create(['name' => 'afiliado.estado'])->syncRoles([$rol1]);
 
         // ENCUESTAS
         Permission::create(['name' => 'encuestas.index'])->syncRoles([$rol1]);

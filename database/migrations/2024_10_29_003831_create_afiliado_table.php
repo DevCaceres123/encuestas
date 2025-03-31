@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('materno');
             $table->string('ci')->unique();
             $table->date('fecha_nacimiento')->nullable();
+            $table->string('estado', 20);
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('comunidad_id');
             $table->timestamps();

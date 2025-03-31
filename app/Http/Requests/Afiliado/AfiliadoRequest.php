@@ -44,6 +44,13 @@ class AfiliadoRequest extends BasePrincipalRequest
                     'distrito_nombre' => 'required|exists:distritos,id',
                     // Más reglas según sea necesario
                 ];
+            case 'comunidad.update':
+                return [
+                    'id_afiliado' => 'required|exists:afiliados,id',
+                   'estado' => 'required|string|in:activo,inactivo',
+                   
+                    // Más reglas según sea necesario
+                ];
             default:
                 return [];
         }

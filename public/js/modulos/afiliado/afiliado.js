@@ -104,6 +104,34 @@ function listar_afiliado() {
 
                 }
             },
+
+            {
+                data: null,
+                className: 'table-td',
+                render: function (data, type, row) {
+
+                    let estadoChecked = row.estado === "activo" ? 'checked' : '';
+
+                        // Aquí verificamos el permiso de desactivar
+                        let desactivarContent = permisosGlobal['estado'] ? `
+                            <a class="cambiar_estado_afiliado" data-id="${row.id},${row.estado}">
+                                <div class="form-check form-switch ms-3">
+                                    <input class="form-check-input" type="checkbox" 
+                                           ${estadoChecked} style="transform: scale(2.0);">
+                                </div>
+                            </a>` : `
+                           <p>No permitido...<p/>
+                        `;
+
+                        return `
+                            <div data-class="">
+                                ${desactivarContent}
+                            </div>`;
+                    
+                }
+            },
+
+
         ],
     });
 }
@@ -156,7 +184,7 @@ $('#table_afiliado').on('click', '.eliminar_distrito', function (e) {
     let afiliado_id = $(this).data('id'); // Obtener el id del alumno desde el data-id
     Swal.fire({
         title: "NOTA!",
-        text: "¿Está seguro de Eliminar el distrito?",
+        text: "¿Está seguro de Eliminar el Afiliado?",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -189,3 +217,41 @@ $('#table_afiliado').on('click', '.eliminar_distrito', function (e) {
 });
 
 
+// CAMBIAR ESTADO USAURIO
+
+
+$('#table_afiliado').on('click', '.cambiar_estado_afiliado', function (e) {
+    e.preventDefault(); // Evitar que el enlace recargue la página
+
+
+    // Obtener el valor de data-id
+    var dataId = $(this).data('id');
+
+    // Separar el id y el estado
+    var values = dataId.split(',');
+
+    let datos =
+    {
+        id_afiliado: values[0],
+        estado: values[1]
+    }
+
+    crud("admin/afiliado", "PUT", values[0], datos, function (error, response) {
+        if (response.tipo === "errores") {
+
+            mensajeAlerta(response.mensaje.estado[0], "error");
+            return;
+        }
+        if (response.tipo != "exito") {
+            mensajeAlerta(response.mensaje, response.tipo);
+            return;
+        }
+
+        mensajeAlerta(response.mensaje, response.tipo);
+
+        actualizarTabla();
+
+
+    });
+
+});

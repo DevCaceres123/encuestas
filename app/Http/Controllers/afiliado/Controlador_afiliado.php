@@ -39,7 +39,7 @@ class Controlador_afiliado extends Controller
         $query = Afiliado::with(['numero_familia' => function ($query) {
             // Asegúrate de seleccionar 'afiliado_id' para que la relación funcione
             $query->select('total_integrantes', 'afiliado_id');
-        }])->select('id', 'nombres', 'paterno', 'materno', 'ci');
+        }])->select('id', 'nombres', 'paterno', 'materno', 'ci','estado');
 
         // Filtro de búsqueda: Filtra por los campos correctos en la tabla Afiliado
         if (!empty($request->search['value'])) {
@@ -67,6 +67,7 @@ class Controlador_afiliado extends Controller
             'permisos' => [
                 'editar' => auth()->user()->can('afiliado.editar'),
                 'eliminar' => auth()->user()->can('afiliado.eliminar'),
+                'estado' => auth()->user()->can('afiliado.estado'),
             ]
         ]);
     }
@@ -92,6 +93,7 @@ class Controlador_afiliado extends Controller
             $afiliado->paterno = $request->paterno;
             $afiliado->materno = $request->materno;
             $afiliado->ci = $request->complemento == null ? $request->ci : $request->ci . "-" . $request->complemento;
+            $afiliado->estado='activo';
             $afiliado->comunidad_id = $request->comunidad_id;
             $afiliado->user_id = auth()->user()->id;
             $afiliado->save();
@@ -134,12 +136,37 @@ class Controlador_afiliado extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    // cambiar estado afiliado
+    public function update(AfiliadoRequest $request)
     {
-        //
+        DB::beginTransaction();
+        try {
+
+            // Encontrar el usuario por ID
+            $afiliado = Afiliado::findOrFail($request->id_afiliado);
+
+            if ($request->estado == "activo") {
+                $afiliado->estado = "inactivo";
+            }
+            if ($request->estado == "inactivo") {
+                $afiliado->estado = "activo";
+            }
+
+
+            $afiliado->save();
+            DB::commit();
+
+            $this->mensaje("exito", "Estado cambiado Correctamente");
+
+            return response()->json($this->mensaje, 200);
+        } catch (Exception $e) {
+            // Revertir los cambios si hay algún error
+            DB::rollBack();
+
+            $this->mensaje("error", "error" . $e->getMessage());
+
+            return response()->json($this->mensaje, 200);
+        }
     }
 
     /**
