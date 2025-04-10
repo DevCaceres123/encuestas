@@ -94,6 +94,7 @@ class Controlador_afiliado extends Controller
             $afiliado->materno = $request->materno;
             $afiliado->ci = $request->complemento == null ? $request->ci : $request->ci . "-" . $request->complemento;
             $afiliado->estado='activo';
+            $afiliado->expedido_id  = $request->expedido_id;
             $afiliado->comunidad_id = $request->comunidad_id;
             $afiliado->user_id = auth()->user()->id;
             $afiliado->save();
@@ -131,9 +132,32 @@ class Controlador_afiliado extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id_afiliado)
     {
-        //
+        DB::beginTransaction();
+        try {
+
+            // Encontrar el usuario por ID
+            $afiliado = Afiliado::findOrFail($id_afiliado);
+
+            if (!$afiliado) {
+                throw new Exception('Afiliado no encontrado');
+            }
+            $miembrosFamilia= Miembros_familia::select('mujeres','hombres')->where('afiliado_id',$afiliado->id)->first();
+            $afiliado['miembrosFamilia']=$miembrosFamilia;
+            DB::commit();
+
+            $this->mensaje("exito", $afiliado);
+
+            return response()->json($this->mensaje, 200);
+        } catch (Exception $e) {
+            // Revertir los cambios si hay algún error
+            DB::rollBack();
+
+            $this->mensaje("error", "error" . $e->getMessage());
+
+            return response()->json($this->mensaje, 200);
+        }
     }
 
     // cambiar estado afiliado
@@ -144,7 +168,9 @@ class Controlador_afiliado extends Controller
 
             // Encontrar el usuario por ID
             $afiliado = Afiliado::findOrFail($request->id_afiliado);
-
+            if (!$afiliado) {
+                throw new Exception('Afiliado no encontrado');
+            }
             if ($request->estado == "activo") {
                 $afiliado->estado = "inactivo";
             }
@@ -169,6 +195,57 @@ class Controlador_afiliado extends Controller
         }
     }
 
+
+
+    public function actualizarAfiliado(AfiliadoRequest $request, string $afiliado_id)
+    {
+        DB::beginTransaction();
+        try {
+            // Buscar afiliado por su ID
+            $afiliado = Afiliado::find($afiliado_id); // Usar $afiliado_id en lugar de $request->id_afiliado
+            if (!$afiliado) {
+                throw new Exception('Afiliado no encontrado');
+            }
+    
+            // Actualizar afiliado
+            $afiliado->nombres = $request->input('nombres-edit');
+            $afiliado->paterno = $request->input('paterno-edit');
+            $afiliado->materno = $request->input('materno-edit');
+            $afiliado->ci = $request->input('complemento-edit') == null 
+                ? $request->input('ci-edit') 
+                : $request->input('ci-edit') . "-" . $request->input('complemento-edit');
+    
+            $afiliado->expedido_id  = $request->input('expedido_id-edit');
+            $afiliado->comunidad_id = $request->input('comunidad_id-edit');
+    
+            $afiliado->save();
+    
+            // Buscar o crear miembros de familia
+            $miembrosFamilia = Miembros_familia::where('afiliado_id', $afiliado_id)->first();
+            if (!$miembrosFamilia) {
+                throw new Exception('Miembro de la familia no encontrado');
+            }
+    
+            // Actualizar miembros de familia
+            $miembrosFamilia->hombres = $request->input('hombres-edit');
+            $miembrosFamilia->mujeres = $request->input('mujeres-edit');
+            $miembrosFamilia->total_integrantes = $request->input('hombres-edit') + $request->input('mujeres-edit');
+    
+            $miembrosFamilia->save(); // Guardar cambios
+    
+            DB::commit();
+            $this->mensaje("exito", "Datos actualizados Correctamente");
+            return response()->json($this->mensaje, 200);
+        } catch (Exception $e) {
+            // Revertir los cambios si hay algún error
+            DB::rollBack();
+    
+            $this->mensaje("error", "error: " . $e->getMessage());
+    
+            return response()->json($this->mensaje, 200);
+        }
+    }
+    
     /**
      * Remove the specified resource from storage.
      */

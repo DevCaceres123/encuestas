@@ -83,5 +83,6 @@ Route::prefix('/admin')->middleware([Autenticados::class])->group(function () {
 
         Route::resource('afiliado', Controlador_afiliado::class);
         Route::get('listarAfiliado', 'listarAfiliado')->name('afiliado.listar');
+        Route::put('actualizarAfiliado/{id_afiliado}', 'actualizarAfiliado')->name('afiliado.actualizarAfiliado');
     });
 });

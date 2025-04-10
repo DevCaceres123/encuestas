@@ -15,7 +15,7 @@ export function vaciar_errores(nombre_formulario) {
         }
 
         // Seleccionar solo los campos de tipo input, textarea y select
-        const elements = form.querySelectorAll("input, textarea, select");
+        const elements = form.querySelectorAll("input:not([type=hidden]), textarea, select");
         
         const fieldNames = Array.from(elements).map(element => element.name);
         

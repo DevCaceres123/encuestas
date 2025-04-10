@@ -69,9 +69,9 @@ function listar_afiliado() {
             {
                 data: 'numero_familia',
                 className: 'table-td',
-                render: function (data) { 
+                render: function (data) {
                     // console.log(data);
-                    let total_integrantes=data == null ? "Ninguno" : data.total_integrantes+"<span class='text-muted'> Integrantes</span>";
+                    let total_integrantes = data == null ? "Ninguno" : data.total_integrantes + "<span class='text-muted'> Integrantes</span>";
                     return total_integrantes;
                 }
             },
@@ -79,12 +79,12 @@ function listar_afiliado() {
                 data: null,
                 className: 'table-td text-end',
                 render: function (data, type, row) {
-                   
+
                     return ` <div class="d-flex justify-content-center">
 
                          ${permisosGlobal.editar ?
                             `
-                        <a class="btn btn-sm btn-outline-danger px-2 d-inline-flex align-items-center eliminar_distrito me-1" data-id="${row.id}">
+                        <a class="btn btn-sm btn-outline-danger px-2 d-inline-flex align-items-center eliminar_afiliado me-1" data-id="${row.id}">
                             <i class="fas fa-window-close fs-16"></i>
                         </a>
                             `
@@ -92,7 +92,7 @@ function listar_afiliado() {
                         }
                       
                              ${permisosGlobal.eliminar ?
-                            ` <a class="btn btn-sm btn-outline-primary px-2 d-inline-flex align-items-center editar_distrito" data-id="${row.id}">
+                            ` <a class="btn btn-sm btn-outline-primary px-2 d-inline-flex align-items-center editar_afiliado" data-id="${row.id}">
                             <i class="fas fa-pencil-alt fs-16"></i>
                         </a>`
                             : ``
@@ -112,8 +112,8 @@ function listar_afiliado() {
 
                     let estadoChecked = row.estado === "activo" ? 'checked' : '';
 
-                        // Aquí verificamos el permiso de desactivar
-                        let desactivarContent = permisosGlobal['estado'] ? `
+                    // Aquí verificamos el permiso de desactivar
+                    let desactivarContent = permisosGlobal['estado'] ? `
                             <a class="cambiar_estado_afiliado" data-id="${row.id},${row.estado}">
                                 <div class="form-check form-switch ms-3">
                                     <input class="form-check-input" type="checkbox" 
@@ -123,11 +123,11 @@ function listar_afiliado() {
                            <p>No permitido...<p/>
                         `;
 
-                        return `
+                    return `
                             <div data-class="">
                                 ${desactivarContent}
                             </div>`;
-                    
+
                 }
             },
 
@@ -152,7 +152,7 @@ $('#formnuevo_afiliado').submit(function (e) {
     vaciar_errores("formnuevo_afiliado");
     crud("admin/afiliado", "POST", null, datosFormulario, function (error, response) {
 
-        
+
         $("#btnnuevo_afiliado").prop("disabled", false);
         // console.log(response);
         // Verificamos que no haya un error o que todos los campos sean llenados
@@ -165,7 +165,7 @@ $('#formnuevo_afiliado').submit(function (e) {
             mensajeAlerta(response.mensaje, response.tipo);
             return;
         }
-      
+
         //si todo esta correcto muestra el mensaje de correcto
         $('#modalAfiliado').modal('hide');
         vaciar_formulario("formnuevo_afiliado");
@@ -177,8 +177,8 @@ $('#formnuevo_afiliado').submit(function (e) {
 
 
 
-// eliminar distrito
-$('#table_afiliado').on('click', '.eliminar_distrito', function (e) {
+// eliminar afiliado
+$('#table_afiliado').on('click', '.eliminar_afiliado', function (e) {
 
     e.preventDefault(); // Evitar que el enlace recargue la página
     let afiliado_id = $(this).data('id'); // Obtener el id del alumno desde el data-id
@@ -217,8 +217,94 @@ $('#table_afiliado').on('click', '.eliminar_distrito', function (e) {
 });
 
 
-// CAMBIAR ESTADO USAURIO
+// editar afiliado
+$('#table_afiliado').on('click', '.editar_afiliado', function (e) {
 
+    e.preventDefault(); // Evitar que el enlace recargue la página
+    let afiliado_id = $(this).data('id'); // Obtener el id del afiliado desde el data-id
+    $('#modalAfiliadoEdit').modal('show');
+    crud("admin/afiliado", "GET", afiliado_id+'/edit', null, function (error, response) {
+
+        console.log(response);
+        // Verificamos que no haya un error o que todos los campos sean llenados
+        if (response.tipo === "errores") {
+            mensajeAlerta(response.mensaje, "errores");
+            return;
+        }
+        if (response.tipo != "exito") {
+            mensajeAlerta(response.mensaje, response.tipo);
+            return;
+        }
+        let completo = response.mensaje.ci; // "12345678-rga"
+        let partes = completo.split('-'); // Divide en un array
+        
+        let numero_documento = partes[0];  // "12345678"
+        let complemento = partes[1]; // "rga"
+
+        $('#id_afiliado').val(response.mensaje.id);
+        $('#ci-edit').val(numero_documento);
+        $('#complemento-edit').val(complemento);
+        $('#expedido_id-edit').val(response.mensaje.expedido_id).trigger('change');
+        $('#nombres-edit').val(response.mensaje.nombres);
+        $('#paterno-edit').val(response.mensaje.paterno);
+        $('#materno-edit').val(response.mensaje.materno);
+        $('#comunidad_id-edit').val(response.mensaje.comunidad_id).trigger('change');
+        $('#mujeres-edit').val(response.mensaje.miembrosFamilia.mujeres);
+        $('#hombres-edit').val(response.mensaje.miembrosFamilia.hombres);
+
+    })
+});
+
+
+// ACTUALIZAR AFILIADO
+
+$('#formnuevo_afiliadoEdit').submit(function (e) {
+    e.preventDefault();
+    let datos = {
+     
+        "ci-edit": $('#ci-edit').val(),
+        "complemento-edit": $('#complemento-edit').val(),
+        "expedido_id-edit": $('#expedido_id-edit').val(),
+        "nombres-edit": $('#nombres-edit').val(),
+        "paterno-edit": $('#paterno-edit').val(),
+        "materno-edit": $('#materno-edit').val(),
+        "comunidad_id-edit": $('#comunidad_id-edit').val(),
+        "mujeres-edit": $('#mujeres-edit').val(),
+        "hombres-edit": $('#hombres-edit').val(),
+        "id_afiliado" :$('#id_afiliado').val(),
+    };
+
+    let id_registro=$('#id_afiliado').val();
+    
+    
+    $("#btnnuevo_afiliadoEdit").prop("disabled", true);
+    vaciar_errores("formnuevo_afiliadoEdit");
+
+    crud("admin/actualizarAfiliado", "PUT", id_registro, datos, function (error, response) {
+
+        $("#btnnuevo_afiliadoEdit").prop("disabled", false);
+        // console.log(response);
+        // Verificamos que no haya un error o que todos los campos sean llenados
+        if (response.tipo === "errores") {
+            mensajeAlerta(response.mensaje, "errores");
+            return;
+        }
+        if (response.tipo != "exito") {
+            mensajeAlerta(response.mensaje, response.tipo);
+            return;
+        }
+        //si todo esta correcto muestra el mensaje de correcto
+        $('#modalAfiliadoEdit').modal('hide');
+        vaciar_formulario("formnuevo_afiliadoEdit");
+        mensajeAlerta(response.mensaje, response.tipo);
+        actualizarTabla();
+
+    })
+});
+
+
+
+// CAMBIAR ESTADO USAURIO
 
 $('#table_afiliado').on('click', '.cambiar_estado_afiliado', function (e) {
     e.preventDefault(); // Evitar que el enlace recargue la página
