@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('/')->middleware([No_autenticados::class])->group(function () {
     Route::get('/', function () {
-        return view('login');
+        return view('index');
     })->name('login');
 
     Route::get('/login', function () {

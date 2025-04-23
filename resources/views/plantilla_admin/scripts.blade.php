@@ -60,7 +60,7 @@
             let dato = await respuesta.json();
             alerta_top(dato.tipo, dato.mensaje);
             setTimeout(() => {
-                location.reload();
+                window.location.href = '/login';
             }, 1500);
         } catch (error) {
             console.log('Ocurrio un error: ' + error);
