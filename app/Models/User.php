@@ -67,15 +67,8 @@ class User extends Authenticatable
         );
     }
 
-
-
-    // Relacion eloquent
-
-
-    public function reuniones(){
-        //return $this->belongsToMany('App\Models\Reunion');
-
-        return $this->belongsToMany('App\Models\Reunion', 'user_reunion', 'id_usuario', 'id_reunion')
-                    ->withPivot('id_lector'); // Incluimos el campo extra (id_lectores)
+    public function encuestas()
+    {
+        return $this->hasMany(Encuesta::class);
     }
 }

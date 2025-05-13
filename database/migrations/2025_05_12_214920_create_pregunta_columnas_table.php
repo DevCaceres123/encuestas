@@ -11,15 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('encuestas', function (Blueprint $table) {
+        Schema::create('pregunta_columnas', function (Blueprint $table) {
             $table->id();
-            $table->string('titulo',50);
-            $table->string('descripcion',100);
-            $table->string('estado',20);
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')
+            $table->string('pregunta', 50);
+            $table->enum('tipo', ['numerico','texto','opcional','porcentaje','tabla']);
+            $table->string('sumar', 10);
+            $table->integer('total');
+            $table->integer('orden');
+            $table->unsignedBigInteger('pregunta_id');
+            $table->foreign('pregunta_id')
                 ->references('id')
-                ->on('users')
+                ->on('preguntas')
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
             $table->timestamps();
@@ -31,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('encuestas');
+        Schema::dropIfExists('pregunta_columnas');
     }
 };

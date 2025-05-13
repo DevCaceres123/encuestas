@@ -13,7 +13,16 @@ return new class extends Migration
     {
         Schema::create('preguntas', function (Blueprint $table) {
             $table->id();
-            
+            $table->string('titulo', 50);
+            $table->enum('tipo', ['numerico','texto','opcional','porcentaje','tabla']);
+            $table->string('obligatorio', 10);
+
+            $table->unsignedBigInteger('encuesta_id');
+            $table->foreign('encuesta_id')
+                ->references('id')
+                ->on('encuestas')
+                ->onUpdate('cascade')
+                ->onDelete('restrict');
             $table->timestamps();
         });
     }

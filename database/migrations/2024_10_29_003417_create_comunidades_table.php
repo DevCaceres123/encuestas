@@ -22,7 +22,7 @@ return new class extends Migration
             $table->foreign('distrito_id')
             ->references('id')
             ->on('distritos')
-            ->onDelete('restrict');
+            ->onDelete('cascade');
         });
     }
 
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('comunidad');
+        Schema::dropIfExists('comunidades');
     }
 };
