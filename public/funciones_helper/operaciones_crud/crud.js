@@ -9,7 +9,7 @@ export async function crud(url, metodo, idRegistro = null, datos = null, callbac
 
         // CUANDO SE REALIZA UN PUT
         if (idRegistro != null && datos != null && metodo === 'PUT') {
-            console.log(`Enviando PUT a: /${url}/${idRegistro}`);
+            // console.log(`Enviando PUT a: /${url}/${idRegistro}`);
             response = await fetch(`/${url}/${idRegistro}`, {
                 method: metodo, // or 'PUT'
                 headers: {
@@ -24,7 +24,7 @@ export async function crud(url, metodo, idRegistro = null, datos = null, callbac
         // CUANDO SE REALIZA UN POST
         if (datos != null && idRegistro == null && metodo === 'POST') {
            
-            console.log(`Enviando POST a: /${url}`);
+            // console.log(`Enviando POST a: /${url}`);
             response = await fetch(`/${url}`, {
                 method: metodo, // or 'PUT'
                 headers: {

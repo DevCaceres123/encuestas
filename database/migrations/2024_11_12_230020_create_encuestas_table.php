@@ -22,6 +22,7 @@ return new class extends Migration
                 ->on('users')
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }

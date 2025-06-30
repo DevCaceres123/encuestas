@@ -3,8 +3,16 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Pregunta_filas extends Model
 {
-    private $table = 'pregunta_filas';
+    use SoftDeletes;
+    protected $table = 'pregunta_filas';
+    protected $fillable = [
+           'pregunta_id',
+           'columna_id',
+           'pregunta',
+           'orden',
+       ];
 }

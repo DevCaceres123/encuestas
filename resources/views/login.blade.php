@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-startbar="dark" data-bs-theme="light">
+<html lang="es" data-startbar="dark" data-bs-theme="light">
 
 <head>
     <meta charset="utf-8" />

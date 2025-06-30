@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     /**
      * Run the migrations.
      */
@@ -16,13 +15,15 @@ return new class extends Migration
             $table->string('titulo', 50);
             $table->enum('tipo', ['numerico','texto','opcional','porcentaje','tabla']);
             $table->string('obligatorio', 10);
-
+            $table->string('varias_respuestas', 10)->nullable(); //para poder seleccionar varias respuestas
+            $table->integer('orden')->nullable();
             $table->unsignedBigInteger('encuesta_id');
             $table->foreign('encuesta_id')
                 ->references('id')
                 ->on('encuestas')
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }

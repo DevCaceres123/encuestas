@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('pregunta_columnas', function (Blueprint $table) {
             $table->id();
-            $table->string('pregunta', 50);
-            $table->enum('tipo', ['numerico','texto','opcional','porcentaje','tabla']);
-            $table->string('sumar', 10);
-            $table->integer('total');
+            $table->string('pregunta', 100);
+            $table->enum('tipo', ['numero','texto','opcion','porcentaje','pregunta']);
+            $table->string('sumar', 10)->nullable();
+            $table->integer('total')->nullable();
             $table->integer('orden');
             $table->unsignedBigInteger('pregunta_id');
             $table->foreign('pregunta_id')
@@ -24,6 +24,8 @@ return new class extends Migration
                 ->on('preguntas')
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
+                
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }

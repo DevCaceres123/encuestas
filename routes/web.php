@@ -12,8 +12,6 @@ use App\Http\Middleware\Autenticados;
 use App\Http\Middleware\No_autenticados;
 use Illuminate\Support\Facades\Route;
 
-
-
 Route::prefix('/')->middleware([No_autenticados::class])->group(function () {
     Route::get('/', function () {
         return view('index');
@@ -67,8 +65,27 @@ Route::prefix('/admin')->middleware([Autenticados::class])->group(function () {
     Route::controller(Controlador_encuesta::class)->group(function () {
 
         Route::resource('encuestas', Controlador_encuesta::class);
-        Route::get('listarAfiliado', 'listarAfiliado')->name('afiliado.listar');
+        Route::get('listarEncuesta', 'listarEncuesta')->name('encuesta.listar');
+        Route::get('verEncuesta/{id_encuesta}', 'verEncuesta')->name('encuesta.verEncuesta');
+        Route::put('guardarPregunta/{id_encuesta}', 'guardarPregunta')->name('encuesta.guardarPregunta');
+        Route::put('guardarPreguntasTabla/{id_encuesta}', 'guardarPreguntaTabla')->name('encuesta.guardarPreguntaTabla');
+        Route::post('editarPregunta', 'editarPregunta')->name('encuesta.editarPregunta');
+        Route::get('obtenerPreguntaEncuesta/{id_encuesta}', 'obtenerPreguntaEncuesta')->name('encuesta.listar');
+        Route::put('guardarPreguntaEditada/{id_encuesta}', 'guardarPreguntaEditada')->name('encuesta.listar');
+        Route::put('moverPregunta/{id_encuesta}', 'cambiarOrden')->name('encuesta.cambiarOrden');
+        Route::delete('eliminarEncuesta/{id_encuesta}', 'eliminarEncuesta')->name('encuesta.eliminarEncuesta');
+        Route::put('actualizarEncuesta/{id_encuesta}', 'actualizarEncuesta')->name('encuesta.actualizarEncuesta');
+        Route::put('actualizarEstado/{id_encuesta}', 'actualizarEstado')->name('encuesta.actualizarEstado');
+
+
+        // SECCION DE INFORME
+        Route::get('verInforme/{id_encuesta}', 'verInforme')->name('encuesta.verEncuesta');
     });
+
+    // Ruta para la vista del constructor de tabla
+    Route::get('constructorTabla', function () {
+        return view('administrador.encuesta.constructor_tabla');
+    })->name('preguntas.constructor_tabla');
 
     // PARA EL FORMULARIO
 

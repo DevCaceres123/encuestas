@@ -20,6 +20,7 @@ return new class extends Migration
                 ->on('pregunta_columnas')
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }
