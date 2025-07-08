@@ -8,211 +8,154 @@
                 <div class="card-header">
                     <div class="row align-items-center">
                         <div class="col">
-                            <h4 class="card-title">LISTA DE ENCUESTAS</h4>
+                            <h4 class="d-inline card-title p-2 bg-danger rounded text-light">LISTA DE FORMULARIOS</h4>
                         </div>
+
                         <div class="col-auto">
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAfiliado">
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCrearFormulario">
                                 <i class="fas fa-plus me-1"></i> Nuevo
                             </button>
                         </div>
                         <div class="card-body">
+
                             <div class="table-responsive">
                                 {{-- tabla para crear reunions --}}
-                                <table class="table  mb-0 table-centered" id="table_afiliado">
+                                <table class="table  mb-0 table-centered table-bordered" id="table_formulario">
                                     <thead class="table-light">
                                         <tr>
                                             <th>Nº</th>
-                                            <th>CI</th>
-                                            <th>NOMBRES</th>
-                                            <th>PATARNO</th>
-                                            <th>MATERNO</th>
-                                            <th>T. INTEGRANTES</th>
+                                            <th>TITULO</th>
+                                            <th>DESCRIPCION</th>
+                                            <th>FECHA</th>
                                             <th class="text-end">ACCIONES</th>
+                                            <th class="text-end">ESTADO</th>
                                         </tr>
                                     </thead>
                                 </table>
                             </div>
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
 
+    <!-- MODAL CREAR FORMULARIO -->
+    <div class="modal fade" id="modalCrearFormulario" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content">
+
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title">
+                        Crear Formulario
+                    </h5>
+                    <span class="ms-3 text-light">Campos obligatorios <strong class="text-danger">(*)</strong></span>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <form id="formCrearFormulario">
+                        <div class="mb-3">
+                            <label for="tituloFormulario" class="form-label">
+                                <i class="fas fa-certificate me-1"></i> Título del Formulario <span class="text-danger">
+                                    (*)</span>
+                            </label>
+                            <input type="text" class="form-control text-uppercase" id="tituloFormulario" name="tituloFormulario"
+                                required>
+                            <div id="_tituloFormulario">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="descripcionFormulario" class="form-label">
+                                <i class="fas fa-align-left me-1"></i> Descripción <span class="text-danger"> (*)</span>
+                            </label>
+                            <textarea class="form-control" id="descripcionFormulario" name="descripcionFormulario" rows="3" required></textarea>
+                             <div id="_descripcionFormulario">
+
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="encuestaFormulario" class="form-label">
+                                <i class="fas fa-list me-1"></i> Seleccionar Encuesta <span class="text-danger"> (*)</span>
+                            </label>
+                            <select class="form-select" id="encuesta_id" name="encuesta_id" required>
+                                <option value="" disabled selected>Seleccione una encuesta</option>
+                                @foreach ($encuestas as $encuesta)
+                                    <option value="{{ $encuesta->id }}">{{ $encuesta->titulo }}</option>
+                                @endforeach
+                            </select>
+                            <div id="_encuesta_id">
+
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end mt-3">
+                            <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">
+                                <i class="fas fa-times me-1"></i> Cancelar
+                            </button>
+                            <button type="submit" class="btn btn-success" id="btn_guaradarFormulario">
+                                <i class="fas fa-save me-1"></i> Guardar Formulario
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
     </div>
 
 
 
-    {{-- CREAR DISTRITO --}}
-
-    {{-- <div class="modal fade" id="modalAfiliado" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-center modal-lg" role="document">
+    <!-- MODAL BUSCAR AFILIADO -->
+    <div class="modal fade" id="modalBuscarAfiliado" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md">
             <div class="modal-content">
-                <div class="modal-header">
 
-                    <h4 class="modal-title " id="">
-                        <span class="badge badge-outline-primary rounded">AGREGAR DISTRITO</span>
-                    </h4>
-                    <span class="ms-3 text-light">Campos obligatorios <strong class="text-danger">(*)</strong></span>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title">
+                        <i class="fas fa-search me-2"></i> Buscar Afiliado
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
+
                 <div class="modal-body">
-                    <form id="formnuevo_afiliado">
-                        <div class="row">
-                            <div class="row">
-                                <div class="form-group py-2 col-12 col-md-6 col-lg-6">
-                                    <label for="" class="form-label">CARNET DE INDENTIDAD <strong
-                                            class="text-danger">(*)</strong></label>
-                                    <div class="container-validation" id="group_usuarioReset">
-                                        <input type="text" class="form-control rounded" name="ci" id="ci"
-                                            required>
-                                        <div id="_ci">
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group py-2 col-12 col-md-6 col-lg-3">
-                                    <label for="" class="form-label">COMPLEMENTO</label>
-                                    <div class="container-validation" id="group_usuarioReset">
-                                        <input type="text" class="form-control rounded" name="complemento"
-                                            id="complemento">
-                                        <div id="_complemento">
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group py-2 col-12 col-md-6 col-lg-3">
-                                    <label for="" class="form-label">EXPEDIDO <strong
-                                            class="text-danger">(*)</strong></label>
-
-                                    <div class="container-validation" id="group_usuarioReset">
-                                        <select class="form-select" aria-label="Default select example" id="expedido_id"
-                                            name="expedido_id">
-                                            <option disabled selected>Seleccionar</option>
-                                            @foreach ($expedidos as $item)
-                                                <option value="{{ $item->id }}">{{ $item->departamento }}</option>
-                                            @endforeach
-
-
-                                        </select>
-
-                                        <div id="_expedido_id">
-
-                                        </div>
-                                    </div>
-                                </div>
-
-
-
-                                <div class="form-group py-2 col-12 col-md-6 col-lg-6">
-                                    <label for="" class="form-label">NOMBRES <strong
-                                            class="text-danger">(*)</strong></label>
-                                    <div class="container-validation" id="group_usuarioReset">
-                                        <input type="text" class="form-control rounded" name="nombres" id="nombres"
-                                            required>
-                                        <div id="_nombres">
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group py-2 col-12 col-md-6 col-lg-6">
-                                    <label for="" class="form-label">PATERNO <strong
-                                            class="text-danger">(*)</strong></label>
-                                    <div class="container-validation" id="group_usuarioReset">
-                                        <input type="text" class="form-control rounded" name="paterno" id="paterno"
-                                            required>
-                                        <div id="_paterno">
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group py-2 col-12 col-md-6 col-lg-6">
-                                    <label for="" class="form-label">MATERNO <strong
-                                            class="text-danger">(*)</strong></label>
-                                    <div class="container-validation" id="group_usuarioReset">
-                                        <input type="text" class="form-control rounded" name="materno" id="materno"
-                                            required>
-                                        <div id="_materno">
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group py-2 col-12 col-md-6 col-lg-6">
-                                    <label for="" class="form-label">COMUNIDAD <strong
-                                            class="text-danger">(*)</strong></label>
-                                    <div class="container-validation" id="group_usuarioReset">
-
-                                        <select class="form-select" aria-label="Default select example" id="comunidad_id"
-                                            name="comunidad_id">
-                                            <option disabled selected>Seleccionar</option>
-                                            @foreach ($comunidadades as $item)
-                                                <option value="{{ $item->id }}">{{ $item->titulo }}</option>
-                                            @endforeach
-
-
-                                        </select>
-                                        <div id="_comunidad_id">
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <label for="" class="form-label">DATOS FAMILIA </label>
-                                <div class="col-12 ms-2 row border border-3 rounded m-auto">
-
-                                    <div class="form-group py-2 col-12 col-md-6 col-lg-6">
-                                        <label for="" class="form-label">INTEGRANTES MUJERES <strong
-                                                class="text-danger">(*)</strong></label>
-                                        <div class="container-validation" id="group_usuarioReset">
-                                            <input type="number" class="form-control rounded" name="mujeres"
-                                                id="mujeres" required>
-                                            <div id="_mujeres">
-
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group py-2 col-12 col-md-6 col-lg-6">
-                                        <label for="" class="form-label">INTEGRANTES HOMBRES <strong
-                                                class="text-danger">(*)</strong></label>
-                                        <div class="container-validation" id="group_usuarioReset">
-                                            <input type="number" class="form-control rounded" name="hombres"
-                                                id="hombres" required>
-                                            <div id="_hombres">
-
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                  
-                                </div>
-
-
-                            </div>
-
+                    <!-- FORMULARIO DE BÚSQUEDA -->
+                    <form id="formBuscarAfiliado">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" id="buscarAfiliado" name="buscarAfiliado"
+                                placeholder="Ingrese CI o Nombre del afiliado" required>
+                            <button class="btn btn-primary" type="submit">
+                                <i class="fas fa-search"></i> Buscar
+                            </button>
                         </div>
 
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-danger rounded btn-sm" data-bs-dismiss="modal"> <i
-                                    class="ri-close-line me-1 align-middle"></i> Cerrar</button>
-                            <button type="submit" class="btn btn-success rounded btn-sm" id="btnnuevo_afiliado"><i
-                                    class="ri-save-3-line me-1 align-middle"></i> guardar</button>
+                        <!-- Resultados dinámicos -->
+                        <div id="resultadosBusqueda" class="list-group mt-2 d-none"
+                            style="max-height: 200px; overflow-y: auto;">
+                            <!-- Se llenará con botones de resultados -->
                         </div>
-
-
                     </form>
+
+                    <!-- Detalle del afiliado seleccionado -->
+                    <div id="detalleAfiliado" class="card mt-3 d-none text-capitalize">
+                        <div class="card-body text-center">
+                            <i class="fas fa-user-graduate fa-3x text-primary mb-2"></i>
+                            <h5 id="nombreAfiliado"></h5>
+                            <p class="text-muted mb-1">Documento de Identidad: <span id="ciAfiliado"></span></p>
+                            <button id="btnIniciarFormulario" class="btn btn-success mt-2" disabled>
+                                <i class="fas fa-play me-1"></i> Iniciar Responder Formulario
+                            </button>
+                        </div>
+                    </div>
+
                 </div>
             </div>
-
-
         </div>
-
-    </div> --}}
-
-
+    </div>
 
 
 
@@ -224,6 +167,5 @@
 
 
 @section('scripts')
-
-    {{-- <script src="{{ asset('js/modulos/afiliado/afiliado.js') }}" type="module"></script> --}}
+    <script src="{{ asset('js/modulos/formulario/formulario.js') }}" type="module"></script>
 @endsection

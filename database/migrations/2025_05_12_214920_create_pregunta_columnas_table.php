@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('pregunta', 100);
             $table->enum('tipo', ['numero','texto','opcion','porcentaje','pregunta']);
-            $table->string('sumar', 10)->nullable();
-            $table->integer('total')->nullable();
+            // $table->string('sumar', 10)->nullable();
+            // $table->integer('total')->nullable();
             $table->integer('orden');
             $table->unsignedBigInteger('pregunta_id');
             $table->foreign('pregunta_id')

@@ -11,6 +11,7 @@ class Miembros_familia extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    
     protected $table = "miembros_familia";
     public function afiliado()
     {

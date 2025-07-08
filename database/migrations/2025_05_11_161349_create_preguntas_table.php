@@ -12,7 +12,7 @@ return new class () extends Migration {
     {
         Schema::create('preguntas', function (Blueprint $table) {
             $table->id();
-            $table->string('titulo', 50);
+            $table->string('titulo', 100);
             $table->enum('tipo', ['numerico','texto','opcional','porcentaje','tabla']);
             $table->string('obligatorio', 10);
             $table->string('varias_respuestas', 10)->nullable(); //para poder seleccionar varias respuestas

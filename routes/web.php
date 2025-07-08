@@ -92,7 +92,10 @@ Route::prefix('/admin')->middleware([Autenticados::class])->group(function () {
     Route::controller(Controlador_formulario::class)->group(function () {
 
         Route::resource('formulario', Controlador_formulario::class);
-        Route::get('listarAfiliado', 'listarAfiliado')->name('afiliado.listar');
+        Route::get('listarFormularios', 'listarFormularios')->name('formulario.listarFormularios');
+        Route::get('buscarAfiliado/{id_afiliado}', 'buscarAfiliado')->name('formulario.buscarAfiliado');
+        Route::get('responderFormulario/{id_formulario}/{id_afiliado}', 'responderFormulario')->name('formulario.responderFormulario');
+
     });
 
     // PARA EL AFILIADO
