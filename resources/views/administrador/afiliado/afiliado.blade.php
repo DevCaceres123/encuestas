@@ -11,9 +11,11 @@
                             <h4 class="d-inline card-title p-2 bg-danger rounded text-light">LISTA DE AFILIADOS</h4>
                         </div>
                         <div class="col-auto">
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAfiliado">
-                                <i class="fas fa-plus me-1"></i> Nuevo
-                            </button>
+                            @can('afiliado.crear')
+                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAfiliado">
+                                    <i class="fas fa-plus me-1"></i> Nuevo
+                                </button>
+                            @endcan
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -75,8 +77,8 @@
                                             <i class="fas fa-id-card  me-1"></i>
                                             DOCUMENTO DE INDENTIDAD <strong class="text-danger">(*)</strong></label>
                                         <div class="container-validation" id="group_usuarioReset">
-                                            <input type="text" class="form-control rounded text-uppercase" name="ci" id="ci"
-                                                required>
+                                            <input type="text" class="form-control rounded text-uppercase" name="ci"
+                                                id="ci" required>
                                             <div id="_ci">
 
                                             </div>
@@ -88,8 +90,8 @@
                                             <i class="fas fa-id-card  me-1"></i>
                                             COMPLEMENTO</label>
                                         <div class="container-validation" id="group_usuarioReset">
-                                            <input type="text " class="form-control rounded text-uppercase" name="complemento"
-                                                id="complemento">
+                                            <input type="text " class="form-control rounded text-uppercase"
+                                                name="complemento" id="complemento">
                                             <div id="_complemento">
 
                                             </div>
@@ -125,8 +127,8 @@
                                             <i class="fas fa-user-alt   me-1"></i>
                                             NOMBRES <strong class="text-danger">(*)</strong></label>
                                         <div class="container-validation" id="group_usuarioReset">
-                                            <input type="text " class="form-control rounded text-uppercase" name="nombres" id="nombres"
-                                                required>
+                                            <input type="text " class="form-control rounded text-uppercase" name="nombres"
+                                                id="nombres" required>
                                             <div id="_nombres">
 
                                             </div>
@@ -138,8 +140,8 @@
                                             <i class="fas fa-user-alt   me-1"></i>
                                             PATERNO <strong class="text-danger">(*)</strong></label>
                                         <div class="container-validation" id="group_usuarioReset">
-                                            <input type="text " class="form-control rounded text-uppercase" name="paterno"
-                                                id="paterno" required>
+                                            <input type="text " class="form-control rounded text-uppercase"
+                                                name="paterno" id="paterno" required>
                                             <div id="_paterno">
 
                                             </div>
@@ -150,8 +152,8 @@
                                             <i class="fas fa-user-alt   me-1"></i>
                                             MATERNO <strong class="text-danger">(*)</strong></label>
                                         <div class="container-validation" id="group_usuarioReset">
-                                            <input type="text " class="form-control rounded text-uppercase" name="materno"
-                                                id="materno" required>
+                                            <input type="text " class="form-control rounded text-uppercase"
+                                                name="materno" id="materno" required>
                                             <div id="_materno">
 
                                             </div>
@@ -176,7 +178,8 @@
                                                 id="comunidad_id" name="comunidad_id">
                                                 <option disabled selected>Seleccionar</option>
                                                 @foreach ($comunidadades as $item)
-                                                    <option class="text-uppercase" value="{{ $item->id }}">{{ $item->titulo }}</option>
+                                                    <option class="text-uppercase" value="{{ $item->id }}">
+                                                        {{ $item->titulo }}</option>
                                                 @endforeach
 
 
@@ -203,8 +206,8 @@
                                             <i class="fas fa-female  me-1"></i>
                                             INTEGRANTES MUJERES <strong class="text-danger">(*)</strong></label>
                                         <div class="container-validation" id="group_usuarioReset">
-                                            <input type="number " class="form-control rounded text-uppercase" name="mujeres"
-                                                id="mujeres" required>
+                                            <input type="number " class="form-control rounded text-uppercase"
+                                                name="mujeres" id="mujeres" required>
                                             <div id="_mujeres">
 
                                             </div>
@@ -214,11 +217,10 @@
                                     <div class="form-group py-2 col-12 col-md-6 col-lg-6 mt-2">
                                         <label for="" class="form-label">
                                             <i class="fas fa-male   me-1"></i>
-                                            INTEGRANTES HOMBRES <strong
-                                                class="text-danger ">(*)</strong></label>
+                                            INTEGRANTES HOMBRES <strong class="text-danger ">(*)</strong></label>
                                         <div class="container-validation" id="group_usuarioReset">
-                                            <input type="number" class="form-control rounded text-uppercase" name="hombres"
-                                                id="hombres" required>
+                                            <input type="number" class="form-control rounded text-uppercase"
+                                                name="hombres" id="hombres" required>
                                             <div id="_hombres">
 
                                             </div>
@@ -283,10 +285,10 @@
                                             <i class="fas fa-id-card  me-1"></i>
                                             DOCUMENTO DE INDENTIDAD <strong class="text-danger">(*)</strong></label>
                                         <div class="container-validation" id="group_usuarioReset">
-                                            <input type="hidden" class="form-control rounded text-uppercase" name="id_afiliado" id="id_afiliado"
-                                                required>
-                                            <input type="text" class="form-control rounded text-uppercase" name="ci-edit" id="ci-edit"
-                                                required>
+                                            <input type="hidden" class="form-control rounded text-uppercase"
+                                                name="id_afiliado" id="id_afiliado" required>
+                                            <input type="text" class="form-control rounded text-uppercase"
+                                                name="ci-edit" id="ci-edit" required>
                                             <div id="_ci-edit">
 
                                             </div>
@@ -298,8 +300,8 @@
                                             <i class="fas fa-id-card  me-1"></i>
                                             COMPLEMENTO</label>
                                         <div class="container-validation" id="group_usuarioReset">
-                                            <input type="text " class="form-control rounded text-uppercase" name="complemento-edit"
-                                                id="complemento-edit">
+                                            <input type="text " class="form-control rounded text-uppercase"
+                                                name="complemento-edit" id="complemento-edit">
                                             <div id="_complemento-edit">
 
                                             </div>
@@ -312,8 +314,8 @@
                                             EXPEDIDO <strong class="text-danger">(*)</strong></label>
 
                                         <div class="container-validation" id="group_usuarioReset">
-                                            <select class="form-select" aria-label="Default select example" id="expedido_id-edit"
-                                                name="expedido_id-edit">
+                                            <select class="form-select" aria-label="Default select example"
+                                                id="expedido_id-edit" name="expedido_id-edit">
                                                 <option disabled selected>Seleccionar</option>
                                                 @foreach ($expedidos as $item)
                                                     <option value="{{ $item->id }}">{{ $item->departamento }}</option>
@@ -335,8 +337,8 @@
                                             <i class="fas fa-user-alt   me-1"></i>
                                             NOMBRES <strong class="text-danger">(*)</strong></label>
                                         <div class="container-validation" id="group_usuarioReset">
-                                            <input type="text " class="form-control rounded text-uppercase" name="nombres-edit" id="nombres-edit"
-                                                required>
+                                            <input type="text " class="form-control rounded text-uppercase"
+                                                name="nombres-edit" id="nombres-edit" required>
                                             <div id="_nombres-edit">
 
                                             </div>
@@ -348,8 +350,8 @@
                                             <i class="fas fa-user-alt   me-1"></i>
                                             PATERNO <strong class="text-danger">(*)</strong></label>
                                         <div class="container-validation" id="group_usuarioReset">
-                                            <input type="text " class="form-control rounded text-uppercase" name="paterno-edit"
-                                                id="paterno-edit" required>
+                                            <input type="text " class="form-control rounded text-uppercase"
+                                                name="paterno-edit" id="paterno-edit" required>
                                             <div id="_paterno-edit">
 
                                             </div>
@@ -360,8 +362,8 @@
                                             <i class="fas fa-user-alt   me-1"></i>
                                             MATERNO <strong class="text-danger">(*)</strong></label>
                                         <div class="container-validation" id="group_usuarioReset">
-                                            <input type="text " class="form-control rounded text-uppercase" name="materno-edit"
-                                                id="materno-edit" required>
+                                            <input type="text " class="form-control rounded text-uppercase"
+                                                name="materno-edit" id="materno-edit" required>
                                             <div id="_materno-edit">
 
                                             </div>
@@ -386,7 +388,8 @@
                                                 id="comunidad_id-edit" name="comunidad_id-edit">
                                                 <option disabled selected>Seleccionar</option>
                                                 @foreach ($comunidadades as $item)
-                                                    <option class="text-uppercase" value="{{ $item->id }}">{{ $item->titulo }}</option>
+                                                    <option class="text-uppercase" value="{{ $item->id }}">
+                                                        {{ $item->titulo }}</option>
                                                 @endforeach
 
 
@@ -413,8 +416,8 @@
                                             <i class="fas fa-female  me-1"></i>
                                             INTEGRANTES MUJERES <strong class="text-danger">(*)</strong></label>
                                         <div class="container-validation" id="group_usuarioReset">
-                                            <input type="number " class="form-control rounded text-uppercase" name="mujeres-edit"
-                                                id="mujeres-edit" required>
+                                            <input type="number " class="form-control rounded text-uppercase"
+                                                name="mujeres-edit" id="mujeres-edit" required>
                                             <div id="_mujeres-edit">
 
                                             </div>
@@ -424,11 +427,10 @@
                                     <div class="form-group py-2 col-12 col-md-6 col-lg-6 mt-2">
                                         <label for="" class="form-label">
                                             <i class="fas fa-male   me-1"></i>
-                                            INTEGRANTES HOMBRES <strong
-                                                class="text-danger ">(*)</strong></label>
+                                            INTEGRANTES HOMBRES <strong class="text-danger ">(*)</strong></label>
                                         <div class="container-validation" id="group_usuarioReset">
-                                            <input type="number" class="form-control rounded text-uppercase" name="hombres-edit"
-                                                id="hombres-edit" required>
+                                            <input type="number" class="form-control rounded text-uppercase"
+                                                name="hombres-edit" id="hombres-edit" required>
                                             <div id="_hombres-edit">
 
                                             </div>

@@ -81,13 +81,13 @@ function listar_afiliado() {
                             : ``
                         }
 
-                        ${permisosGlobal.eliminar ?
+                        ${permisosGlobal.ver_preguntas ?
                             ` <a href="verEncuesta/${row.id}" class="btn btn-sm btn-outline-info px-2 d-inline-flex align-items-center me-1" data-id="${row.id}" title="Ver Preguntas">
                             <i class="fas fa-eye   fs-16"></i>
                         </a>`
                             : ``
                         }  
-                        ${permisosGlobal.eliminar ?
+                        ${permisosGlobal.ver_informe ?
                             ` <a href="verInforme/${row.id}" class="btn btn-sm btn-outline-warning px-2 d-inline-flex align-items-center" data-id="${row.id}" title="Ver Informe">
                             <i class="fas fa-file-alt  fs-16"></i>
                         </a>`

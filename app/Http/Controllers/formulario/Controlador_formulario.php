@@ -27,7 +27,7 @@ class Controlador_formulario extends Controller
      */
     public function index()
     {
-        if (!auth()->user()->can('formulario.formularios.inicio')) {
+        if (!auth()->user()->can('formulario.inicio')) {
             return redirect()->route('inicio');
         }
 
@@ -58,9 +58,11 @@ class Controlador_formulario extends Controller
             'recordsFiltered' => $recordsTotal, // Ajustar si hay filtros
             'data' => $formularios,
             'permisos' => [
-                'editar' => auth()->user()->can('afiliado.editar'),
-                'eliminar' => auth()->user()->can('afiliado.eliminar'),
-                'estado' => auth()->user()->can('afiliado.estado'),
+                'editar' => auth()->user()->can('formulario.editar'),
+                'eliminar' => auth()->user()->can('formulario.eliminar'),
+                'estado' => auth()->user()->can('formulario.estado'),
+                'responer_formulario' => auth()->user()->can('formulario.responer_formulario'),
+                'ver_respuestas' => auth()->user()->can('formulario.ver_respuestas'),
             ],
         ]);
     }

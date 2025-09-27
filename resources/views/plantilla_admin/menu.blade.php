@@ -3,10 +3,11 @@
     <div class="brand">
         <a href="index.html" class="logo">
             <span>
-                 <img src="{{ asset('assets/logo-small.webp') }}" alt="logo-expanded" class="logo" height="40" width="78">
+                <img src="{{ asset('assets/logo-small.webp') }}" alt="logo-expanded" class="logo" height="40"
+                    width="78">
             </span>
             <span class="">
-                
+
             </span>
         </a>
     </div>
@@ -21,7 +22,7 @@
                     <li class="menu-label pt-0 mt-0">
                         <span>MENU</span>
                     </li>
-                    @can('inicio.index')
+                    @can('inicio')
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('inicio') }}" role="button" aria-expanded="false"
                                 aria-controls="sidebarDashboards">
@@ -32,7 +33,7 @@
                     @endcan
 
 
-                    @can('admin.index')
+                    @can('admin')
                         <li class="nav-item">
                             <a class="nav-link" href="#usuarios" data-bs-toggle="collapse" role="button"
                                 aria-expanded="false" aria-controls="usuarios">
@@ -68,9 +69,9 @@
                         <span>ACTIVIDADES</span>
                     </li>
 
-                    @can('afiliado.index')
+                    @can('afiliado')
                         <li class="nav-item">
-                            <a class="nav-link" href="{{route('afiliado.index')}}" role="button" aria-expanded="false"
+                            <a class="nav-link" href="{{ route('afiliado.index') }}" role="button" aria-expanded="false"
                                 aria-controls="sidebarDashboards">
                                 <i class="fas fa-users menu-icon"></i>
                                 <span>AFILIADOS</span>
@@ -78,7 +79,7 @@
                         </li>
                     @endcan
 
-                    @can('encuestas.index')
+                    @can('encuestas')
                         <li class="nav-item">
                             <a class="nav-link" href="#encuestas" data-bs-toggle="collapse" role="button"
                                 aria-expanded="false" aria-controls="encuestas">
@@ -87,17 +88,17 @@
                             </a>
                             <div class="collapse " id="encuestas">
                                 <ul class="nav flex-column">
-
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="{{route('encuestas.index')}}">Encuentas</a>
-                                    </li><!--end nav-item-->
-
+                                    @can('encuestas.inicio')
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ route('encuestas.index') }}">Encuentas</a>
+                                        </li><!--end nav-item-->
+                                    @endcan
                                 </ul>
                             </div>
                         </li>
                     @endcan
 
-                    @can('formulario.index')
+                    @can('formulario')
                         <li class="nav-item">
                             <a class="nav-link" href="#formulario" data-bs-toggle="collapse" role="button"
                                 aria-expanded="false" aria-controls="formulario">
@@ -106,24 +107,24 @@
                             </a>
                             <div class="collapse " id="formulario">
                                 <ul class="nav flex-column">
-
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="{{route('formulario.index')}}">Formularios</a>
-                                    </li><!--end nav-item-->
-
+                                    @can('formulario.inicio')
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ route('formulario.index') }}">Formularios</a>
+                                        </li><!--end nav-item-->
+                                    @endcan
                                 </ul>
                             </div>
                         </li>
                     @endcan
 
 
-                    @can('distrito_comunidad.index')
+                    @can('distrito_comunidad')
                         <li class="menu-label pt-0 mt-0">
                             <span>LOCALIDAD</span>
                         </li>
                     @endcan
 
-                    @can('distrito_comunidad.index')
+                    @can('distrito_comunidad')
                         <li class="nav-item">
                             <a class="nav-link" href="#localidad" data-bs-toggle="collapse" role="button"
                                 aria-expanded="false" aria-controls="formulario">
@@ -132,15 +133,15 @@
                             </a>
                             <div class="collapse " id="localidad">
                                 <ul class="nav flex-column">
-
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="{{route('distrito.index')}}">Distrito y Comunidad</a>
-                                    </li><!--end nav-item-->
-
+                                    @can('distrito_comunidad.inicio')
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ route('distrito.index') }}">Distrito y Comunidad</a>
+                                        </li><!--end nav-item-->
+                                    @endcan
                                 </ul>
                             </div>
                         </li>
-                    @endcan                                                           
+                    @endcan
                 </ul>
             </div>
         </div><!--end startbar-collapse-->

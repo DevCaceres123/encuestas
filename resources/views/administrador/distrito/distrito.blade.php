@@ -11,9 +11,11 @@
                             <h4 class="card-title">LISTA DE DISTRITOS</h4>
                         </div>
                         <div class="col-auto">
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalNuevoDistrito">
-                                <i class="fas fa-plus me-1"></i> Nuevo
-                            </button>
+                            @can('distrito_comunidad.distrito.crear')
+                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalNuevoDistrito">
+                                    <i class="fas fa-plus me-1"></i> Nuevo
+                                </button>
+                            @endcan
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -43,9 +45,11 @@
                             <h4 class="card-title">LISTA DE COMUNIDADES</h4>
                         </div>
                         <div class="col-auto">
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalNuevaComunidad">
-                                <i class="fas fa-plus me-1"></i> Nuevo
-                            </button>
+                            @can('distrito_comunidad.comunidad.crear')
+                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalNuevaComunidad">
+                                    <i class="fas fa-plus me-1"></i> Nuevo
+                                </button>
+                            @endcan
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -176,7 +180,7 @@
                                         name="distrito_nombre">
                                         <option disabled selected>Seleccionar</option>
                                         @foreach ($distritos as $item)
-                                            <option value="{{$item->id}}">{{ $item->titulo }}</option>
+                                            <option value="{{ $item->id }}">{{ $item->titulo }}</option>
                                         @endforeach
 
 
@@ -208,65 +212,65 @@
 
 
 
-     {{-- EDITAR DISTRITO --}}
+    {{-- EDITAR DISTRITO --}}
 
-     <div class="modal fade" id="modalEditarDistrito" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-     role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-     <div class="modal-dialog modal-center modal-sm" role="document">
-         <div class="modal-content">
-             <div class="modal-header">
+    <div class="modal fade" id="modalEditarDistrito" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-center modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
 
-                 <h4 class="modal-title " id="exampleModalLabel"><span
-                         class="badge badge-outline-primary rounded">EDITAR DISTRITO</span></h4>
-                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-             </div>
-             <div class="modal-body">
-                 <form id="formEditar_distrito">
-                     <div class="row">
-                         <div class="row">
-                             <div class="form-group py-2 col-12 col-md-12">
+                    <h4 class="modal-title " id="exampleModalLabel"><span
+                            class="badge badge-outline-primary rounded">EDITAR DISTRITO</span></h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formEditar_distrito">
+                        <div class="row">
+                            <div class="row">
+                                <div class="form-group py-2 col-12 col-md-12">
 
-                                 <label for="" class="form-label">TITULO</label>
-                                 <div class="container-validation" id="group_usuarioReset">
-                                    <input type="hidden" name="distrito_id" id="distrito_id">
-                                     <input type="text" class="form-control rounded" name="titulo_distrito"
-                                         id="titulo_distrito-edit" required>
+                                    <label for="" class="form-label">TITULO</label>
+                                    <div class="container-validation" id="group_usuarioReset">
+                                        <input type="hidden" name="distrito_id" id="distrito_id">
+                                        <input type="text" class="form-control rounded" name="titulo_distrito"
+                                            id="titulo_distrito-edit" required>
 
-                                     <div id="_titulo_distrito-edit">
+                                        <div id="_titulo_distrito-edit">
 
-                                     </div>
-                                 </div>
-                             </div>
+                                        </div>
+                                    </div>
+                                </div>
 
-                             <div class="form-group py-2 col-md-12">
-                                 <label for="" class="form-label">DESCRIPCION</label>
-                                 <textarea class="form-control" placeholder="Ingrese Descripcion" name="descripcion_distrito-edit" id="descripcion_distrito-edit"
-                                     style="height: 100px" required></textarea>
-                                 <div id="_descripcion_distrito-edit">
+                                <div class="form-group py-2 col-md-12">
+                                    <label for="" class="form-label">DESCRIPCION</label>
+                                    <textarea class="form-control" placeholder="Ingrese Descripcion" name="descripcion_distrito-edit"
+                                        id="descripcion_distrito-edit" style="height: 100px" required></textarea>
+                                    <div id="_descripcion_distrito-edit">
 
-                                 </div>
-                             </div>
+                                    </div>
+                                </div>
 
-                         </div>
+                            </div>
 
-                     </div>
+                        </div>
 
-                     <div class="modal-footer">
-                         <button type="button" class="btn btn-danger rounded btn-sm" data-bs-dismiss="modal"> <i
-                                 class="ri-close-line me-1 align-middle"></i> Cerrar</button>
-                         <button type="submit" class="btn btn-success rounded btn-sm" id="btnDistrito_editar"><i
-                                 class="ri-save-3-line me-1 align-middle"></i> guardar</button>
-                     </div>
-
-
-                 </form>
-             </div>
-         </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger rounded btn-sm" data-bs-dismiss="modal"> <i
+                                    class="ri-close-line me-1 align-middle"></i> Cerrar</button>
+                            <button type="submit" class="btn btn-success rounded btn-sm" id="btnDistrito_editar"><i
+                                    class="ri-save-3-line me-1 align-middle"></i> guardar</button>
+                        </div>
 
 
-     </div>
+                    </form>
+                </div>
+            </div>
 
- </div>
+
+        </div>
+
+    </div>
 
 
 @endsection

@@ -102,21 +102,20 @@
 
 
                                                 <td class="text-end">
-                                                    @can('admin.usuario.reset')
+                                                    @can('admin.usuario.resetear')
                                                         <a class="btn btn-sm btn-outline-info px-2 d-inline-flex align-items-center resetear_usuario"
-                                                            data-id="{{ $usuario->id }}">
+                                                            title="resetar contraseña" data-id="{{ $usuario->id }}">
                                                             <i class="fas fa-redo fs-16"></i>
 
                                                         </a>
                                                     @endcan
 
-
-                                                    <a class="btn btn-sm btn-outline-primary px-2 d-inline-flex align-items-center cambiar_rol"
-                                                        data-id="{{ $usuario->id }}">
-                                                        <i class="far fa-edit fs-16"></i>
-
-                                                    </a>
-
+                                                    @can('admin.usuario.cambiar_rol')
+                                                        <a class="btn btn-sm btn-outline-primary px-2 d-inline-flex align-items-center cambiar_rol"
+                                                            data-id="{{ $usuario->id }}" title="cambiar_rol">
+                                                            <i class="far fa-edit fs-16"></i>
+                                                        </a>
+                                                    @endcan
 
                                                 </td>
                                             </tr>

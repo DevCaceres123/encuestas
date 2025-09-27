@@ -10,9 +10,11 @@
                             <h4 class="card-title">Permisos</h4>
                         </div>
                         <div class="col-auto">
+                            @can('admin.permiso.crear')
                             <button class="btn btn-primary" onclick="abrirModalPermiso()">
                                 <i class="fas fa-plus me-1"></i> Nuevo
                             </button>
+                            @endcan
                         </div>
                     </div>
                 </div>
@@ -135,7 +137,8 @@
             let datos = Object.fromEntries(new FormData(form_permiso).entries());
 
             // Definimos la URL y el método de la solicitud dependiendo de si estamos creando o editando un permiso
-            let url = datos.permiso_id ? `{{ route('permisos.update', ':id') }}`.replace(':id', datos.permiso_id) : "{{ route('permisos.store') }}";
+            let url = datos.permiso_id ? `{{ route('permisos.update', ':id') }}`.replace(':id', datos
+                .permiso_id) : "{{ route('permisos.store') }}";
             let method = datos.permiso_id ? "PUT" : "POST";
 
             // Deshabilitamos el botón de guardar mientras se realiza la solicitud y mostramos un mensaje de "Guardando..."
@@ -189,14 +192,14 @@
                     },
                 });
                 let data = await response.json();
-                permiso_tabla(data);
+                permiso_tabla(data.listar_permisos, data.permisos);
             } catch (error) {
                 console.error("Error al obtener los datos:", error);
             }
         }
 
         // Función para renderizar la tabla de permisos utilizando DataTables
-        function permiso_tabla(data) {
+        function permiso_tabla(data, permisosGlobal) {
             $('#tabla_permiso').DataTable({
                 responsive: true,
                 data: data,
@@ -212,15 +215,35 @@
                     {
                         data: null,
                         className: 'table-td',
-                        render: (data, type, row) => `
-                            <button type="button" class="btn rounded-pill btn-sm btn-warning p-0.5" onclick="abrirModalPermiso('${row.id}')">
-                                <i class="las la-pen fs-18"></i>
-                            </button>
+                        render: (data, type, row) => {
+                            let botones = "";
 
-                            <button type="button" class="btn rounded-pill btn-sm btn-danger p-0.5" onclick="eliminarPermiso('${row.id}')">
-                                <i class="las la-trash-alt fs-18"></i>
-                            </button>
-                        `
+                            // Botón EDITAR
+                            if (permisosGlobal.editar) {
+                                botones += `
+            <button type="button" class="btn rounded-pill btn-sm btn-warning p-0.5 me-1" 
+                    onclick="abrirModalPermiso('${row.id}')">
+                <i class="las la-pen fs-18"></i>
+            </button>
+        `;
+                            }
+
+                            // Botón ELIMINAR
+                            if (permisosGlobal.eliminar) {
+                                botones += `
+            <button type="button" class="btn rounded-pill btn-sm btn-danger p-0.5" 
+                    onclick="eliminarPermiso('${row.id}')">
+                <i class="las la-trash-alt fs-18"></i>
+            </button>
+        `;
+                            }
+
+                            return botones;
+                        }
+
+
+
+
                     },
                 ],
                 destroy: true

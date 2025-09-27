@@ -77,7 +77,7 @@ function listar_formularo() {
           return ` <div class="d-flex justify-content-center">
 
                          ${
-                           permisosGlobal.editar
+                           permisosGlobal.eliminar
                              ? `
                         <a class="btn btn-sm btn-outline-danger px-2 d-inline-flex align-items-center eliminar_afiliado me-1" data-id="${row.id}" title="Eliminar Formulario">
                             <i class="fas fa-window-close fs-16"></i>
@@ -87,7 +87,7 @@ function listar_formularo() {
                          }
                       
                              ${
-                               permisosGlobal.eliminar
+                               permisosGlobal.editar
                                  ? ` <a class="btn btn-sm btn-outline-warning px-2 d-inline-flex align-items-center me-1 editar_afiliado" data-id="${row.id}" title="Editar Formulario">
                             <i class="fas fa-pencil-alt fs-16"></i>
                         </a>`
@@ -95,14 +95,14 @@ function listar_formularo() {
                              }
 
                          ${
-                           permisosGlobal.eliminar
+                           permisosGlobal.responer_formulario
                              ? ` <a class="btn btn-sm btn-outline-info px-2 d-inline-flex align-items-center me-1 responderFormulario" data-id="${row.id}" title="Responer Formulario">
                             <i class="fas fa-clipboard-check fs-16"></i>
                         </a>`
                              : ``
                          }
                         ${
-                          permisosGlobal.eliminar
+                          permisosGlobal.ver_respuestas
                             ? ` <a class="btn btn-sm btn-outline-primary px-2 d-inline-flex align-items-center editar_afiliado" data-id="${row.id}" title="Ver respuestas Afiliados">
                             <i class="fas fa-users fs-16"></i>
                         </a>`
@@ -114,6 +114,32 @@ function listar_formularo() {
                         </div>`;
         },
       },
+
+      {
+                data: null,
+                className: 'table-td',
+                render: function (data, type, row) {
+
+                    let estadoChecked = row.estado === "activo" ? 'checked' : '';
+
+                    // Aquí verificamos el permiso de desactivar
+                    let desactivarContent = permisosGlobal['estado'] ? `
+                            <a class="cambiar_estado_encuesta" data-id="${row.id},${row.estado}">
+                                <div class="form-check form-switch ms-3">
+                                    <input class="form-check-input" type="checkbox" 
+                                           ${estadoChecked} style="transform: scale(2.0);">
+                                </div>
+                            </a>` : `
+                           <p>No permitido...<p/>
+                        `;
+
+                    return `
+                            <div data-class="">
+                                ${desactivarContent}
+                            </div>`;
+
+                }
+            },
     ],
   });
 }

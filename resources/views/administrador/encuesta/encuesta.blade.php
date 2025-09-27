@@ -12,9 +12,11 @@
                             <h4 class="d-inline card-title p-2 bg-danger rounded text-light">LISTA DE ENCUESTAS</h4>
                         </div>
                         <div class="col-auto">
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalEncuesta">
-                                <i class="fas fa-plus me-1"></i> Nueva Encuesta
-                            </button>
+                            @can('encuestas.crear')
+                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalEncuesta">
+                                    <i class="fas fa-plus me-1"></i> Nueva Encuesta
+                                </button>
+                            @endcan
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -167,8 +169,8 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger rounded btn-sm" data-bs-dismiss="modal">
                                     <i class="ri-close-line me-1 align-middle"></i> Cerrar</button>
-                                <button type="submit" class="btn btn-success rounded btn-sm" id="btnnuevo_encuestaEdit"><i
-                                        class="ri-save-3-line me-1 align-middle"></i>
+                                <button type="submit" class="btn btn-success rounded btn-sm"
+                                    id="btnnuevo_encuestaEdit"><i class="ri-save-3-line me-1 align-middle"></i>
                                     guardar</button>
                             </div>
 

@@ -23,7 +23,7 @@ class Controlador_afiliado extends Controller
      */
     public function index()
     {
-        if (!auth()->user()->can('afiliado.index')) {
+        if (!auth()->user()->can('afiliado')) {
             return redirect()->route('inicio');
         }
 

@@ -27,7 +27,9 @@ class Controlador_usuario extends Controller
     public function index()
     {
 
-
+        if (!auth()->user()->can('admin.usuario.inicio')) {
+            return redirect()->route('inicio');
+        }
         $usuarios = User::with('roles')->get();
         $roles = Role::select('id', 'name')->get();
 

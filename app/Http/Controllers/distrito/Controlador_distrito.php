@@ -22,6 +22,11 @@ class Controlador_distrito extends Controller
     public $mensaje = [];
     public function index()
     {
+        if (!auth()->user()->can('distrito_comunidad.inicio')) {
+            return redirect()->route('inicio');
+        }
+
+
         $distritos = Distrito::select('titulo', 'id')->get();
         return view('administrador.distrito.distrito', compact('distritos'));
     }

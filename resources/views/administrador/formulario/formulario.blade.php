@@ -12,9 +12,11 @@
                         </div>
 
                         <div class="col-auto">
+                            @can('formulario.crear')
                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCrearFormulario">
                                 <i class="fas fa-plus me-1"></i> Nuevo
                             </button>
+                            @endcan
                         </div>
                         <div class="card-body">
 
@@ -27,6 +29,7 @@
                                             <th>TITULO</th>
                                             <th>DESCRIPCION</th>
                                             <th>FECHA</th>
+                                            <TH>ESTADO</TH>
                                             <th class="text-end">ACCIONES</th>
                                             <th class="text-end">ESTADO</th>
                                         </tr>

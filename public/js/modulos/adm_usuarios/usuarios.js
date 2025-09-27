@@ -163,7 +163,8 @@ $('#formularioUsuario').submit(function (e) {
 
 
 
-        listar_usuarios();
+        // listar_usuarios();
+        
         mensajeAlerta(response.mensaje, response.tipo);
         vaciar_formulario("formularioUsuario");
         $('#ModalUsuario').modal('hide');

@@ -31,7 +31,7 @@ class Controlador_encuesta extends Controller
 
     public function index()
     {
-        if (!auth()->user()->can('encuestas.encuestas.inicio')) {
+        if (!auth()->user()->can('encuestas.inicio')) {
             return redirect()->route('inicio');
         }
 
@@ -172,9 +172,11 @@ class Controlador_encuesta extends Controller
             'recordsFiltered' => $recordsTotal, // Ajustar si hay filtros
             'data' => $encuestas,
             'permisos' => [
-                'editar' => auth()->user()->can('afiliado.editar'),
-                'eliminar' => auth()->user()->can('afiliado.eliminar'),
-                'estado' => auth()->user()->can('afiliado.estado'),
+                'editar' => auth()->user()->can('encuestas.editar'),
+                'eliminar' => auth()->user()->can('encuestas.eliminar'),
+                'estado' => auth()->user()->can('encuestas.estado'),
+                'ver_preguntas' => auth()->user()->can('encuestas.ver_preguntas'),
+                'ver_informe' => auth()->user()->can('encuestas.ver_informe'),
             ],
         ]);
     }

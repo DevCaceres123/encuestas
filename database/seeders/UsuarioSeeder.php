@@ -41,17 +41,31 @@ class UsuarioSeeder extends Seeder
 
         $usuario->syncRoles(['administrador']);
 
+        $usuario2 = new User();
+        $usuario2->usuario = '1234';
+        $usuario2->password = Hash::make('1234');
+        $usuario2->ci = '123456789';
+        $usuario2->nombres = 'michael';
+        $usuario2->paterno = 'caceres';
+        $usuario2->materno = 'quina';
+        $usuario2->estado = 'activo';
+        $usuario2->email = 'michael@gmail.com';
+        $usuario2->save();
 
-        Permission::create(['name' => 'inicio.index'])->syncRoles([$rol1 ,$rol2]);
+        $usuario2->syncRoles(['general']);
 
-        Permission::create(['name' => 'admin.index'])->syncRoles([$rol1, $rol2]);
+
+        Permission::create(['name' => 'inicio'])->syncRoles([$rol1 ,$rol2]);
+
+        Permission::create(['name' => 'admin'])->syncRoles([$rol1, $rol2]);
 
         // USAURIO
         Permission::create(['name' => 'admin.usuario.inicio'])->syncRoles([$rol1]);
         Permission::create(['name' => 'admin.usuario.crear'])->assignRole($rol1);
         Permission::create(['name' => 'admin.usuario.desactivar'])->assignRole($rol1);
-        Permission::create(['name' => 'admin.usuario.reset'])->assignRole($rol1);
-        Permission::create(['name' => 'admin.usuario.edit'])->assignRole($rol1);
+        Permission::create(['name' => 'admin.usuario.resetear'])->assignRole($rol1);
+        Permission::create(['name' => 'admin.usuario.editar'])->assignRole($rol1);
+        Permission::create(['name' => 'admin.usuario.cambiar_rol'])->assignRole($rol1);
 
 
         //ROL
@@ -68,23 +82,35 @@ class UsuarioSeeder extends Seeder
         Permission::create(['name' => 'admin.permiso.eliminar'])->syncRoles([$rol1]);
 
         // AFILIADOS
-        Permission::create(['name' => 'afiliado.index'])->syncRoles([$rol1]);
+        Permission::create(['name' => 'afiliado'])->syncRoles([$rol1]);
         Permission::create(['name' => 'afiliado.crear'])->syncRoles([$rol1]);
         Permission::create(['name' => 'afiliado.editar'])->syncRoles([$rol1]);
         Permission::create(['name' => 'afiliado.eliminar'])->syncRoles([$rol1]);
         Permission::create(['name' => 'afiliado.estado'])->syncRoles([$rol1]);
 
         // ENCUESTAS
-        Permission::create(['name' => 'encuestas.index'])->syncRoles([$rol1]);
-        Permission::create(['name' => 'encuestas.encuestas.inicio'])->syncRoles([$rol1]);
+        Permission::create(['name' => 'encuestas'])->syncRoles([$rol1]);
+        Permission::create(['name' => 'encuestas.inicio'])->syncRoles([$rol1]);
+        Permission::create(['name' => 'encuestas.crear'])->syncRoles([$rol1]);
+        Permission::create(['name' => 'encuestas.editar'])->syncRoles([$rol1]);
+        Permission::create(['name' => 'encuestas.eliminar'])->syncRoles([$rol1]);
+        Permission::create(['name' => 'encuestas.estado'])->syncRoles([$rol1]);
+        Permission::create(['name' => 'encuestas.ver_preguntas'])->syncRoles([$rol1]);
+        Permission::create(['name' => 'encuestas.ver_informe'])->syncRoles([$rol1]);
  
          // FORMULARIO
-         Permission::create(['name' => 'formulario.index'])->syncRoles([$rol1]);
-         Permission::create(['name' => 'formulario.formularios.inicio'])->syncRoles([$rol1]);
+         Permission::create(['name' => 'formulario'])->syncRoles([$rol1]);
+         Permission::create(['name' => 'formulario.inicio'])->syncRoles([$rol1]);
+         Permission::create(['name' => 'formulario.crear'])->syncRoles([$rol1]);
+         Permission::create(['name' => 'formulario.eliminar'])->syncRoles([$rol1]);
+         Permission::create(['name' => 'formulario.editar'])->syncRoles([$rol1]);
+         Permission::create(['name' => 'formulario.estado'])->syncRoles([$rol1]);
+         Permission::create(['name' => 'formulario.responer_formulario'])->syncRoles([$rol1]);
+         Permission::create(['name' => 'formulario.ver_respuestas'])->syncRoles([$rol1]);
 
         //  DISTRITO Y COMUNIDAD
-         Permission::create(['name' => 'distrito_comunidad.index'])->syncRoles([$rol1]);
-         Permission::create(['name' => 'distrito_comunidad.distrito_comunidad.inicio'])->syncRoles([$rol1]);
+         Permission::create(['name' => 'distrito_comunidad'])->syncRoles([$rol1]);
+         Permission::create(['name' => 'distrito_comunidad.inicio'])->syncRoles([$rol1]);
          Permission::create(['name' => 'distrito_comunidad.distrito.crear'])->syncRoles([$rol1]);
          Permission::create(['name' => 'distrito_comunidad.distrito.editar'])->syncRoles([$rol1]);
          Permission::create(['name' => 'distrito_comunidad.distrito.eliminar'])->syncRoles([$rol1]);

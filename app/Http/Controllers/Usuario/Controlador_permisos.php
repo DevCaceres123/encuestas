@@ -11,14 +11,15 @@ use Spatie\Permission\Models\Permission;
 
 class Controlador_permisos extends Controller
 {
-
-
-
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+        if (!auth()->user()->can('admin.permiso.inicio')) {
+            return redirect()->route('inicio');
+        }
+
         return view('administrador.usuarios.permisos');
     }
 
@@ -28,8 +29,16 @@ class Controlador_permisos extends Controller
      */
     public function listar()
     {
-        $listar_permiso = Permission::OrderBy('id', 'asc')->get();
-        return response()->json($listar_permiso);
+        
+        $data = [
+            'listar_permisos' => Permission::OrderBy('id', 'asc')->get(),
+            'permisos' => [                
+                'editar' => auth()->user()->can('admin.permiso.editar'),
+                'eliminar' => auth()->user()->can('admin.permiso.eliminar'),
+            ],
+            ];
+
+        return response()->json($data);
     }
     /**
      *Fin de listar
