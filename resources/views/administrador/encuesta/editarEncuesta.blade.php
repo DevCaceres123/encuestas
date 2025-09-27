@@ -112,7 +112,7 @@
                                                 <div class="pregunta-card" id="pregunta_{{ $pregunta['id'] }}"
                                                     data-tipo="{{ $pregunta['tipo'] }}">
                                                     <div class="vista-normal">
-                                                        <table class="table table-bordered border-primary mt-2">
+                                                        <table class="table table-bordered border-primary mt-2 table-responsive">
                                                             <thead class="table-dark text-uppercase">
                                                                 <tr>
                                                                     @foreach ($pregunta['columnas'] as $columna)
@@ -382,8 +382,8 @@
                                                 <div class="pregunta-card" id="pregunta_{{ $pregunta['id'] }}"
                                                     data-tipo="{{ $pregunta['tipo'] }}">
                                                     {{-- Vista normal --}}
-                                                    <div class="vista-normal">
-                                                        <input type="text" class="form-control mt-2" disabled />
+                                                    <div class="vista-normal  col-12 col-md-4">
+                                                        <input type="text" class="form-control mt-2" />
                                                     </div>
                                                     {{-- Vista edición --}}
                                                     <div class="vista-edicion d-none mt-3">
@@ -408,7 +408,7 @@
                                                 <div class="pregunta-card" id="pregunta_{{ $pregunta['id'] }}"
                                                     data-tipo="{{ $pregunta['tipo'] }}">
                                                     {{-- Vista normal --}}
-                                                    <div class="vista-normal">
+                                                    <div class="vista-normal col-12 col-md-4">
 
                                                         <input type="number" step="any" class="form-control mt-2" />
                                                     </div>
