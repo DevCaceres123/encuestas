@@ -24,6 +24,8 @@ class DatabaseSeeder extends Seeder
             UsuarioSeeder::class,
             ExpedidoSeeder::class,
             PreguntaSeeder::class,
+            DistritoSeeder::class,
+            ComunidadSeeder::class,
         ]);
 
     }
