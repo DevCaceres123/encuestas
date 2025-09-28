@@ -6,11 +6,15 @@ $(document).ready(function () {
     let table_distrito = $("#table_distrito").DataTable({
         processing: true,
         responsive: true,
+        pageLength: 5,
+
     });
 
     let table_comunidad = $("#table_comunidad").DataTable({
         processing: true,
         responsive: true,
+        pageLength: 5,
+
     });
     listar_distrito();
     listar_comunidad();
@@ -33,6 +37,8 @@ function listar_distrito() {
         $('#table_distrito').DataTable({
             responsive: true,
             data: distrito,
+            pageLength: 5,
+
             columns: [
                 {
                     data: null,
@@ -64,19 +70,19 @@ function listar_distrito() {
                     className: 'table-td text-end',
                     render: function (data, type, row) {
 
-                        return ` <div class="d-flex justify-content-around">
+                        return ` <div class="">
 
                              ${permissions['editar'] ?
                                 `
-                            <a class="btn btn-sm btn-outline-danger px-2 d-inline-flex align-items-center eliminar_distrito" data-id="${row.id}">
+                            <a class="btn btn-sm btn-outline-danger px-2 d-inline-flex align-items-center eliminar_distrito me-1" data-id="${row.id}">
                                 <i class="fas fa-window-close fs-16"></i>
                             </a>
                                 `
                                 : ``
                             }
                           
-                                 ${permissions['eliminar'] ?
-                                ` <a class="btn btn-sm btn-outline-primary px-2 d-inline-flex align-items-center editar_distrito" data-id="${row.id}">
+                            ${permissions['eliminar'] ?
+                            ` <a class="btn btn-sm btn-outline-primary px-2 d-inline-flex align-items-center editar_distrito" data-id="${row.id}">
                                 <i class="fas fa-pencil-alt fs-16"></i>
                             </a>`
                                 : ``
@@ -112,6 +118,8 @@ function listar_comunidad() {
         $('#table_comunidad').DataTable({
             responsive: true,
             data: comunidad,
+            pageLength: 5,
+
             columns: [
                 {
                     data: null,
@@ -162,10 +170,7 @@ function listar_comunidad() {
                                 `
                                 : ``
                             }
-                          
-                            
-                          
-                             
+                                                                                                       
                             </div>`;
 
 

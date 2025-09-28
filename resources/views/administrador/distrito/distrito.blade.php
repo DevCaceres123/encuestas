@@ -2,8 +2,8 @@
 @section('titulo', 'distrito y comunidades')
 @section('contenido')
 
-    <div class="row">
-        <div class="col-12 col-md-6">
+    <div class="row py-5">
+        <div class="col-12 col-md-8 card shadow-lg border-0 rounded-4 overflow-hidden m-auto mb-3">
             <div class="card">
                 <div class="card-header">
                     <div class="row align-items-center">
@@ -37,7 +37,7 @@
             </div>
         </div>
 
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-8 card shadow-lg border-0 rounded-4 overflow-hidden m-auto">
             <div class="card">
                 <div class="card-header">
                     <div class="row align-items-center">

@@ -157,6 +157,7 @@ class Controlador_distrito extends Controller
 
     public function listarDistrito()
     {
+        
         $distritos = Distrito::select('id', 'titulo', 'descripcion')->get();
         $permissions = [
             'editar' => auth()->user()->can('distrito_comunidad.distrito.editar'),
