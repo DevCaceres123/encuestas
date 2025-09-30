@@ -185,7 +185,7 @@ class Controlador_encuesta extends Controller
     // SE LISTARAN TODAS LAS PREGUNTAS DE UNA ENCUESTA
     public function verEncuesta(Request $request, $id_encuesta)
     {
-        if (!auth()->user()->can('encuestas.encuestas.inicio')) {
+        if (!auth()->user()->can('encuestas.inicio')) {
             return redirect()->route('inicio');
         }
 
