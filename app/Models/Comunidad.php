@@ -18,7 +18,7 @@ class Comunidad extends Model
     public function distrito()
     {
 
-        return $this->belongsTo('App\Models\Distrito');
+        return $this->belongsTo('App\Models\Distrito','distrito_id');
     }
 
     public function afiliados()

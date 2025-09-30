@@ -28,7 +28,10 @@ class Controlador_afiliado extends Controller
         }
 
         $expedidos = Expedido::select('id', 'departamento')->get();
-        $comunidadades = Comunidad::select('id', 'titulo')->get();
+        $comunidadades = Comunidad::with(['distrito' => function ($query) {
+            // Asegúrate de seleccionar 'afiliado_id' para que la relación funcione
+            $query->select('id','titulo');
+        }])->select('id', 'titulo','distrito_id')->get();
         return view('administrador.afiliado.afiliado', compact(['expedidos', 'comunidadades']));
     }
 
@@ -36,10 +39,18 @@ class Controlador_afiliado extends Controller
     public function listarAfiliado(Request $request)
     {
 
-        $query = Afiliado::with(['numero_familia' => function ($query) {
+        $query = Afiliado::with([
+        'numero_familia' => function ($query) {
             // Asegúrate de seleccionar 'afiliado_id' para que la relación funcione
             $query->select('total_integrantes', 'afiliado_id');
-        }])->select('id', 'nombres', 'paterno', 'materno', 'ci','estado');
+        },
+
+        'comunidad' => function ($query) {
+            // Asegúrate de seleccionar 'afiliado_id' para que la relación funcione
+            $query->select('id', 'titulo');
+        },
+        
+        ])->select('id', 'nombres', 'paterno', 'materno', 'ci','estado','comunidad_id');
 
         // Filtro de búsqueda: Filtra por los campos correctos en la tabla Afiliado
         if (!empty($request->search['value'])) {

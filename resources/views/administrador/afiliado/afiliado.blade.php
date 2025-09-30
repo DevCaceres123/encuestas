@@ -29,6 +29,7 @@
                                             <th>PATARNO</th>
                                             <th>MATERNO</th>
                                             <th>INTEGRANTES</th>
+                                            <th>COMUNIDAD</th>
                                             <th class="text-end">ACCIONES</th>
                                             <th class="text-end">ESTADO</th>
                                         </tr>
@@ -176,10 +177,11 @@
 
                                             <select class="form-select" aria-label="Default select example"
                                                 id="comunidad_id" name="comunidad_id">
-                                                <option disabled selected>Seleccionar</option>
+                                                <option disabled selected>Seleccionar comunidad</option>
                                                 @foreach ($comunidadades as $item)
                                                     <option class="text-uppercase" value="{{ $item->id }}">
-                                                        {{ $item->titulo }}</option>
+                                                          {{ ucwords($item->titulo) }} <> {{ ucwords($item->distrito->titulo) }}
+                                                    </option>
                                                 @endforeach
 
 
@@ -389,7 +391,7 @@
                                                 <option disabled selected>Seleccionar</option>
                                                 @foreach ($comunidadades as $item)
                                                     <option class="text-uppercase" value="{{ $item->id }}">
-                                                        {{ $item->titulo }}</option>
+                                                         {{ ucwords($item->titulo) }} <> {{ ucwords($item->distrito->titulo) }}</option>
                                                 @endforeach
 
 
@@ -468,6 +470,28 @@
 
 
 @section('scripts')
+    <script>
+        // Inicialización de Selectr
+        document.addEventListener('DOMContentLoaded', function() {
+            const selectElement = document.getElementById('comunidad_id');            
+            const selectElement2 = document.getElementById('comunidad_id-edit');            
+
+            let selectrInstanceSede = new Selectr(selectElement, {
+                searchable: true,    
+                            
+            });
+
+            let selectrInstanceSede2 = new Selectr(selectElement2, {
+                searchable: true,    
+                            
+            });
+
+
+
+        });
+    </script>
 
     <script src="{{ asset('js/modulos/afiliado/afiliado.js') }}" type="module"></script>
+
+
 @endsection

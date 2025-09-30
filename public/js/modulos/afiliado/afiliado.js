@@ -76,6 +76,16 @@ function listar_afiliado() {
                 }
             },
             {
+                data: 'comunidad.titulo',
+                className: 'table-td text-uppercase',
+                render: function (data) {
+                     return `                            
+                       <span class="badge rounded-pill bg-danger bg-gradient  text-light p-2 fs-6">${data}</span>
+                    `;
+                }
+            },
+
+            {
                 data: null,
                 className: 'table-td text-end',
                 render: function (data, type, row) {
@@ -223,7 +233,7 @@ $('#table_afiliado').on('click', '.editar_afiliado', function (e) {
     e.preventDefault(); // Evitar que el enlace recargue la página
     let afiliado_id = $(this).data('id'); // Obtener el id del afiliado desde el data-id
     $('#modalAfiliadoEdit').modal('show');
-    crud("admin/afiliado", "GET", afiliado_id+'/edit', null, function (error, response) {
+    crud("admin/afiliado", "GET", afiliado_id + '/edit', null, function (error, response) {
 
         console.log(response);
         // Verificamos que no haya un error o que todos los campos sean llenados
@@ -237,7 +247,7 @@ $('#table_afiliado').on('click', '.editar_afiliado', function (e) {
         }
         let completo = response.mensaje.ci; // "12345678-rga"
         let partes = completo.split('-'); // Divide en un array
-        
+
         let numero_documento = partes[0];  // "12345678"
         let complemento = partes[1]; // "rga"
 
@@ -261,7 +271,7 @@ $('#table_afiliado').on('click', '.editar_afiliado', function (e) {
 $('#formnuevo_afiliadoEdit').submit(function (e) {
     e.preventDefault();
     let datos = {
-     
+
         "ci-edit": $('#ci-edit').val(),
         "complemento-edit": $('#complemento-edit').val(),
         "expedido_id-edit": $('#expedido_id-edit').val(),
@@ -271,12 +281,12 @@ $('#formnuevo_afiliadoEdit').submit(function (e) {
         "comunidad_id-edit": $('#comunidad_id-edit').val(),
         "mujeres-edit": $('#mujeres-edit').val(),
         "hombres-edit": $('#hombres-edit').val(),
-        "id_afiliado" :$('#id_afiliado').val(),
+        "id_afiliado": $('#id_afiliado').val(),
     };
 
-    let id_registro=$('#id_afiliado').val();
-    
-    
+    let id_registro = $('#id_afiliado').val();
+
+
     $("#btnnuevo_afiliadoEdit").prop("disabled", true);
     vaciar_errores("formnuevo_afiliadoEdit");
 
