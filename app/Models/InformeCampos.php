@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class InformeCampos extends Model
 {
@@ -11,9 +12,15 @@ class InformeCampos extends Model
         'informe_id',
         'campo',
         'tipo',
+        'titulo',
         'orden',
         'columna_id',
+        'fila_id',
+        'pregunta_id',
+        'tipo_analisis',
     ];
+
+    use SoftDeletes;
 
     public function informe()
     {

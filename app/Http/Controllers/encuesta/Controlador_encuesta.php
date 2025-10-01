@@ -860,9 +860,9 @@ class Controlador_encuesta extends Controller
     public function verInforme($id_encuesta)
     {
 
-        // if (!auth()->user()->can('encuestas.informe.ver')) {
-        //     return redirect()->route('inicio');
-        // }
+        if (!auth()->user()->can('encuestas.ver_informe')) {
+            return redirect()->route('inicio');
+        }
 
         $encuesta = Encuesta::find($id_encuesta);
 
@@ -882,73 +882,186 @@ class Controlador_encuesta extends Controller
 
         //Obtener preguntas relevantes con relaciones necesarias
         $preguntas = Pregunta::where('encuesta_id', $id_encuesta)
-            ->whereIn('tipo', ['numerico', 'opcional', 'tabla'])
-            ->with(['columnas' => function ($q) {
-                $q->whereIn('tipo', ['numero', 'opcion', 'porcentaje', 'pregunta'])
-                  ->with('preguntas');
-            }])
-            ->get();
+             ->whereIn('tipo', ['numerico', 'opcional', 'tabla'])
+             ->with(['columnas' => function ($q) {
+                 $q->whereIn('tipo', ['numero', 'opcion', 'porcentaje', 'pregunta'])
+                   ->with('preguntas');
+             }])
+             ->get();
 
         $campos = [];
 
+        $orden = 1; // Inicializamos el orden
+
         foreach ($preguntas as $pregunta) {
             if ($pregunta->tipo === 'tabla') {
-                foreach ($pregunta->columnas as $columna) {
-                    if ($columna->tipo === 'pregunta') {
-                        foreach ($columna->preguntas as $fila) {
+                $columnas = $pregunta->columnas;
+
+                // Revisamos si hay columna de tipo "pregunta" (filas)
+                $columnaPreguntas = $columnas->firstWhere('tipo', 'pregunta');
+
+                if ($columnaPreguntas) {
+                    // Tabla con filas
+                    foreach ($columnaPreguntas->preguntas as $fila) {
+                        foreach ($columnas->where('tipo', '!=', 'pregunta') as $columna) {
+                            // Determinar tipo de análisis según tipo de columna
+                            $tipoAnalisis = match($columna->tipo) {
+                                'numero'     => 'suma',
+                                'opcion'     => 'conteo',
+                                'porcentaje' => 'promedio',
+                                default      => null,
+                            };
+
                             $campos[] = [
-                                'informe_id' => $informe_id,
-                                'pregunta_id' => $pregunta->id,
-                                'columna_id' => $columna->id,
-                                'fila_id' => $fila->id,
-                                'tipo_analisis' => null,
-                                'titulo' => "{$pregunta->titulo} - {$columna->pregunta} - {$fila->pregunta}",
-                                'estado' => 'activo',
+                                'informe_id'    => $informe_id,
+                                'pregunta_id'   => $pregunta->id,
+                                'columna_id'    => $columna->id,
+                                'fila_id'       => $fila->id,
+                                'tipo_analisis' => $tipoAnalisis,
+                                'titulo'        => "{$pregunta->titulo} - {$fila->pregunta} - {$columna->pregunta}",
+                                'estado'        => 'activo',
+                                'orden'         => $orden++, // incrementamos el orden
                             ];
                         }
-                    } else {
+                    }
+                } else {
+                    // Tabla sin filas, solo columnas
+                    foreach ($columnas as $columna) {
+                        $tipoAnalisis = match($columna->tipo) {
+                            'numero'     => 'suma',
+                            'opcion'     => 'conteo',
+                            'porcentaje' => 'promedio',
+                            default      => null,
+                        };
+
                         $campos[] = [
-                            'informe_id' => $informe_id,
-                            'pregunta_id' => $pregunta->id,
-                            'columna_id' => $columna->id,
-                            'fila_id' => null,
-                            'tipo_analisis' => null,
-                            'titulo' => "{$pregunta->titulo} - {$columna->pregunta}",
-                            'estado' => 'activo',
+                            'informe_id'    => $informe_id,
+                            'pregunta_id'   => $pregunta->id,
+                            'columna_id'    => $columna->id,
+                            'fila_id'       => null,
+                            'tipo_analisis' => $tipoAnalisis,
+                            'titulo'        => "{$pregunta->titulo} - {$columna->pregunta}",
+                            'estado'        => 'activo',
+                            'orden'         => $orden++,
                         ];
                     }
                 }
+
             } else {
+                // Preguntas normales
+                // Determinar tipo de análisis según tipo de pregunta
+                $tipoAnalisis = match($pregunta->tipo) {
+                    'numerico'  => 'suma',
+                    'opcional'  => 'conteo',
+                    default     => null,
+                };
+
                 $campos[] = [
-                    'informe_id' => $informe_id,
-                    'pregunta_id' => $pregunta->id,
-                    'columna_id' => null,
-                    'fila_id' => null,
-                    'tipo_analisis' => null,
-                    'titulo' => $pregunta->titulo,
-                    'estado' => 'activo',
+                    'informe_id'    => $informe_id,
+                    'pregunta_id'   => $pregunta->id,
+                    'columna_id'    => null,
+                    'fila_id'       => null,
+                    'tipo_analisis' => $tipoAnalisis,
+                    'titulo'        => $pregunta->titulo,
+                    'estado'        => 'activo',
+                    'orden'         => $orden++,
                 ];
             }
         }
 
-        // 3️⃣ Limpiar campos antiguos del informe antes de insertar
-        InformeCampos::where('informe_id', $informe_id)->delete();
+        //Obtener todos los IDs actuales que deberían estar activos
+        $idsActivos = [];
+        foreach ($campos as $campo) {
 
-        // 4️⃣ Insertar nuevos campos
-        InformeCampos::insert($campos);
 
-        $preguntas = InformeCampos::with(['pregunta', 'columna', 'fila'])
-            ->where('informe_id', $informe_id)
-            ->orderBy('id')
-            ->get();
+            if (is_null($campo['columna_id']) && is_null($campo['fila_id'])) {
 
+                // Preguntas normales
+                $registro = InformeCampos::updateOrCreate(
+                    [
+                         'informe_id'  => $campo['informe_id'],
+                         'pregunta_id' => $campo['pregunta_id'],
+                     ],
+                    [
+                         'pregunta_id'   => $campo['pregunta_id'], // añadir explícitamente
+                         'titulo'        => $campo['titulo'],
+                         'tipo_analisis' => $campo['tipo_analisis'],
+                         'orden'         => $campo['orden'],
+                         'estado'        => 'activo',
+                     ]
+                );
+                $idsActivos[] = $registro->id;
+
+            } else {
+                // Campos de tabla
+                $registro =  InformeCampos::updateOrCreate(
+                    [
+                          'informe_id'  => $campo['informe_id'],
+                          'pregunta_id' => $campo['pregunta_id'],
+                          'columna_id'  => $campo['columna_id'],
+                          'fila_id'     => $campo['fila_id'],
+                      ],
+                    [
+                          'pregunta_id'   => $campo['pregunta_id'], // añadir explícitamente
+                          'titulo'        => $campo['titulo'],
+                          'tipo_analisis' => $campo['tipo_analisis'],
+                          'orden'         => $campo['orden'],
+                          'estado'        => 'activo',
+                      ]
+                );
+                $idsActivos[] = $registro->id;
+            }
+        }
+
+        // Soft-delete de los eliminados
+        InformeCampos::where('informe_id', $informe_id)
+            ->whereNotIn('id', $idsActivos)
+            ->delete();
+
+        $preguntas_informe = InformeCampos::select('id', 'titulo', 'estado', 'columna_id', 'fila_id', 'tipo_analisis')->where('informe_id', $informe_id)
+        ->orderBy('orden', 'asc')
+        ->get();
 
         return view('administrador.encuesta.informe', [
-            'encuesta' => $encuesta,
             'informe' => $informe,
-            'campos' => $campos,
-            'preguntas' => $preguntas,
+            'preguntas_informe' => $preguntas_informe,
         ]);
+    }
+
+
+    public function cambiarEstadoInforme(Request $request,$id)
+    {
+
+        DB::beginTransaction();
+        try {
+
+            // Encontrar el usuario por ID
+            $informe = InformeCampos::findOrFail($id);
+            if (!$informe) {
+                throw new Exception('Afiliado no encontrado');
+            }
+            if ($request->estado == "activo") {
+                $informe->estado = "inactivo";
+            }
+            if ($request->estado == "inactivo") {
+                $informe->estado = "activo";
+            }
+
+
+            $informe->save();
+            DB::commit();
+
+            $this->mensaje("exito", "Adicionado al informe correctamente");
+
+            return response()->json($this->mensaje, 200);
+        } catch (Exception $e) {
+            // Revertir los cambios si hay algún error
+            DB::rollBack();
+
+            $this->mensaje("error", "error" . $e->getMessage());
+
+            return response()->json($this->mensaje, 200);
+        }
     }
 
     public function eliminarEncuesta($id_encuesta)

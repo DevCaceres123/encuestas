@@ -79,7 +79,8 @@ Route::prefix('/admin')->middleware([Autenticados::class])->group(function () {
 
 
         // SECCION DE INFORME
-        Route::get('verInforme/{id_encuesta}', 'verInforme')->name('encuesta.verEncuesta');
+        Route::get('verInforme/{id_encuesta}', 'verInforme')->name('encuesta.verFormulario');
+        Route::put('cambiarEstadoInforme/{id_pregunta_informe}', 'cambiarEstadoInforme')->name('encuesta.cambiarEstadoInforme');
     });
 
     // Ruta para la vista del constructor de tabla

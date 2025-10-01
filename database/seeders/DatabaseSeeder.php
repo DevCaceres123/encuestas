@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Afiliado;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -27,6 +28,8 @@ class DatabaseSeeder extends Seeder
             DistritoSeeder::class,
             ComunidadSeeder::class,
         ]);
+
+        Afiliado::factory(1000)->create();
 
     }
 }

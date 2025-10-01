@@ -20,9 +20,7 @@ return new class () extends Migration {
             $table->string('titulo')->nullable(); // Título personalizado
             $table->unsignedInteger('orden')->default(0);
             $table->enum('estado', ['activo', 'inactivo'])->default('inactivo');
-
-           
-            
+            $table->timestamp('deleted_at')->nullable();                   
             $table->timestamps();
         });
     }

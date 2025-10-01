@@ -30,9 +30,12 @@ function listar_afiliado() {
             {
                 data: null,
                 className: 'table-td',
-                render: function (data, type, row, meta) {
-                    return meta.row + 1; // Usar meta.row para obtener el índice de la fila
-                }
+                render: function (data, type, row, meta) {                 
+                     let start = $("#table_afiliado")
+                        .DataTable()
+                        .page.info().start;
+                    return start + meta.row + 1;
+                },
             },
             {
                 data: 'ci',
