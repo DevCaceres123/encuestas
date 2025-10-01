@@ -130,6 +130,41 @@ class Controlador_formulario extends Controller
     }
 
 
+    public function actualizarEstadoFormulario(Request $request,$id){
+
+        
+        DB::beginTransaction();
+        try {
+
+            // Encontrar el usuario por ID
+            $formulario = Formulario::findOrFail($id);
+            if (!$formulario) {
+                throw new Exception('Formulario no encontrado');
+            }
+            if ($request->estado == "proceso") {
+                $formulario->estado = "terminado";
+            }
+            if ($request->estado == "terminado") {
+                $formulario->estado = "proceso";
+            }
+
+
+            $formulario->save();
+            DB::commit();
+
+            $this->mensaje("exito", "Estado cambiado Correctamente");
+
+            return response()->json($this->mensaje, 200);
+        } catch (Exception $e) {
+            // Revertir los cambios si hay algún error
+            DB::rollBack();
+
+            $this->mensaje("error", "error" . $e->getMessage());
+
+            return response()->json($this->mensaje, 200);
+        }
+    }
+
 
     public function buscarAfiliado(string $datos_Afiliado)
     {

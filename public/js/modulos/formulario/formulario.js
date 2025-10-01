@@ -60,10 +60,10 @@ function listar_formularo() {
         className: 'table-td text-capitalize text-start',
         render: function (data) {
           if (data === 'proceso') {
-            return `<span class="badge bg-warning text-light fs-5">${data}</span>`;
+            return `<span class="badge bg-warning text-light fs-5"><i class='fas fa-lock-open me-1'></i>${data}</span>`;
           }
           if (data === 'terminado') {
-            return `<span class="badge bg-primary fs-5">${data}</span>`;
+            return `<span class="badge bg-primary fs-5"><i class='fas fa-lock me-1'></i> ${data}</span>`;
           } else {
             return data; // o agregar un estilo por defecto si deseas
           }
@@ -117,11 +117,11 @@ function listar_formularo() {
                 className: 'table-td',
                 render: function (data, type, row) {
 
-                    let estadoChecked = row.estado === "activo" ? 'checked' : '';
+                    let estadoChecked = row.estado === "terminado" ? 'checked' : '';
 
                     // Aquí verificamos el permiso de desactivar
                     let desactivarContent = permisosGlobal['estado'] ? `
-                            <a class="cambiar_estado_encuesta" data-id="${row.id},${row.estado}">
+                            <a class="cambiar_estado_formulario" data-id="${row.id},${row.estado}">
                                 <div class="form-check form-switch ms-3">
                                     <input class="form-check-input" type="checkbox" 
                                            ${estadoChecked} style="transform: scale(2.0);">
@@ -319,4 +319,39 @@ $('#table_formulario').on('click', '.eliminar_formulario', function (e) {
             alerta_top('error', 'Se canceló la eliminacion');
         }
     })
+});
+
+
+// CAMBIAR ESTAD FORMULARIO
+
+$('#table_formulario').on('click', '.cambiar_estado_formulario', function (e) {
+    e.preventDefault(); // Evitar que el enlace recargue la página
+
+
+    // Obtener el valor de data-id
+    var dataId = $(this).data('id');
+
+    // Separar el id y el estado
+    var values = dataId.split(',');
+
+    let datos =
+    {
+        id_afiliado: values[0],
+        estado: values[1]
+    }
+
+    crud("admin/actualizarEstadoFormulario", "PUT", values[0], datos, function (error, response) {
+        
+        if (response.tipo != "exito") {
+            mensajeAlerta(response.mensaje, response.tipo);
+            return;
+        }
+
+        mensajeAlerta(response.mensaje, response.tipo);
+
+        actualizarTabla();
+
+
+    });
+
 });

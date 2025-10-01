@@ -96,6 +96,8 @@ Route::prefix('/admin')->middleware([Autenticados::class])->group(function () {
         Route::get('listarFormularios', 'listarFormularios')->name('formulario.listarFormularios');
         Route::get('buscarAfiliado/{id_afiliado}', 'buscarAfiliado')->name('formulario.buscarAfiliado');
         Route::get('responderFormulario/{id_formulario}/{id_afiliado}', 'responderFormulario')->name('formulario.responderFormulario');
+        Route::put('actualizarEstadoFormulario/{id_formulario}', 'actualizarEstadoFormulario')->name('formulario.actualizarEstadoFormulario');
+
 
     });
 
