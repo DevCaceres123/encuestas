@@ -88,7 +88,7 @@ function listar_formularo() {
                       
                              ${
                                permisosGlobal.editar
-                                 ? ` <a class="btn btn-sm btn-outline-warning px-2 d-inline-flex align-items-center me-1 editar_afiliado" data-id="${row.id}" title="Editar Formulario">
+                                 ? ` <a class="btn btn-sm btn-outline-warning px-2 d-inline-flex align-items-center me-1 editar_formulario" data-id="${row.id}" title="Editar Formulario">
                             <i class="fas fa-pencil-alt fs-16"></i>
                         </a>`
                                  : ``
@@ -355,3 +355,69 @@ $('#table_formulario').on('click', '.cambiar_estado_formulario', function (e) {
     });
 
 });
+
+
+// obtener datos de un formulario
+$('#table_formulario').on('click', '.editar_formulario', function (e) {
+
+    e.preventDefault(); // Evitar que el enlace recargue la página
+    let id_dato = $(this).data('id'); // Obtener el id del afiliado desde el data-id
+    $('#modalCrearFormulario_edit').modal('show');    
+    crud("admin/formulario", "GET", id_dato + '/edit', null, function (error, response) {
+
+        //console.log(response);
+        // Verificamos que no haya un error o que todos los campos sean llenados
+        if (response.tipo === "errores") {
+            mensajeAlerta(response.mensaje, "errores");
+            return;
+        }
+        if (response.tipo != "exito") {
+            mensajeAlerta(response.mensaje, response.tipo);
+            return;
+        }
+
+        // Llenar los campos del formulario
+        let data = response.mensaje;
+
+        $('#formCrearFormulario_edit input[name="id_formulario"]').val(data.id);
+        $('#tituloFormulario_edit').val(data.titulo_formulario);
+        $('#descripcionFormulario_edit').val(data.descripcion_formulario);
+        $('#encuesta_id_edit').val(data.encuesta_id);
+       
+    })
+});
+
+
+$('#formCrearFormulario_edit').submit(function (e) {
+    e.preventDefault();
+    let datos = {
+      id_formulario: $('#id_formulario').val(),
+      tituloFormulario_edit: $('#tituloFormulario_edit').val(),
+      descripcionFormulario_edit: $('#descripcionFormulario_edit').val(),
+      encuesta_id_edit: $('#encuesta_id_edit').val()
+    };
+
+    let id_registro = $('#id_formulario').val();
+
+
+    $("#btn_guaradarFormularioEdit").prop("disabled", true);
+    vaciar_errores("formCrearFormulario_edit");
+
+    crud("admin/formulario", "PUT", id_registro, datos, function (error, response) {
+
+        $("#btn_guaradarFormularioEdit").prop("disabled", false);
+        //console.log(response);        
+      
+        if (response.tipo != "exito") {
+            mensajeAlerta(response.mensaje, response.tipo);
+            return;
+        }
+        //si todo esta correcto muestra el mensaje de correcto
+        $('#modalCrearFormulario_edit').modal('hide');
+        vaciar_formulario("formCrearFormulario_edit");
+        mensajeAlerta(response.mensaje, response.tipo);
+        actualizarTabla();
+
+    })
+});
+

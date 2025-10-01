@@ -31,22 +31,12 @@ class FormularioRequest extends BasePrincipalRequest
                     'descripcionFormulario' => 'required|max:100|min:5',
                     'encuesta_id' => 'required|integer|exists:encuestas,id',
                 ];
-            case 'encuesta.guardarPregunta':
+            case 'formulario.update':
                 return [
-                    'descripcionPregunta' => 'required|string|min:5|max:255',
-                    'tipoPregunta' => 'required|in:texto,numerico,opcional',
-                    'opciones' => 'nullable|array',
-                ];
-            case 'encuesta.guardarPreguntaTabla':
-                return [
-                    'titulo' => 'required|string|min:5|max:255',
-                    'tipo' => 'required|in:tabla',
-                ];
-            case 'encuesta.actualizarEncuesta':
-                return [
-                    'tituloEdit' => 'required|max:50|min:5',
-                    'descripcionEdit' => 'required|max:100|min:5',
-                ];
+                    'tituloFormulario_edit' => 'required|max:50|min:5',
+                    'descripcionFormulario_edit' => 'required|max:100|min:5',
+                    'encuesta_id_edit' => 'required|integer|exists:encuestas,id',
+                ];            
             default:
                 return [];
         }

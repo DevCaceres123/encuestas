@@ -97,10 +97,79 @@
                         </div>
 
                         <div class="d-flex justify-content-end mt-3">
-                            <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">
+                            <button type="button" class="btn btn-danger rounded btn-sm me-1" data-bs-dismiss="modal">
                                 <i class="fas fa-times me-1"></i> Cancelar
                             </button>
-                            <button type="submit" class="btn btn-success" id="btn_guaradarFormulario">
+                            <button type="submit" class="btn btn-success rounded btn-sm" id="btn_guaradarFormulario">
+                                <i class="fas fa-save me-1"></i> Guardar Formulario
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- MODAL CREAR FORMULARIO -->
+    <div class="modal fade" id="modalCrearFormulario_edit" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content">
+
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title">
+                       Editar datos
+                    </h5>
+                    <span class="ms-3 text-light">Campos obligatorios <strong class="text-danger">(*)</strong></span>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <form id="formCrearFormulario_edit">
+                        <div class="mb-3">
+                            <label for="tituloFormulario" class="form-label">
+                                <i class="fas fa-certificate me-1"></i> Título del Formulario <span class="text-danger">
+                                    (*)</span>
+                            </label>
+                            <input type="hidden" name="id_formulario" id="id_formulario">
+                            <input type="text" class="form-control text-uppercase" id="tituloFormulario_edit" name="tituloFormulario_edit"
+                                required>
+                            <div id="_tituloFormulario_edit">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="descripcionFormulario" class="form-label">
+                                <i class="fas fa-align-left me-1"></i> Descripción <span class="text-danger"> (*)</span>
+                            </label>
+                            <textarea class="form-control" id="descripcionFormulario_edit" name="descripcionFormulario_edit" rows="3" required></textarea>
+                             <div id="_descripcionFormulario_edit">
+
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="encuestaFormulario" class="form-label">
+                                <i class="fas fa-list me-1"></i> Seleccionar Encuesta <span class="text-danger"> (*)</span>
+                            </label>
+                            <select class="form-select" id="encuesta_id_edit" name="encuesta_id_edit" required>
+                                <option value="" disabled selected>Seleccione una encuesta</option>
+                                @foreach ($encuestas as $encuesta)
+                                    <option value="{{ $encuesta->id }}">{{ $encuesta->titulo }}</option>
+                                @endforeach
+                            </select>
+                            <div id="_encuesta_id_edit">
+
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end mt-3">
+                            <button type="button" class="btn btn-danger rounded btn-sm me-1" data-bs-dismiss="modal">
+                                <i class="fas fa-times me-1"></i> Cancelar
+                            </button>
+                            <button type="submit" class="btn btn-success rounded btn-sm" id="btn_guaradarFormularioEdit">
                                 <i class="fas fa-save me-1"></i> Guardar Formulario
                             </button>
                         </div>

@@ -31,8 +31,8 @@ class Controlador_formulario extends Controller
             return redirect()->route('inicio');
         }
 
-        $encuestas=Encuesta::where('estado','activo')->get();
-        return view('administrador.formulario.formulario',compact(['encuestas']));
+        $encuestas = Encuesta::where('estado', 'activo')->get();
+        return view('administrador.formulario.formulario', compact(['encuestas']));
     }
 
 
@@ -79,16 +79,16 @@ class Controlador_formulario extends Controller
      */
     public function store(FormularioRequest $request)
     {
-        
+
         DB::beginTransaction();
         try {
             $formulario = new Formulario();
-            $formulario->titulo_formulario=$request->tituloFormulario;
-            $formulario->descripcion_formulario=$request->tituloFormulario;
-            $formulario->estado='proceso';
-            $formulario->user_id=auth()->user()->id;
-            $formulario->encuesta_id=$request->encuesta_id;
-           
+            $formulario->titulo_formulario = $request->tituloFormulario;
+            $formulario->descripcion_formulario = $request->tituloFormulario;
+            $formulario->estado = 'proceso';
+            $formulario->user_id = auth()->user()->id;
+            $formulario->encuesta_id = $request->encuesta_id;
+
             $formulario->save();
 
             DB::commit();
@@ -118,21 +118,66 @@ class Controlador_formulario extends Controller
      */
     public function edit(string $id)
     {
-        //
+        
+        try {
+
+            // Encontrar el usuario por ID
+            $formulario = Formulario::findOrFail($id);
+
+            if (!$formulario) {
+                throw new Exception('Formulario no encontrado');
+            }
+          
+            $this->mensaje("exito", $formulario);
+
+            return response()->json($this->mensaje, 200);
+        } catch (Exception $e) {
+         
+            $this->mensaje("error", "error" . $e->getMessage());
+
+            return response()->json($this->mensaje, 200);
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(FormularioRequest $request, string $id)
     {
-        //
+        
+        DB::beginTransaction();
+        try {
+
+            // Encontrar el usuario por ID
+            $formulario = Formulario::findOrFail($id);
+            if (!$formulario) {
+                throw new Exception('Formulario no encontrado');
+            }
+            
+            $formulario->titulo_formulario= $request->tituloFormulario_edit;
+            $formulario->descripcion_formulario= $request->descripcionFormulario_edit;
+            $formulario->encuesta_id= $request->encuesta_id_edit;
+            $formulario->save();
+            DB::commit();
+
+            $this->mensaje("exito", "Formulario actualizado Correctamente");
+
+            return response()->json($this->mensaje, 200);
+        } catch (Exception $e) {
+            // Revertir los cambios si hay algún error
+            DB::rollBack();
+
+            $this->mensaje("error", "Error" . $e->getMessage());
+
+            return response()->json($this->mensaje, 200);
+        }
     }
 
 
-    public function actualizarEstadoFormulario(Request $request,$id){
+    public function actualizarEstadoFormulario(Request $request, $id)
+    {
 
-        
+
         DB::beginTransaction();
         try {
 
@@ -197,8 +242,8 @@ class Controlador_formulario extends Controller
             if (!$formulario) {
                 throw new Exception('Formulario no encontrado');
             }
-            
-            $formulario->delete();            
+
+            $formulario->delete();
             DB::commit();
 
             $this->mensaje("exito", "Formulario eliminado correctamente");
@@ -234,7 +279,7 @@ class Controlador_formulario extends Controller
             }
             $preguntas = $this->obtenerPreguntasEncuesta($encuesta->id);
 
-            return view('administrador.formulario.responder', compact('formulario', 'afiliado','preguntas'));
+            return view('administrador.formulario.responder', compact('formulario', 'afiliado', 'preguntas'));
 
 
         } catch (Exception $e) {
