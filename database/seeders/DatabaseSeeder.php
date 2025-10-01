@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             PreguntaSeeder::class,
             DistritoSeeder::class,
             ComunidadSeeder::class,
+            FormularioSeeder::class,
         ]);
 
         Afiliado::factory(1000)->create();
