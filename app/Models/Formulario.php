@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Formulario extends Model
 {
-    // use SoftDeletes;
-
+    
+    use SoftDeletes;
     protected $appends = ['created_at_formateado'];
 
     // Asegurarse de que 'created_at' sea un objeto Carbon al obtenerlo

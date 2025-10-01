@@ -18,6 +18,7 @@ return new class extends Migration
             $table->enum('estado', ['proceso', 'terminado'])->default('proceso');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('encuesta_id');
+            $table->timestamp('deleted_at')->nullable();
 
             $table->foreign('user_id')
                 ->references('id')

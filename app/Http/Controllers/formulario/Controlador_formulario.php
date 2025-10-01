@@ -156,7 +156,26 @@ class Controlador_formulario extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $formulario = Formulario::find($id);
+            if (!$formulario) {
+                throw new Exception('Formulario no encontrado');
+            }
+            
+            $formulario->delete();            
+            DB::commit();
+
+            $this->mensaje("exito", "Formulario eliminado correctamente");
+
+            return response()->json($this->mensaje, 200);
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            $this->mensaje("error", "Error" . $e->getMessage());
+
+            return response()->json($this->mensaje, 200);
+        }
     }
 
     public function responderFormulario(string $id_formulario, string $id_afiliado)

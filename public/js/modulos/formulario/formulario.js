@@ -79,7 +79,7 @@ function listar_formularo() {
                          ${
                            permisosGlobal.eliminar
                              ? `
-                        <a class="btn btn-sm btn-outline-danger px-2 d-inline-flex align-items-center eliminar_afiliado me-1" data-id="${row.id}" title="Eliminar Formulario">
+                        <a class="btn btn-sm btn-outline-danger px-2 d-inline-flex align-items-center eliminar_formulario me-1" data-id="${row.id}" title="Eliminar Formulario">
                             <i class="fas fa-window-close fs-16"></i>
                         </a>
                             `
@@ -107,11 +107,8 @@ function listar_formularo() {
                             <i class="fas fa-users fs-16"></i>
                         </a>`
                             : ``
-                        }
-                        
-                      
-                         
-                        </div>`;
+                        }                                                                     
+                  </div>`;
         },
       },
 
@@ -251,7 +248,7 @@ $('#btnIniciarFormulario').on('click', function () {
 // CREAR NUEVO FORMULARIO
 
 
-// NUEVO AFILIADO
+// NUEVO FORMULARIO
 
 $('#formCrearFormulario').submit(function (e) {
     e.preventDefault();
@@ -280,5 +277,46 @@ $('#formCrearFormulario').submit(function (e) {
         mensajeAlerta(response.mensaje, response.tipo);
         actualizarTabla();
 
+    })
+});
+
+
+
+// eliminar formulario
+$('#table_formulario').on('click', '.eliminar_formulario', function (e) {
+
+    e.preventDefault(); // Evitar que el enlace recargue la página
+    let id_dato = $(this).data('id'); // Obtener el id del alumno desde el data-id
+    Swal.fire({
+        title: "NOTA!",
+        text: "¿Está seguro de Eliminar?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sí, Estoy seguro",
+        cancelButtonText: "Cancelar",
+    }).then(async function (result) {
+        if (result.isConfirmed) {
+
+            crud("admin/formulario", "DELETE", id_dato, null, function (error, response) {
+
+                //console.log(response);
+                // Verificamos que no haya un error o que todos los campos sean llenados
+                if (response.tipo === "errores") {
+                    mensajeAlerta(response.mensaje, "errores");
+                    return;
+                }
+                if (response.tipo != "exito") {
+                    mensajeAlerta(response.mensaje, response.tipo);
+                    return;
+                }
+                // si todo esta correcto muestra el mensaje de correcto
+                mensajeAlerta(response.mensaje, response.tipo);
+                actualizarTabla();
+            })
+        } else {
+            alerta_top('error', 'Se canceló la eliminacion');
+        }
     })
 });
