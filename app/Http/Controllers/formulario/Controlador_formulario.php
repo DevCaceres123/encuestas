@@ -218,7 +218,7 @@ class Controlador_formulario extends Controller
         $afiliados = Afiliado::where('ci', 'like', "%{$datos_Afiliado}%")
             ->orWhere('nombres', 'like', "%{$datos_Afiliado}%")
             ->limit(10)
-            ->get(['id', 'ci', 'nombres', 'paterno', 'materno']);
+            ->get(['id', 'ci', 'nombres', 'paterno', 'materno']);                   
 
         if ($afiliados->isEmpty()) {
             $this->mensaje('no_encontrado', 'No se encontraron afiliados con esos datos.');
